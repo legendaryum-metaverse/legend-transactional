@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { AvailableMicroservices, MintCommands, startGlobalSagaListener, stopRabbitMQ } from 'rabbit-mq11111';
+import { AvailableMicroservices, MintCommands, startGlobalSagaListener, stopRabbitMQ } from 'legend-transac';
 
 const app = express();
 const port = 3050;

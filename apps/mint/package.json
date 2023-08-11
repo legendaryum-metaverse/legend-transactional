@@ -5,7 +5,7 @@
   "main": "./dist/server.js",
   "private": true,
   "dependencies": {
-    "rabbit-mq11111": "workspace:*",
+    "legend-transac": "workspace:*",
     "express-async-errors": "^3.1.1",
     "express": "latest",
     "@types/express": "latest",

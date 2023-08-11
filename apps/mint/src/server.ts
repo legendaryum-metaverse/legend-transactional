@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { connectToSagaCommandEmitter, MintCommands, AvailableMicroservices } from 'rabbit-mq11111';
+import { connectToSagaCommandEmitter, MintCommands, AvailableMicroservices } from 'legend-transac';
 
 const app = express();
 const port = 3022;
