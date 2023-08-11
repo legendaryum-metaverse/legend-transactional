@@ -1,0 +1,40 @@
+{
+  "name": "saga",
+  "version": "0.0.16",
+  "description": "",
+  "main": "./dist/server.js",
+  "private": true,
+  "dependencies": {
+    "@types/express": "latest",
+    "axios": "latest",
+    "cls-hooked": "^4.2.2",
+    "cors": "^2.8.5",
+    "cors-anywhere": "^0.4.4",
+    "express": "latest",
+    "express-async-errors": "^3.1.1",
+    "pg": "^8.11.1",
+    "pg-hstore": "^2.3.4",
+    "rabbit-mq11111": "workspace:*",
+    "sequelize": "^6.32.1",
+    "utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/amqplib": "latest",
+    "@types/cls-hooked": "^4.3.3",
+    "@types/cors": "^2.8.13",
+    "@types/pg": "^8.10.2",
+    "amqplib": "latest",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*"
+  },
+  "scripts": {
+    "build": "swc src -d dist",
+    "lint": "eslint --ext .ts src",
+    "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
+    "watch-compile": "swc src -w --out-dir dist",
+    "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

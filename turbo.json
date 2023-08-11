@@ -1,0 +1,42 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "**/*",
+        "!.turbo/**/*",
+        "!e2e/**/*",
+        "!performance/**/*"
+      ],
+      "outputs": ["dist/**/*"],
+      "outputMode": "new-only"
+    },
+    "build:dev": {
+      "dependsOn": ["^build:dev"],
+      "outputs": ["dist/**/*"],
+      "inputs": ["src/**/*"]
+    },
+    "lint": {},
+    "micro-mint#dev": {
+      "dependsOn": ["rabbit-mq11111#build:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "micro-image#dev": {
+      "dependsOn": ["rabbit-mq11111#build:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "saga#dev": {
+      "dependsOn": ["rabbit-mq11111#build:dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

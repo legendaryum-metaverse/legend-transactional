@@ -1,0 +1,29 @@
+{
+  "name": "micro-image",
+  "version": "0.0.10",
+  "description": "",
+  "main": "./dist/server.js",
+  "private": true,
+  "dependencies": {
+    "rabbit-mq11111": "workspace:*",
+    "express-async-errors": "^3.1.1",
+    "express": "latest",
+    "@types/express": "latest"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "amqplib": "latest",
+    "@types/amqplib": "latest"
+  },
+  "scripts": {
+    "build": "swc src -d dist",
+    "lint": "eslint --ext .ts src",
+    "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
+    "watch-compile": "swc src -w --out-dir dist",
+    "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
