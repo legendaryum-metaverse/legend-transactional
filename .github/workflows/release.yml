@@ -2,17 +2,15 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - main
 
 defaults:
   run:
     shell: bash
-
+# TODO: fix concurrency
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
   FORCE_COLOR: 3
 
 jobs:

@@ -4,7 +4,7 @@
 '🚨 action':
 - .github/workflows/**
 
-'pkg: rabbit-mq':
-- packages/RabbitMQ/**
+'pkg: legend-transac':
+- packages/legend-transac/**
 
 
