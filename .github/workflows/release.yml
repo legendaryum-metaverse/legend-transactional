@@ -15,7 +15,7 @@ env:
 
 jobs:
   changelog:
-    permissions: read-all|write-all
+    permissions: write-all
 #      contents: write
 #      pull-requests: write
     name: Changelog PR or Release
