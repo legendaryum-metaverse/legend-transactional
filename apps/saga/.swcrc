@@ -9,15 +9,7 @@
     },
     "target": "esnext",
     "paths": {
-      "@/*": ["./src/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@db/*": ["./src/db/*"],
-      "@middleware/*": ["./src/middleware/*"],
-      "@router/*": ["./src/router/*"],
-      "@services/*": ["./src/services/*"],
-      "@custom-types/*": ["./src/types/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@tests/*": ["./tests/*"]
+      "@/*": ["./src/*"]
     },
     "baseUrl": "./"
   },

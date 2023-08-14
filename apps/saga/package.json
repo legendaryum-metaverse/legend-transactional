@@ -1,36 +1,24 @@
 {
   "name": "saga",
-  "version": "0.0.17",
-  "description": "",
+  "version": "0.0.0",
+  "description": "saga app",
   "main": "./dist/server.js",
   "private": true,
   "dependencies": {
-    "@types/express": "latest",
-    "axios": "latest",
-    "cls-hooked": "^4.2.2",
-    "cors": "^2.8.5",
-    "cors-anywhere": "^0.4.4",
-    "express": "latest",
-    "express-async-errors": "^3.1.1",
-    "pg": "^8.11.1",
-    "pg-hstore": "^2.3.4",
     "legend-transac": "workspace:*",
-    "sequelize": "^6.32.1",
-    "utils": "workspace:*"
+    "express": "latest"
   },
   "devDependencies": {
-    "@types/amqplib": "latest",
-    "@types/cls-hooked": "^4.3.3",
-    "@types/cors": "^2.8.13",
-    "@types/pg": "^8.10.2",
-    "amqplib": "latest",
     "eslint-config-custom": "workspace:*",
+    "@types/express": "latest",
     "tsconfig": "workspace:*"
   },
   "scripts": {
     "build": "swc src -d dist",
-    "lint": "eslint --ext .ts src",
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src",
+    "start": "node ./dist/server.js",
     "watch-compile": "swc src -w --out-dir dist",
     "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"
   },

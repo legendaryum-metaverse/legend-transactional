@@ -18,7 +18,11 @@
       "outputs": ["dist/**/*"],
       "inputs": ["src/**/*"]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["^build:dev"],
+      "inputs": ["src/**"],
+      "env": ["NODE_ENV", "CI"]
+    },
     "micro-mint#dev": {
       "dependsOn": ["rabbit-mq11111#build:dev"],
       "cache": false,
