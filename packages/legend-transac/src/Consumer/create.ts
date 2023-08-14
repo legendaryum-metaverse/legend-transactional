@@ -1,6 +1,5 @@
-import { QueueConsumerProps } from '../@types/rabbit-mq';
+import { QueueConsumerProps, exchange } from '../@types/rabbit-mq';
 import { getConsumeChannel } from '../Connections';
-import { Exchange } from '../@types';
 /**
  * Create consumers for specified queues, bind them to exchanges, and set up requeue mechanism.
  *
@@ -26,22 +25,22 @@ export const createConsumers = async (consumers: QueueConsumerProps[]) => {
 
     // Iterate through the list of consumers and set up necessary configurations.
     for await (const consumer of consumers) {
-        const { exchange, queueName } = consumer;
+        const { exchange: consumerExchange, queueName } = consumer;
         const requeueQueue = `${queueName}_requeue`;
         const routingKey = `${queueName}_routing_key`;
 
         // Assert exchange and queue for the consumer.
-        await channel.assertExchange(exchange, 'direct', { durable: true });
+        await channel.assertExchange(consumerExchange, 'direct', { durable: true });
         await channel.assertQueue(queueName, { durable: true });
-        await channel.bindQueue(queueName, exchange, routingKey);
+        await channel.bindQueue(queueName, consumerExchange, routingKey);
 
         // Set up requeue mechanism by creating a requeue exchange and binding requeue queue to it.
-        await channel.assertExchange(Exchange.Requeue, 'direct', { durable: true });
+        await channel.assertExchange(exchange.Requeue, 'direct', { durable: true });
         await channel.assertQueue(requeueQueue, {
             durable: true,
             arguments: { 'x-dead-letter-exchange': exchange }
         });
-        await channel.bindQueue(requeueQueue, Exchange.Requeue, routingKey);
+        await channel.bindQueue(requeueQueue, exchange.Requeue, routingKey);
         // Set the prefetch count to process only one message at a time to maintain order and control concurrency.
         await channel.prefetch(1); // process only one message at a time
     }

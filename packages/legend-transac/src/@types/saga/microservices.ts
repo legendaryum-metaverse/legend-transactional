@@ -1,13 +1,17 @@
 /**
  * Represents the available microservices in the system.
  */
-export enum AvailableMicroservices {
+export const availableMicroservices = {
     /**
      * Represents the "Image" microservice.
      */
-    Image = 'image',
+    Image: 'image',
     /**
      * Represents the "Mint" microservice.
      */
-    Mint = 'mint'
-}
+    Mint: 'mint'
+} as const;
+/**
+ * Type of available microservices in the system.
+ */
+export type AvailableMicroservices = (typeof availableMicroservices)[keyof typeof availableMicroservices];

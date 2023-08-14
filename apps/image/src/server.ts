@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { AvailableMicroservices, ImageCommands, connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transac';
+import { availableMicroservices, imageCommands, connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transac';
 
 const app = express();
 const port = 3020;
@@ -27,25 +27,25 @@ app.listen(port, async () => {
     // RECORDAR CONSUMIR TODOS LOS MENSAJES DE LA COLA de IMAGE COMMANDS
     const emitter = await connectToSagaCommandEmitter(
         'amqp://rabbit:1234@localhost:5672',
-        AvailableMicroservices.Image
+        availableMicroservices.Image
     );
 
-    emitter.on(ImageCommands.CreateImage, async ({ channel, sagaId, payload }) => {
+    emitter.on(imageCommands.CreateImage, async ({ channel, sagaId, payload }) => {
         if (needToRequeueWithDelay()) {
             const count = await channel.nackWithDelayAndRetries(1000, 30);
-            console.log(`NACK - Requeue ${ImageCommands.CreateImage} with delay and retries`, count);
+            console.log(`NACK - Requeue ${imageCommands.CreateImage} with delay and retries`, count);
         } else {
-            console.log(`${ImageCommands.CreateImage}`, { payload, sagaId });
+            console.log(`${imageCommands.CreateImage}`, { payload, sagaId });
             await waitWithMessage('La imagen se ha creado', 100);
             channel.ackMessage({ imageId: Math.random() });
         }
     });
-    emitter.on(ImageCommands.UpdateToken, async ({ channel, sagaId, payload }) => {
+    emitter.on(imageCommands.UpdateToken, async ({ channel, sagaId, payload }) => {
         if (needToRequeueWithDelay()) {
             const count = await channel.nackWithDelayAndRetries(1000, 30);
-            console.log(`NACK - Requeue ${ImageCommands.UpdateToken} with delay and retries`, count);
+            console.log(`NACK - Requeue ${imageCommands.UpdateToken} with delay and retries`, count);
         } else {
-            console.log(`${ImageCommands.UpdateToken}`, { payload, sagaId });
+            console.log(`${imageCommands.UpdateToken}`, { payload, sagaId });
             await waitWithMessage('La imagen se ha actualizado', 100);
             channel.ackMessage({ imageidUpdated: Math.random() });
         }

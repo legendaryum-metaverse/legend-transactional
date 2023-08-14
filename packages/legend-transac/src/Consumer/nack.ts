@@ -1,7 +1,7 @@
 import { ConsumeMessage } from 'amqplib';
 import { MAX_NACK_RETRIES, NACKING_DELAY_MS } from '../constants';
 import { getConsumeChannel } from '../Connections';
-import { Exchange } from '../@types';
+import { exchange } from '../@types';
 
 /**
  * Apply delayed nack mechanism to a message, optionally retrying a limited number of times.
@@ -64,7 +64,7 @@ export const nackWithDelay = async (
         return maxRetries;
     }
 
-    channel.publish(Exchange.Requeue, `${queueName}_routing_key`, msg.content, {
+    channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
         expiration: delay,
         headers: msg.properties.headers
     });

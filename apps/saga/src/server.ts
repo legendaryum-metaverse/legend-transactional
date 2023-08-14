@@ -1,5 +1,11 @@
 import express, { Request, Response } from 'express';
-import { MintCommands, stopRabbitMQ, startGlobalSagaListener } from 'legend-transac';
+import {
+    mintCommands,
+    stopRabbitMQ,
+    startGlobalSagaListener,
+    connectToSagaCommandEmitter,
+    availableMicroservices, AvailableMicroservices
+} from 'legend-transac';
 
 const app = express();
 const port = process.env.PORT ?? '3022';
@@ -24,12 +30,12 @@ app.listen(port, async () => {
     const RABBIT_URI = process.env.RABBIT_URI ?? 'amqp://rabbit:1234@localhost:5672';
     const e = await startGlobalSagaListener(RABBIT_URI);
 
-    e.on('*', async (command, { channel, step }) => {
+    e.on(mintCommands.MintImage, async ({ channel, step }) => {
         if (needToRequeueWithDelay()) {
-            console.log(`NACK - Requeue ${MintCommands.MintImage} with delay`);
+            console.log(`NACK - Requeue ${mintCommands.MintImage} with delay`);
             await channel.nackWithDelayAndRetries(1000, 30);
         } else {
-            console.log(`${MintCommands.MintImage}`, { payload, sagaId });
+            console.log(`${mintCommands.MintImage}`, { payload, sagaId });
             await waitWithMessage('La imagen se ha minteado', 100);
             channel.ackMessage({ tokenId: Math.random() });
         }

@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { connectToSagaCommandEmitter, MintCommands, AvailableMicroservices } from 'legend-transac';
+import { connectToSagaCommandEmitter, mintCommands, availableMicroservices } from 'legend-transac';
 
 const app = express();
 const port = 3022;
@@ -21,14 +21,14 @@ const waitWithMessage = async (msg: string, time: number) => {
     console.log(msg);
 };
 app.listen(port, async () => {
-    const emitter = await connectToSagaCommandEmitter('amqp://rabbit:1234@localhost:5672', AvailableMicroservices.Mint);
+    const emitter = await connectToSagaCommandEmitter('amqp://rabbit:1234@localhost:5672', availableMicroservices.Mint);
 
-    emitter.on(MintCommands.MintImage, async ({ channel, sagaId, payload }) => {
+    emitter.on(mintCommands.MintImage, async ({ channel, sagaId, payload }) => {
         if (needToRequeueWithDelay()) {
-            console.log(`NACK - Requeue ${MintCommands.MintImage} with delay`);
+            console.log(`NACK - Requeue ${mintCommands.MintImage} with delay`);
             await channel.nackWithDelayAndRetries(1000, 30);
         } else {
-            console.log(`${MintCommands.MintImage}`, { payload, sagaId });
+            console.log(`${mintCommands.MintImage}`, { payload, sagaId });
             await waitWithMessage('La imagen se ha minteado', 100);
             channel.ackMessage({ tokenId: Math.random() });
         }

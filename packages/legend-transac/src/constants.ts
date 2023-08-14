@@ -1,4 +1,4 @@
-import { SagaStepDefaults, Status } from './@types';
+import { SagaStepDefaults, status } from './@types';
 /**
  * Define the nacking delay in milliseconds
  * @default
@@ -17,7 +17,7 @@ export const MAX_NACK_RETRIES = 20;
  * @type {SagaStepDefaults}
  * @property {object} payload - Default payload is an empty object
  * @property {object} previousPayload - Default previous payload is an empty object
- * @property {Status} status - Default status is 'Pending' from the imported Status enum
+ * @property {status} status - Default status is 'Pending' from the imported Status enum
  * @property {boolean} isCurrentStep - Default isCurrentStep is set to 'false'
  * @default
  * @constant
@@ -25,6 +25,6 @@ export const MAX_NACK_RETRIES = 20;
 export const nodeDataDefaults: SagaStepDefaults = {
     payload: {},
     previousPayload: {},
-    status: Status.Pending,
+    status: status.Pending,
     isCurrentStep: false
 } as const;

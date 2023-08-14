@@ -1,14 +1,14 @@
-import { AvailableMicroservices, ImageCommands, MintCommands, SagaHandler } from 'legend-transac';
+import { availableMicroservices, imageCommands, mintCommands, SagaHandler } from 'legend-transac';
 
 export const handler = async (
-    command: MintCommands | ImageCommands,
-    { channel, step }: SagaHandler<AvailableMicroservices.Mint>
+    command: mintCommands | imageCommands,
+    { channel, step }: SagaHandler<availableMicroservices>
 ) => {
     if (needToRequeueWithDelay()) {
-        console.log(`NACK - Requeue ${MintCommands.MintImage} with delay`);
+        console.log(`NACK - Requeue ${mintCommands.MintImage} with delay`);
         await channel.nackWithDelayAndRetries(1000, 30);
     } else {
-        console.log(`${MintCommands.MintImage}`, { payload, sagaId });
+        console.log(`${mintCommands.MintImage}`, { payload, sagaId });
         await waitWithMessage('La imagen se ha minteado', 100);
         channel.ackMessage({ tokenId: Math.random() });
     }

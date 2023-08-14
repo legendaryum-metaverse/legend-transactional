@@ -4,24 +4,28 @@ import { CommandMap, MicroserviceCommand } from './commands';
 /**
  * Represents the different statuses that a saga step can have.
  */
-export enum Status {
+export const status = {
     /**
      * The step is pending and hasn't been processed yet.
      */
-    Pending = 'pending',
+    Pending: 'pending',
     /**
      * The step has been successfully executed.
      */
-    Success = 'success',
+    Success: 'success',
     /**
      * The step execution has failed.
      */
-    Failure = 'failure',
+    Failure: 'failure',
     /**
      * The step has been sent but not yet executed.
      */
-    Sent = 'sent'
-}
+    Sent: 'sent'
+} as const;
+/**
+ * Type of available statuses for a saga step.
+ */
+export type Status = (typeof status)[keyof typeof status];
 /**
  * Represents the default properties of a saga step.
  */
