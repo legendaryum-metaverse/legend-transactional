@@ -77,37 +77,39 @@ export interface SagaStep<T extends AvailableMicroservices> extends SagaStepDefa
      */
     isCurrentStep: boolean;
 }
+export interface CommandHandler<T extends AvailableMicroservices> {
+    /**
+     * The ID of the saga associated with the event.
+     */
+    sagaId: number;
+    /**
+     * The payload associated with the event.
+     */
+    payload: Record<string, any>;
+    /**
+     * The channel used for consuming the event.
+     */
+    channel: ConsumeChannel<T>;
+}
 /**
  * Represents the events emitted by a consumer for a specific microservice.
  */
 export type ConsumerEvents<T extends AvailableMicroservices> = {
-    [key in CommandMap[T]]: {
-        /**
-         * The ID of the saga associated with the event.
-         */
-        sagaId: number;
-        /**
-         * The payload associated with the event.
-         */
-        payload: Record<string, any>;
-        /**
-         * The channel used for consuming the event.
-         */
-        channel: ConsumeChannel<T>;
-    };
+    [key in CommandMap[T]]: CommandHandler<T>;
 };
+export interface SagaHandler<T extends AvailableMicroservices> {
+    /**
+     * The saga step associated with the event.
+     */
+    step: SagaStep<T>;
+    /**
+     * The channel used for consuming the event.
+     */
+    channel: ConsumeChannel<T>;
+}
 /**
  * Represents the saga events/events/step/command emitted by a consumer from a specific microservice to the saga.
  */
 export type ConsumerSagaEvents<T extends AvailableMicroservices> = {
-    [key in CommandMap[T]]: {
-        /**
-         * The saga step associated with the event.
-         */
-        step: SagaStep<T>;
-        /**
-         * The channel used for consuming the event.
-         */
-        channel: ConsumeChannel<T>;
-    };
+    [key in CommandMap[T]]: SagaHandler<T>;
 };
