@@ -20,9 +20,11 @@ env:
 
 jobs:
   changelog:
-    permissions:
-      contents: write
-      pull-requests: write
+    # Only run on PRs from the same repo
+    if: github.event.pull_request.head.repo.full_name == github.repository
+#    permissions:
+#      contents: write
+#      pull-requests: write
     name: Changelog PR or Release
     runs-on: ubuntu-latest
     steps:
