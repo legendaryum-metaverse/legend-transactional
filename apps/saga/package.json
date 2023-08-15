@@ -18,6 +18,7 @@
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
+    "type-check": "tsc --noEmit --project tsconfig.json",
     "start": "node ./dist/server.js",
     "watch-compile": "swc src -w --out-dir dist",
     "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"

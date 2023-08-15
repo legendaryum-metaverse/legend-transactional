@@ -16,8 +16,8 @@
     "build": "pnpm run prebuild && tsup",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
-    "typecheck": "tsc --noEmit",
-    "prebuild": "pnpm run typecheck"
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    "prebuild": "pnpm run type-check"
   },
   "dependencies": {
     "amqplib": "latest",

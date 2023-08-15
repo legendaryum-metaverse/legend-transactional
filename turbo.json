@@ -21,12 +21,30 @@
     "lint": {
       "dependsOn": ["^build:dev"],
       "inputs": ["src/**"],
-      "env": ["PORT", "RABBIT_URI"]
+      "env": ["PORT", "RABBIT_URI"],
+      "outputMode": "new-only"
     },
     "lint:fix": {
       "dependsOn": ["^build:dev"],
       "inputs": ["src/**"],
-      "env": ["PORT", "RABBIT_URI"]
+      "env": ["PORT", "RABBIT_URI"],
+      "outputMode": "new-only"
+    },
+    "saga#type-check": {
+      "dependsOn": ["legend-transac#build:dev"],
+      "inputs": ["src/**"]
+    },
+    "micro-image#type-check": {
+      "dependsOn": ["legend-transac#build:dev"],
+      "inputs": ["src/**"]
+    },
+    "micro-mint#type-check": {
+      "dependsOn": ["legend-transac#build:dev"],
+      "inputs": ["src/**"]
+    },
+    "type-check": {
+      "inputs": ["src/**"],
+      "outputMode": "new-only"
     },
     "dev": {
       "dependsOn": ["legend-transac#build:dev"],
