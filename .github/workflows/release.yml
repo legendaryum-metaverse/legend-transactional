@@ -19,9 +19,21 @@ env:
   FORCE_COLOR: 3
 
 jobs:
+  echo:
+    name: Echo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo
+        run: |
+          # github.repository_owner
+          echo "github.repository_owner: ${{ github.repository_owner }}"
+          # github.repository
+          echo "github.repository: ${{ github.repository }}"
+          # github.event.repository
+          echo "github.event.repository: ${{ github.event.repository }}"
   changelog:
     # Only run on PRs from the same repo
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event.repository.full_name == github.repository
 #    permissions:
 #      contents: write
 #      pull-requests: write
