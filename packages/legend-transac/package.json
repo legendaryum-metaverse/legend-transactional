@@ -12,7 +12,6 @@
     "README.md"
   ],
   "scripts": {
-    "clean": "rimraf dist .turbo",
     "build:dev": "tsc",
     "build": "pnpm run prebuild && tsup",
     "lint": "eslint --ext .ts src",

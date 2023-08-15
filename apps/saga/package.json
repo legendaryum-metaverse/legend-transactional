@@ -1,7 +1,7 @@
 {
   "name": "saga",
   "version": "0.0.0",
-  "description": "saga app",
+  "description": "",
   "main": "./dist/server.js",
   "private": true,
   "dependencies": {

@@ -1,69 +1,24 @@
 import express, { Request, Response } from 'express';
-import { availableMicroservices, imageCommands, connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transac';
+import { connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transac';
+import { handler } from './handler';
 
 const app = express();
-const port = 3020;
-
-// eslint-disable-next-line no-console
-const log = console.log;
+const PORT = process.env.PORT ?? '3020';
 
 app.use(express.json());
 
 app.get('/', (_req: Request, res: Response) => {
-    console.log('sou uo');
-    res.send("Hello, I'm -image-");
+    res.send("Hello, I'm micro-image");
+});
+app.get('/ping', (_req: Request, res: Response) => {
+    res.send('pong');
 });
 
-const waitWithMessage = async (msg: string, time: number) => {
-    await new Promise(resolve => setTimeout(resolve, time));
-    console.log(msg);
-};
-
-const needToRequeueWithDelay = () => {
-    return Math.random() >= 0.6;
-};
-
-app.listen(port, async () => {
-    // RECORDAR CONSUMIR TODOS LOS MENSAJES DE LA COLA de IMAGE COMMANDS
-    const emitter = await connectToSagaCommandEmitter(
-        'amqp://rabbit:1234@localhost:5672',
-        availableMicroservices.Image
-    );
-
-    emitter.on(imageCommands.CreateImage, async ({ channel, sagaId, payload }) => {
-        if (needToRequeueWithDelay()) {
-            const count = await channel.nackWithDelayAndRetries(1000, 30);
-            console.log(`NACK - Requeue ${imageCommands.CreateImage} with delay and retries`, count);
-        } else {
-            console.log(`${imageCommands.CreateImage}`, { payload, sagaId });
-            await waitWithMessage('La imagen se ha creado', 100);
-            channel.ackMessage({ imageId: Math.random() });
-        }
-    });
-    emitter.on(imageCommands.UpdateToken, async ({ channel, sagaId, payload }) => {
-        if (needToRequeueWithDelay()) {
-            const count = await channel.nackWithDelayAndRetries(1000, 30);
-            console.log(`NACK - Requeue ${imageCommands.UpdateToken} with delay and retries`, count);
-        } else {
-            console.log(`${imageCommands.UpdateToken}`, { payload, sagaId });
-            await waitWithMessage('La imagen se ha actualizado', 100);
-            channel.ackMessage({ imageidUpdated: Math.random() });
-        }
-    });
-    // emitter.on('*', async (command, { channel, sagaId, payload }) => {
-    //     if (command === ImageCommands.CreateImage || command === ImageCommands.UpdateToken) {
-    //         console.log('ALLLLLLo', command);
-    //
-    //         return;
-    //     }
-    //     console.log('OOOOOOOOOOOOOOOOOO', command);
-    //
-    //     // nunca deberia llegar aca
-    //     // console.log(`NACJKEADON ANDO   with delay and retries`, command);
-    //     await channel.nackWithDelayAndRetries(100, 3);
-    // });
-
-    log(`Server is running on http://localhost:${port}`);
+app.listen(PORT, async () => {
+    const RABBIT_URI = process.env.RABBIT_URI ?? 'amqp://rabbit:1234@localhost:5672';
+    const emitter = await connectToSagaCommandEmitter(RABBIT_URI, 'image');
+    emitter.on('*', handler);
+    console.info(`${String.fromCodePoint(0x1f680)} Server is running on port ${PORT}`);
 });
 
 const terminateProcessListener: NodeJS.SignalsListener = async signal => {
