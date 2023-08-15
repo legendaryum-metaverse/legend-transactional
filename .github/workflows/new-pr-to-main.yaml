@@ -1,0 +1,23 @@
+name: pull_request_to_main
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "**/*.md"
+
+env:
+  FORCE_COLOR: 3
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  code_quality_check:
+    uses: ./.github/workflows/code-quality-check.yml
+    secrets: inherit
