@@ -23,22 +23,8 @@
       "inputs": ["src/**"],
       "env": ["NODE_ENV", "CI"]
     },
-    "micro-mint#dev": {
-      "dependsOn": ["rabbit-mq11111#build:dev"],
-      "cache": false,
-      "persistent": true
-    },
-    "micro-image#dev": {
-      "dependsOn": ["rabbit-mq11111#build:dev"],
-      "cache": false,
-      "persistent": true
-    },
-    "saga#dev": {
-      "dependsOn": ["rabbit-mq11111#build:dev"],
-      "cache": false,
-      "persistent": true
-    },
     "dev": {
+      "dependsOn": ["legend-transac#build:dev"],
       "cache": false,
       "persistent": true
     }

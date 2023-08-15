@@ -38,7 +38,7 @@ export const createConsumers = async (consumers: QueueConsumerProps[]) => {
         await channel.assertExchange(exchange.Requeue, 'direct', { durable: true });
         await channel.assertQueue(requeueQueue, {
             durable: true,
-            arguments: { 'x-dead-letter-exchange': exchange }
+            arguments: { 'x-dead-letter-exchange': consumerExchange }
         });
         await channel.bindQueue(requeueQueue, exchange.Requeue, routingKey);
         // Set the prefetch count to process only one message at a time to maintain order and control concurrency.

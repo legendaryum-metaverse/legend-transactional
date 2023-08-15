@@ -3,7 +3,7 @@ import { stopRabbitMQ, startGlobalSagaListener } from 'legend-transac';
 import { handler } from './handler';
 
 const app = express();
-const PORT = process.env.PORT ?? '3022';
+const PORT = process.env.PORT ?? '3090';
 
 app.use(express.json());
 
