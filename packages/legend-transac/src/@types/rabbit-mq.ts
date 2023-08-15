@@ -1,29 +1,33 @@
 /**
  * Represents the names of specific message queues in the RabbitMQ context.
  */
-export enum Queue {
+export const queue = {
     /**
      * Queue used for sending replies in response to saga events.
      */
-    ReplyToSaga = 'reply_to_saga'
-}
+    ReplyToSaga: 'reply_to_saga'
+} as const;
 /**
  * Represents the names of exchanges, which act as message routing hubs in the RabbitMQ context.
  */
-export enum Exchange {
+export const exchange = {
     /**
      * Exchange dedicated to requeueing messages that require further processing.
      */
-    Requeue = 'requeue_exchange',
+    Requeue: 'requeue_exchange',
     /**
      * Exchange for sending command messages to various consumers.
      */
-    Commands = 'commands_exchange',
+    Commands: 'commands_exchange',
     /**
      * Exchange used for replying to saga events from consumers.
      */
-    ReplyToSaga = 'reply_exchange'
-}
+    ReplyToSaga: 'reply_exchange'
+} as const;
+/**
+ * Represents the names of specific message queues in the RabbitMQ context.
+ */
+export type Exchange = (typeof exchange)[keyof typeof exchange];
 /**
  * Properties defining a queue consumer within the RabbitMQ context.
  */

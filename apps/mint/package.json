@@ -1,26 +1,24 @@
 {
   "name": "micro-mint",
-  "version": "0.0.17",
+  "version": "0.0.0",
   "description": "",
   "main": "./dist/server.js",
   "private": true,
   "dependencies": {
     "legend-transac": "workspace:*",
-    "express-async-errors": "^3.1.1",
-    "express": "latest",
-    "@types/express": "latest",
-    "mitt": "latest"
+    "express": "latest"
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
-    "amqplib": "latest",
-    "@types/amqplib": "latest"
+    "@types/express": "latest",
+    "tsconfig": "workspace:*"
   },
   "scripts": {
     "build": "swc src -d dist",
-    "lint": "eslint --ext .ts src",
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src",
+    "start": "node ./dist/server.js",
     "watch-compile": "swc src -w --out-dir dist",
     "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"
   },

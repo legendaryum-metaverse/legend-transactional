@@ -4,24 +4,28 @@ import { CommandMap, MicroserviceCommand } from './commands';
 /**
  * Represents the different statuses that a saga step can have.
  */
-export enum Status {
+export const status = {
     /**
      * The step is pending and hasn't been processed yet.
      */
-    Pending = 'pending',
+    Pending: 'pending',
     /**
      * The step has been successfully executed.
      */
-    Success = 'success',
+    Success: 'success',
     /**
      * The step execution has failed.
      */
-    Failure = 'failure',
+    Failure: 'failure',
     /**
      * The step has been sent but not yet executed.
      */
-    Sent = 'sent'
-}
+    Sent: 'sent'
+} as const;
+/**
+ * Type of available statuses for a saga step.
+ */
+export type Status = (typeof status)[keyof typeof status];
 /**
  * Represents the default properties of a saga step.
  */
@@ -77,37 +81,39 @@ export interface SagaStep<T extends AvailableMicroservices> extends SagaStepDefa
      */
     isCurrentStep: boolean;
 }
+export interface CommandHandler<T extends AvailableMicroservices> {
+    /**
+     * The ID of the saga associated with the event.
+     */
+    sagaId: number;
+    /**
+     * The payload associated with the event.
+     */
+    payload: Record<string, any>;
+    /**
+     * The channel used for consuming the event.
+     */
+    channel: ConsumeChannel<T>;
+}
 /**
  * Represents the events emitted by a consumer for a specific microservice.
  */
 export type ConsumerEvents<T extends AvailableMicroservices> = {
-    [key in CommandMap[T]]: {
-        /**
-         * The ID of the saga associated with the event.
-         */
-        sagaId: number;
-        /**
-         * The payload associated with the event.
-         */
-        payload: Record<string, any>;
-        /**
-         * The channel used for consuming the event.
-         */
-        channel: ConsumeChannel<T>;
-    };
+    [key in CommandMap[T]]: CommandHandler<T>;
 };
+export interface SagaHandler<T extends AvailableMicroservices> {
+    /**
+     * The saga step associated with the event.
+     */
+    step: SagaStep<T>;
+    /**
+     * The channel used for consuming the event.
+     */
+    channel: ConsumeChannel<T>;
+}
 /**
  * Represents the saga events/events/step/command emitted by a consumer from a specific microservice to the saga.
  */
 export type ConsumerSagaEvents<T extends AvailableMicroservices> = {
-    [key in CommandMap[T]]: {
-        /**
-         * The saga step associated with the event.
-         */
-        step: SagaStep<T>;
-        /**
-         * The channel used for consuming the event.
-         */
-        channel: ConsumeChannel<T>;
-    };
+    [key in CommandMap[T]]: SagaHandler<T>;
 };

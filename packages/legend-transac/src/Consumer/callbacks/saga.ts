@@ -1,4 +1,4 @@
-import { AvailableMicroservices, ConsumerSagaEvents, SagaStep } from '../../@types';
+import { ConsumerSagaEvents, SagaStep, AvailableMicroservices } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { SagaConsumeChannel } from '../channels/Saga';

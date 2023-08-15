@@ -1,4 +1,4 @@
-import { AvailableMicroservices, ConsumerEvents, ConsumerSagaEvents, Exchange, Queue } from '../@types';
+import { ConsumerEvents, ConsumerSagaEvents, exchange, queue, AvailableMicroservices } from '../@types';
 import { getRabbitMQConn, saveUri } from './rabbitConn';
 import { getConsumeChannel } from './consumeChannel';
 import { consume, createConsumers, microserviceConsumeCallback, sagaConsumeCallback } from '../Consumer';
@@ -6,7 +6,7 @@ import { getQueueConsumer } from '../utils';
 import { Emitter } from 'mitt';
 /**
  * Prepare the library for consuming messages by saving the RabbitMQ URI, establishing a connection,
- * and getting the consume channel.
+ * and getting the **_consume_** channel.
  *
  * @param {string} url - The RabbitMQ URL to establish a connection.
  * @throws {Error} If there is an issue with saving the URI, establishing a connection, or getting the consume channel.
@@ -57,12 +57,12 @@ export const startGlobalSagaListener = async <T extends AvailableMicroservices>(
     url: string
 ): Promise<Emitter<ConsumerSagaEvents<T>>> => {
     await prepare(url);
-    const queue = {
-        queueName: Queue.ReplyToSaga,
-        exchange: Exchange.ReplyToSaga
+    const queueO = {
+        queueName: queue.ReplyToSaga,
+        exchange: exchange.ReplyToSaga
     };
-    await createConsumers([queue]);
-    return await consume<ConsumerSagaEvents<T>>(queue.queueName, sagaConsumeCallback);
+    await createConsumers([queueO]);
+    return await consume<ConsumerSagaEvents<T>>(queueO.queueName, sagaConsumeCallback);
 };
 /**
  * Connects to a specific microservice's saga command emitter to handle incoming saga events/commands.
