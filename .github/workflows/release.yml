@@ -29,8 +29,8 @@ jobs:
           echo "github.repository_owner: ${{ github.repository_owner }}"
           # github.repository
           echo "github.repository: ${{ github.repository }}"
-          # github.event.repository
-          echo "github.event.repository: ${{ github.event.repository }}"
+          # github.event.repository -> is an object use json
+          echo "github.event.repository: ${{ toJson(github.event.repository) }}"
   changelog:
     # Only run on PRs from the same repo
     if: github.event.repository.full_name == github.repository
