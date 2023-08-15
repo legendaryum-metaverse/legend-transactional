@@ -15,9 +15,24 @@ defaults:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
 jobs:
   code_quality_check:
+    # Only run on PRs from the same repo
+    if: github.event.pull_request.head.repo.full_name == github.repository
     uses: ./.github/workflows/code-quality-check.yml
     secrets: inherit
+# TODO:
+#  check_changeset:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#        with:
+#          fetch-depth: 2
+#      - name: Check changeset
+#        id: changeset-detected
+#        run: |
+#          bash scripts/check_changeset.sh
+
