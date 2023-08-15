@@ -21,7 +21,12 @@
     "lint": {
       "dependsOn": ["^build:dev"],
       "inputs": ["src/**"],
-      "env": ["NODE_ENV", "CI"]
+      "env": ["PORT", "RABBIT_URI"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^build:dev"],
+      "inputs": ["src/**"],
+      "env": ["PORT", "RABBIT_URI"]
     },
     "dev": {
       "dependsOn": ["legend-transac#build:dev"],

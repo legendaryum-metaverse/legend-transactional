@@ -2,8 +2,10 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "clean": "bash ./scripts/clean-project.sh",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "dependencies": {

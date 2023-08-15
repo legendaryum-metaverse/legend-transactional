@@ -15,6 +15,7 @@
     "build:dev": "tsc",
     "build": "pnpm run prebuild && tsup",
     "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src",
     "typecheck": "tsc --noEmit",
     "prebuild": "pnpm run typecheck"
   },
