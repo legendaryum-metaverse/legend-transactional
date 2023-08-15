@@ -1,0 +1,67 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+env:
+  # ******************  IMPORTANTE  ************************
+  # Si el proyecto escala y los 'builds' se vuelven lentos, habilitar REMOTE CACHE:
+  # https://turbo.build/repo/docs/ci/github-actions#remote-caching
+#  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+#  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  FORCE_COLOR: 3
+
+jobs:
+  changelog:
+    permissions:
+      contents: write
+      pull-requests: write
+    name: Changelog PR or Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Packages
+        run: pnpm run build
+
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # Note: pnpm install after versioning is necessary to refresh lockfile.
+          version: pnpm exec changeset version
+          publish: pnpm exec changeset publish
+          commit: "[ci] release"
+          title: "[ci] release"
+        env:
+          # Needs access to push to main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Needs access to publish to npm
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # TODO: que se genere notificaciones al slack -> develop, al luis a alexis, etc.-...
+      # pero tienen que ser 'secrets' cualquier url.
+      - name: Generate Notification
+        id: notification
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          echo "Published Packages: ${{ steps.changesets.outputs.publishedPackages }}"
+
