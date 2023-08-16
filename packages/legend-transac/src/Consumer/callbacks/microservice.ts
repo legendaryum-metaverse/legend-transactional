@@ -30,8 +30,8 @@ export const microserviceConsumeCallback = <T extends AvailableMicroservices>(
         channel.nack(msg, false, false);
         return;
     }
-    const { command, sagaId, payload } = currentStep;
+    const { command, sagaId, previousPayload } = currentStep;
     const responseChannel = new MicroserviceConsumeChannel<T>(channel, msg, queueName, currentStep);
 
-    e.emit(command, { sagaId, payload, channel: responseChannel });
+    e.emit(command, { sagaId, payload: previousPayload, channel: responseChannel });
 };
