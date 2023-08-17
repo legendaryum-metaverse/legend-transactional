@@ -50,3 +50,10 @@ Join us on [Discord](https://astro.build/chat) to meet other maintainers. We'll 
 <img src="https://img.shields.io/badge/astro%2Fbuild-0.18.0-blueviolet?style=flat-square&labelColor=000000" alt="Astro Build Version"/>
   <br/><br/>
 </p>
+
+
+### ⚠ Importante leer antes de hacer merge a main
+>Cerrar esta **PR** y abrirla de nuevo para que corran las **actions** 
+de **code-quality-check**. 
+
+>Luego _merge_ a **main**.
