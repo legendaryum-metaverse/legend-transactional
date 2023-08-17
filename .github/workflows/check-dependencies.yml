@@ -10,6 +10,10 @@ defaults:
   run:
     shell: bash
 
+# *************************   TRIGGERING FURTHER WORKFLOW RUNS ***************************
+# https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
+
+
 jobs:
   test_schedule:
     runs-on: ubuntu-latest
@@ -45,9 +49,13 @@ jobs:
           npx npm-check-updates --target minor -u
           pnpm install --no-frozen-lockfile && pnpm dedupe
       - name: Create PR
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v5
         with:
-          title: 'build(deps): Upgrade NPM packages (automated)'
+          title: 'dependencies: Upgrade NPM packages (automated)'
           branch: 'upgrade-npm-packages'
-          commit-message: 'build(deps): upgrade NPM packages (automated)'
+          commit-message: 'dependencies: Upgrade NPM packages (automated)'
+          body: |
+            Cerrar esta **PR** #${{ github.event.number }} y abrirla de nuevo para que corran las **actions** 
+            de **code-quality-check**, luego _merge_ a **main**.
+
 
