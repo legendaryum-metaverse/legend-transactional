@@ -23,16 +23,62 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     uses: ./.github/workflows/code-quality-check.yml
     secrets: inherit
-# TODO:
-#  check_changeset:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#        with:
-#          fetch-depth: 2
-#      - name: Check changeset
-#        id: changeset-detected
-#        run: |
-#          bash scripts/check_changeset.sh
+  check_changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check changeset
+        id: changeset_detected
+        run: |
+          changeset_folder=".changeset"
+          
+          # Get a list of .md files (excluding README.md) in the .changeset folder
+          md_files=$(find "$changeset_folder" -name '*.md' ! -name 'README.md')
+          
+          # Check if there are any .md files other than README.md
+          if [ -n "$md_files" ]; then
+            echo "There are .md files other than README.md in the $changeset_folder folder:"
+            echo "$md_files"
+            echo "changeset_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "No .md files other than README.md found in the $changeset_folder folder."
+            echo "changeset_detected=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: changeset_comment
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v3
+        if: steps.changeset_detected.outputs.changeset_detected == 'true'
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |-
+            <!---
+            changeset_comment
+            -->
+            Changeset detected.
+          reactions: eyes
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v3
+        if: steps.changeset_detected.outputs.changeset_detected == 'false'
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |-
+            <!---
+            changeset_comment
+            -->
+            Changeset not detected.
+          reactions: eyes
+
 
