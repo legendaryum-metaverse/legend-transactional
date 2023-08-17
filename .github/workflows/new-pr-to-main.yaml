@@ -24,6 +24,7 @@ jobs:
     uses: ./.github/workflows/code-quality-check.yml
     secrets: inherit
   check_changeset:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -53,7 +54,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: changeset_comment
-      - name: Create or update comment
+      - name: Comment changeset detected
         uses: peter-evans/create-or-update-comment@v3
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
         with:
@@ -64,10 +65,16 @@ jobs:
             <!---
             changeset_comment
             -->
-            Changeset detected.
+            ###  🦋  Changeset detected
+            
+            Latest commit: ${{ github.event.pull_request.head.sha }}
+            
+            Mergear esta PR generará un aumento de versión en los siguientes paquetes:
+            
+            [¿Qué son los conjuntos de cambios (changesets) y cómo agregar uno?](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md)
           reactions: eyes
 
-      - name: Create or update comment
+      - name: Comment changeset not detected
         uses: peter-evans/create-or-update-comment@v3
         if: steps.changeset_detected.outputs.changeset_detected == 'false'
         with:
@@ -78,7 +85,15 @@ jobs:
             <!---
             changeset_comment
             -->
-            Changeset not detected.
+            ###  ⚠️  No Changeset found
+            
+            Latest commit: ${{ github.event.pull_request.head.sha }}
+            
+            Mergear esta PR **no** generará un aumento de versión en ningún paquete. Si estos cambios no deberían resultar en una nueva versión, puedes proceder.
+            
+            **Si estos cambios deben resultar en un aumento de versión se necesita agregar un conjunto de cambios _changeset_.**
+            
+            [¿Qué son los conjuntos de cambios (changesets) y cómo agregar uno?](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md#i-am-in-a-multi-package-repository-a-mono-repo)
           reactions: eyes
 
 
