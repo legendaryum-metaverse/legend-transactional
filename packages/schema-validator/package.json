@@ -1,0 +1,46 @@
+{
+  "name": "@legend-transac/schema-validator",
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build:dev": "tsc",
+    "build": "pnpm run prebuild && tsup",
+    "lint": "eslint --ext .ts src",
+    "lint:fix": "eslint --fix --ext .ts src",
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    "prebuild": "pnpm run type-check"
+  },
+  "dependencies": {
+    "legend-transac": "workspace:*",
+    "ajv": "latest"
+  },
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "eslint-config-custom": "workspace:*"
+  },
+  "tsup": {
+    "entry": [
+      "src/**/*.ts"
+    ],
+    "splitting": true,
+    "sourcemap": false,
+    "clean": true,
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "dts": true,
+    "treeshake": true,
+    "minify": true,
+    "outDir": "dist"
+  }
+}

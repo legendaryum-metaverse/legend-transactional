@@ -42,6 +42,10 @@
       "dependsOn": ["legend-transac#build:dev"],
       "inputs": ["src/**"]
     },
+    "@legend-transac/schema-validator#type-check": {
+      "dependsOn": ["legend-transac#build:dev"],
+      "inputs": ["src/**"]
+    },
     "type-check": {
       "inputs": ["src/**"],
       "outputMode": "new-only"
