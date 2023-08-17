@@ -43,7 +43,7 @@ jobs:
         if : ${{ steps.check_dependencies.outputs.num_properties > 0 }}
         run: |
           npx npm-check-updates --target minor -u
-          pnpm install && pnpm dedupe
+          pnpm install --no-frozen-lockfile && pnpm dedupe --no-frozen-lockfile
       - name: Create PR
         uses: peter-evans/create-pull-request@v3
         with:
