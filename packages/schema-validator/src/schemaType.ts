@@ -53,7 +53,22 @@ const microserviceCommandSchema: JTDSchemaType<MicroserviceCommand<AvailableMicr
 const microserviceCommandSchemaArray: JTDSchemaType<MicroserviceCommand<AvailableMicroservices>[]> = {
     elements: microserviceCommandSchemaWithDiscriminator
 };
-
+/**
+ * Parser to validate the json array of microservice commands.
+ * @param microserviceCommandArrayParser
+ * @returns {MicroserviceCommand<AvailableMicroservices>[]} - Array of microservice commands.
+ * @example
+ * const cmds = microserviceCommandArrayParser(jsonString);
+ * if (cmds === undefined) {
+ *     throw new Error(
+ *         `${file} ${microserviceCommandArrayParser.message ?? ''}
+ *          ${microserviceCommandArrayParser.position ?? ''}`);
+ * }
+ *  // otherwise, cmds is an array of microservice commands.
+ *
+ *
+ *
+ */
 export const microserviceCommandArrayParser = ajv.compileParser(microserviceCommandSchemaArray);
 
 // **************   Otro esquemas que puedan ser útiles en el futuro : **************************
