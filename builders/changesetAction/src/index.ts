@@ -81,16 +81,20 @@ export const getReleasePlanMessage = (releasePlan: ReleasePlan | null) => {
 </details>`;
 };
 
+const jsonParser = <T>(str: string) => {
+    let parsed = JSON.parse(str) as T;
+    if (typeof parsed === 'string') parsed = jsonParser<T>(parsed);
+    return parsed;
+};
+
 try {
     // const jsonString =
     //     '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
     const jsonString = core.getInput('json-string', { required: true });
     console.log('AA', jsonString);
-    const releasePlan = JSON.parse(jsonString) as ReleasePlan;
-    const relasePlanHardCopy = JSON.parse(JSON.stringify(releasePlan)) as ReleasePlan;
+    const releasePlan = jsonParser<ReleasePlan>(jsonString);
     console.log('BB', releasePlan);
-    console.log('CC', relasePlanHardCopy);
-    const msg = getReleasePlanMessage(relasePlanHardCopy);
+    const msg = getReleasePlanMessage(releasePlan);
     console.log('CC', msg);
     core.setOutput('release-plan-message', msg);
 } catch (error) {
