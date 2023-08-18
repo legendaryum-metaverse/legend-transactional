@@ -37,9 +37,9 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
-      - name: Install dependencies
-        run: |
-          pnpm install
+#      - name: Install dependencies
+#        run: |
+#          pnpm install
       - name: Check changeset
         id: changeset_detected
         run: |
@@ -71,11 +71,12 @@ jobs:
         run: |
           # https://github.com/changesets/changesets/issues/517#issuecomment-813282523
           git checkout ${{ github.event.pull_request.head.sha }}
-          changeset_status=$(pnpm exec changeset status --since=origin/main --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
+          changeset_status=$(npx changeset status --since=origin/main --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
           echo "json_string=$changeset_status" >> $GITHUB_OUTPUT
       - name: Build Release plan message action
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
         run: |
+          pnpm --filter get-release-plan-message install
           pnpm --filter get-release-plan-message package
       - name: Release Plan Message
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
