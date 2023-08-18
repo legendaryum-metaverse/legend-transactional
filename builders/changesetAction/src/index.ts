@@ -42,6 +42,7 @@ export interface ReleasePlan {
 
 export const getReleasePlanMessage = (releasePlan: ReleasePlan | null) => {
     console.log('releasePlan1', releasePlan);
+    console.log('releasePlan1.1', releasePlan?.releases);
     if (!releasePlan) return '';
     console.log('releasePlan2', releasePlan.releases);
     const publishableReleases = releasePlan.releases.filter(

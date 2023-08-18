@@ -38,6 +38,7 @@ const core = __importStar(__nccwpck_require__(41));
 const markdown_table_1 = __importDefault(__nccwpck_require__(61));
 const getReleasePlanMessage = (releasePlan) => {
     console.log('releasePlan1', releasePlan);
+    console.log('releasePlan1.1', releasePlan === null || releasePlan === void 0 ? void 0 : releasePlan.releases);
     if (!releasePlan)
         return '';
     console.log('releasePlan2', releasePlan.releases);
