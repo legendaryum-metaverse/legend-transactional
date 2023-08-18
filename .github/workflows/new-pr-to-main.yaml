@@ -18,11 +18,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-#  code_quality_check:
-#    # Only run on PRs from the same repo
-#    if: github.event.pull_request.head.repo.full_name == github.repository
-#    uses: ./.github/workflows/code-quality-check.yml
-#    secrets: inherit
+  code_quality_check:
+    # Only run on PRs from the same repo
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    uses: ./.github/workflows/code-quality-check.yml
+    secrets: inherit
   check_changeset:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
@@ -73,10 +73,14 @@ jobs:
           git checkout ${{ github.event.pull_request.head.sha }}
           changeset_status=$(pnpm exec changeset status --since=origin/main --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
           echo "json_string=$changeset_status" >> $GITHUB_OUTPUT
+      - name: Build Release plan message action
+        if: steps.changeset_detected.outputs.changeset_detected == 'true'
+        run: |
+          pnpm --filter get-release-plan-message package
       - name: Release Plan Message
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
         id: release_plan_message
-        uses: ./.github/actions/release-plan-message
+        uses: ./builders/changesetActione
         with:
           json-string: ${{ steps.changeset_status.outputs.json_string }}
 

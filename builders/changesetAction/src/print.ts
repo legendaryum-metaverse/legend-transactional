@@ -1,5 +1,4 @@
-/*
-import { ComprehensiveRelease, ReleasePlan, VersionType } from './getReleasePlanMessage';
+import { ComprehensiveRelease, ReleasePlan, VersionType } from './types';
 import util from 'util';
 import chalk from 'chalk';
 import table from 'tty-table';
@@ -25,6 +24,7 @@ function format(args: any[], customPrefix?: string) {
     return (
         fullPrefix +
         util
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .format('', ...args)
             .split('\n')
             .join(`\n${fullPrefix} `)
@@ -68,7 +68,7 @@ function verbosePrint(type: VersionType, releases: ComprehensiveRelease[]) {
         info(chalk`Running release would release {red NO} packages as a {green ${type}}`);
     }
 }
-
+// changeset --status --verbose
 export const printJson = (releasePlan: ReleasePlan) => {
     const { releases } = releasePlan;
     verbosePrint('patch', releases);
@@ -77,4 +77,3 @@ export const printJson = (releasePlan: ReleasePlan) => {
     log('---');
     verbosePrint('major', releases);
 };
-*/

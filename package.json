@@ -8,7 +8,9 @@
     "lint:fix": "turbo run lint:fix",
     "type-check": "turbo run type-check",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "test": "turbo run test --concurrency=1",
+    "test:report": "turbo run test:report --concurrency=1"
   },
   "dependencies": {
     "@types/node": "latest"
@@ -26,6 +28,9 @@
     "eslint-config-custom": "workspace:*",
     "nodemon": "latest",
     "prettier": "^2.8.8",
+    "@types/jest": "^29.5.3",
+    "@swc/jest": "^0.2.29",
+    "jest": "^29.6.2",
     "turbo": "^1.10.12",
     "typescript": "latest"
   },

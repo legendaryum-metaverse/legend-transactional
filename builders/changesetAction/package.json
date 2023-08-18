@@ -2,30 +2,32 @@
   "name": "get-release-plan-message",
   "version": "0.0.0",
   "description": "",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "private": true,
-  "dependencies": {
+  "devDependencies": {
     "@actions/core": "^1.10.0",
     "@types/markdown-table": "^2.0.0",
     "chalk": "^2.1.0",
     "markdown-table": "^2.0.0",
-    "tty-table": "^4.1.5"
-  },
-  "devDependencies": {
+    "tty-table": "^4.1.5",
     "@vercel/ncc": "^0.36.1",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*"
   },
   "scripts": {
-    "build": "tsc",
-    "package": "ncc build --source-map --license licenses.txt",
+    "build": "swc src -d dist",
+    "package": "pnpm run build && ncc build --source-map --license licenses.txt",
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
-    "start": "node ./dist/server.js",
+    "test": "npx jest --runInBand --detectOpenHandles --forceExit",
+    "test:file": "npx jest --detectOpenHandles --forceExit --maxWorkers 1 --testNamePattern ",
+    "test:file:watch": "npx jest --watch --detectOpenHandles --forceExit --maxWorkers 1 --onlyChanged --testNamePattern ",
+    "test:report": "npx jest --runInBand --detectOpenHandles --forceExit --coverage",
+    "start": "node ./dist/index.js",
     "type-check": "tsc --noEmit --project tsconfig.json",
     "watch-compile": "swc src -w --out-dir dist",
-    "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"
+    "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/index.js"
   },
   "keywords": [],
   "author": "",

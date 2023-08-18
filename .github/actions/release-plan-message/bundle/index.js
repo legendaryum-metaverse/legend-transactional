@@ -1,94 +1,56 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 225:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ 683:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
+Object.defineProperty(exports, "__esModule", ({
+    value: true
 }));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getReleasePlanMessage = void 0;
-const core = __importStar(__nccwpck_require__(41));
-const markdown_table_1 = __importDefault(__nccwpck_require__(61));
-const getReleasePlanMessage = (releasePlan) => {
-    console.log('releasePlan1', releasePlan);
-    console.log('releasePlan1.1', releasePlan === null || releasePlan === void 0 ? void 0 : releasePlan.releases);
-    if (!releasePlan)
-        return '';
-    console.log('releasePlan2', releasePlan.releases);
-    const publishableReleases = releasePlan.releases.filter((x) => x.type !== 'none');
-    console.log('releasePlan3', releasePlan.releases);
-    const tableRows = publishableReleases.map(({ name, type, newVersion: version, changesets }) => [
-        name,
-        version,
-        {
-            major: 'Major',
-            minor: 'Minor',
-            patch: 'Patch'
-        }[type],
-        changesets.map(c => `[.changeset/${c}.md]`).join(' ')
+Object.defineProperty(exports, "getReleasePlanMessage", ({
+    enumerable: true,
+    get: function() {
+        return getReleasePlanMessage;
+    }
+}));
+const _markdowntable = /*#__PURE__*/ _interop_require_default(__nccwpck_require__(61));
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const getReleasePlanMessage = (releasePlan)=>{
+    if (!releasePlan) return '';
+    const publishableReleases = releasePlan.releases.filter((x)=>x.type !== 'none');
+    const tableRows = publishableReleases.map(({ name, type, newVersion: version, changesets })=>[
+            name,
+            version,
+            {
+                major: 'Major',
+                minor: 'Minor',
+                patch: 'Patch'
+            }[type],
+            changesets.map((c)=>`[.changeset/${c}.md]`).join(' ')
+        ]);
+    const tableHeader = [
+        'Package Name',
+        'New Version',
+        'Type',
+        'Related Changeset Summaries'
+    ];
+    const table = (0, _markdowntable.default)([
+        tableHeader,
+        ...tableRows
     ]);
-    const tableHeader = ['Package Name', 'New Version', 'Type', 'Related Changeset Summaries'];
-    const table = (0, markdown_table_1.default)([tableHeader, ...tableRows]);
-    return `<details><summary>This PR includes ${releasePlan.changesets.length
-        ? `changesets to release ${publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`}`
-        : 'no changesets'}</summary>
+    return `<details><summary>This PR includes ${releasePlan.changesets.length ? `changesets to release ${publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`}` : 'no changesets'}</summary>
 
-  ${publishableReleases.length
-        ? table
-        : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"}
+  ${publishableReleases.length ? table : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"}
 
 </details>`;
 };
-exports.getReleasePlanMessage = getReleasePlanMessage;
-const jsonParser = (str) => {
-    let parsed = JSON.parse(str);
-    if (typeof parsed === 'string')
-        parsed = jsonParser(parsed);
-    return parsed;
-};
-try {
-    // const jsonString =
-    //     '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
-    const jsonString = core.getInput('json-string', { required: true });
-    console.log('AA', jsonString);
-    const releasePlan = jsonParser(jsonString);
-    console.log('BB', releasePlan);
-    const msg = (0, exports.getReleasePlanMessage)(releasePlan);
-    console.log('CC', msg);
-    core.setOutput('release-plan-message', msg);
-}
-catch (error) {
-    console.error(error);
-    core.setFailed('Action failed.');
-}
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -3274,13 +3236,79 @@ module.exports = require("util");
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(225);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "__esModule", ({
+    value: true
+}));
+const _core = /*#__PURE__*/ _interop_require_wildcard(__nccwpck_require__(41));
+const _getReleasePlanMessage = __nccwpck_require__(683);
+function _getRequireWildcardCache(nodeInterop) {
+    if (typeof WeakMap !== "function") return null;
+    var cacheBabelInterop = new WeakMap();
+    var cacheNodeInterop = new WeakMap();
+    return (_getRequireWildcardCache = function(nodeInterop) {
+        return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
+    })(nodeInterop);
+}
+function _interop_require_wildcard(obj, nodeInterop) {
+    if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+    }
+    if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return {
+            default: obj
+        };
+    }
+    var cache = _getRequireWildcardCache(nodeInterop);
+    if (cache && cache.has(obj)) {
+        return cache.get(obj);
+    }
+    var newObj = {};
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for(var key in obj){
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+            var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+            if (desc && (desc.get || desc.set)) {
+                Object.defineProperty(newObj, key, desc);
+            } else {
+                newObj[key] = obj[key];
+            }
+        }
+    }
+    newObj.default = obj;
+    if (cache) {
+        cache.set(obj, newObj);
+    }
+    return newObj;
+}
+const jsonParser = (str)=>{
+    let parsed = JSON.parse(str);
+    if (typeof parsed === 'string') parsed = jsonParser(parsed);
+    return parsed;
+};
+try {
+    // const jsonString =
+    //     '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
+    const jsonString = _core.getInput('json-string', {
+        required: true
+    });
+    const releasePlan = jsonParser(jsonString);
+    const msg = (0, _getReleasePlanMessage.getReleasePlanMessage)(releasePlan);
+    console.log(msg);
+    _core.setOutput('release-plan-message', msg);
+} catch (error) {
+    console.error(error);
+    _core.setFailed('Action failed.');
+}
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map

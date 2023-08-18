@@ -1,0 +1,42 @@
+name: pull_request_to_main
+
+on:
+  workflow_dispatch:
+    inputs:
+      json-string:
+        description: "A random input name for the workflow"
+        type: string
+
+env:
+  FORCE_COLOR: 3
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check_changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies and build packages
+        run: |
+          pnpm --filter get-release-plan-message install
+          pnpm --filter get-release-plan-message package
+      - name: Release Plan Message
+        id: release_plan_message
+        uses: ./builders/changesetAction
+        with:
+          json-string: ${{ github.event.inputs.json-string }}
