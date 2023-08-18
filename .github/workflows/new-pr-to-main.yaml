@@ -54,6 +54,24 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: changeset_comment
+      - name: Changeset status
+        if: steps.changeset_detected.outputs.changeset_detected == 'true'
+        id: changeset_status
+        run: |
+          changeset_status=$(changeset status --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
+          echo "json_string=$changeset_status" >> $GITHUB_OUTPUT
+      - name: Release Plan Message
+        id: release_plan_message
+        uses: ./.github/actions/release-plan-message
+        with:
+          json-string: ${{ steps.changeset_status.outputs.json_string }}
+      # Use the output from the `hello` step
+#      - name: Get the output time
+#        run: echo "The time was ${{ steps.hello.outputs.time }}"
+#      - name: Env vars
+#        run: |
+#          env
+
       - name: Comment changeset detected
         uses: peter-evans/create-or-update-comment@v3
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
@@ -67,9 +85,10 @@ jobs:
             -->
             ###  🦋  Changeset detected
             
-            Latest commit: ${{ github.event.pull_request.head.sha }}
+            _Latest commit:_ ${{ github.event.pull_request.head.sha }}
             
             Mergear esta PR generará un aumento de versión en los siguientes paquetes:
+            ${{ steps.release_plan_message.outputs.release-plan-message }}
             
             [¿Qué son los conjuntos de cambios (changesets) y cómo agregar uno?](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md)
           reactions: eyes
@@ -87,7 +106,7 @@ jobs:
             -->
             ###  ⚠️  No Changeset found
             
-            Latest commit: ${{ github.event.pull_request.head.sha }}
+            _Latest commit:_ ${{ github.event.pull_request.head.sha }}
             
             Mergear esta PR **no** generará un aumento de versión en ningún paquete. Si estos cambios no deberían resultar en una nueva versión, puedes proceder.
             

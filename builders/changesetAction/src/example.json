@@ -1,0 +1,52 @@
+{
+  "changesets": [
+    {
+      "releases": [
+        {
+          "name": "saga",
+          "type": "minor"
+        },
+        {
+          "name": "legend-transac",
+          "type": "patch"
+        }
+      ],
+      "summary": "ando",
+      "id": "smart-gorillas-type"
+    }
+  ],
+  "releases": [
+    {
+      "name": "saga",
+      "type": "minor",
+      "oldVersion": "0.0.2",
+      "changesets": [
+        "smart-gorillas-type"
+      ],
+      "newVersion": "0.1.0"
+    },
+    {
+      "name": "legend-transac",
+      "type": "patch",
+      "oldVersion": "0.1.1",
+      "changesets": [
+        "smart-gorillas-type"
+      ],
+      "newVersion": "0.1.2"
+    },
+    {
+      "name": "micro-image",
+      "type": "patch",
+      "oldVersion": "0.0.4",
+      "changesets": [],
+      "newVersion": "0.0.5"
+    },
+    {
+      "name": "micro-mint",
+      "type": "patch",
+      "oldVersion": "0.0.2",
+      "changesets": [],
+      "newVersion": "0.0.3"
+    }
+  ]
+}
