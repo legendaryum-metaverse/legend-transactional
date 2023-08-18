@@ -8,11 +8,13 @@ import { PullRequest } from '@octokit/webhooks-definitions/schema';
 // https://github.com/legendaryum-metaverse/legend-transac/blob/ae92063d4766c0f3b0071861db02e87f4ed95879/.changeset/sweet-horses-joke.md
 function createChangesetLink(changesetId: string) {
     console.log('event name: ', github.context.eventName);
+    console.log('payload', github.context.payload);
+
     let pr_sha: string | null = null;
     if (github.context.eventName === 'pull_request') {
         const pr = github.context.payload as PullRequest;
         // github.event.pull_request.head.sha
-        pr_sha = pr.head.sha;
+        pr_sha = "pr.head.sha";
         // core.info(`The head commit is: ${pushPayload.head_commit}`);
     }
     const {
