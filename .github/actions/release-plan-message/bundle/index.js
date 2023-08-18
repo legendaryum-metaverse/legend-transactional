@@ -3204,18 +3204,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(41));
 const getReleasePlanMessage_1 = __nccwpck_require__(477);
-(() => {
-    try {
-        const jsonString = core.getInput('json-string', { required: true });
-        const releasePlan = JSON.parse(jsonString);
-        const msg = (0, getReleasePlanMessage_1.getReleasePlanMessage)(releasePlan);
-        core.setOutput('release-plan-message', msg);
-    }
-    catch (error) {
-        console.error(error);
-        core.setFailed('Action failed.');
-    }
-})();
+try {
+    const jsonString = core.getInput('json-string', { required: true });
+    console.log('AA', jsonString);
+    const releasePlan = JSON.parse(jsonString);
+    const msg = (0, getReleasePlanMessage_1.getReleasePlanMessage)(releasePlan);
+    core.setOutput('release-plan-message', msg);
+}
+catch (error) {
+    console.error(error);
+    core.setFailed('Action failed.');
+}
 
 
 /***/ }),
