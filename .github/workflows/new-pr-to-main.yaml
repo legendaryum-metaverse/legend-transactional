@@ -28,7 +28,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: |
+          pnpm install
       - name: Check changeset
         id: changeset_detected
         run: |
@@ -58,7 +67,7 @@ jobs:
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
         id: changeset_status
         run: |
-          changeset_status=$(npx changeset status --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
+          changeset_status=$(pnpm exec changeset status --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
           echo "json_string=$changeset_status" >> $GITHUB_OUTPUT
       - name: Release Plan Message
         id: release_plan_message
