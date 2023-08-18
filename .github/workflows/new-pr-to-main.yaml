@@ -73,16 +73,11 @@ jobs:
           changeset_status=$(pnpm exec changeset status --since=origin/main --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
           echo "json_string=$changeset_status" >> $GITHUB_OUTPUT
       - name: Release Plan Message
+        if: steps.changeset_detected.outputs.changeset_detected == 'true'
         id: release_plan_message
         uses: ./.github/actions/release-plan-message
         with:
           json-string: ${{ steps.changeset_status.outputs.json_string }}
-      # Use the output from the `hello` step
-#      - name: Get the output time
-#        run: echo "The time was ${{ steps.hello.outputs.time }}"
-#      - name: Env vars
-#        run: |
-#          env
 
       - name: Comment changeset detected
         uses: peter-evans/create-or-update-comment@v3
