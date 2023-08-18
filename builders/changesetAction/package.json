@@ -2,7 +2,7 @@
   "name": "get-release-plan-message",
   "version": "0.0.0",
   "description": "",
-  "main": "./dist/server.js",
+  "main": "lib/index.js",
   "private": true,
   "dependencies": {
     "@actions/core": "^1.10.0",
@@ -17,8 +17,8 @@
     "tsconfig": "workspace:*"
   },
   "scripts": {
-    "build": "swc src -d dist",
-    "build:ncc": "ncc build src/index.ts -o bundle",
+    "build": "tsc",
+    "package": "ncc build --source-map --license licenses.txt",
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",

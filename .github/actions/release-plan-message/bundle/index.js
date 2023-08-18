@@ -1,5 +1,85 @@
-/******/ (() => { // webpackBootstrap
+require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
+
+/***/ 225:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getReleasePlanMessage = void 0;
+const core = __importStar(__nccwpck_require__(41));
+const markdown_table_1 = __importDefault(__nccwpck_require__(61));
+const getReleasePlanMessage = (releasePlan) => {
+    if (!releasePlan)
+        return '';
+    const publishableReleases = releasePlan.releases.filter((x) => x.type !== 'none');
+    const tableRows = publishableReleases.map(({ name, type, newVersion: version, changesets }) => [
+        name,
+        version,
+        {
+            major: 'Major',
+            minor: 'Minor',
+            patch: 'Patch'
+        }[type],
+        changesets.map(c => `[.changeset/${c}.md]`).join(' ')
+    ]);
+    const tableHeader = ['Package Name', 'New Version', 'Type', 'Related Changeset Summaries'];
+    const table = (0, markdown_table_1.default)([tableHeader, ...tableRows]);
+    return `<details><summary>This PR includes ${releasePlan.changesets.length
+        ? `changesets to release ${publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`}`
+        : 'no changesets'}</summary>
+
+  ${publishableReleases.length
+        ? table
+        : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"}
+
+</details>`;
+};
+exports.getReleasePlanMessage = getReleasePlanMessage;
+try {
+    // const jsonString = "{\"changesets\":[{\"releases\":[{\"name\":\"saga\",\"type\":\"patch\"}],\"summary\":\"asdawd\",\"id\":\"sweet-horses-joke\"}],\"releases\":[{\"name\":\"saga\",\"type\":\"patch\",\"oldVersion\":\"0.0.2\",\"changesets\":[\"sweet-horses-joke\"],\"newVersion\":\"0.0.3\"}]}\n"
+    const jsonString = core.getInput('json-string', { required: true });
+    console.log('AA', jsonString);
+    const releasePlan = JSON.parse(jsonString);
+    console.log('BB', releasePlan);
+    const msg = (0, exports.getReleasePlanMessage)(releasePlan);
+    console.log('CC', msg);
+    core.setOutput('release-plan-message', msg);
+}
+catch (error) {
+    console.error(error);
+    core.setFailed('Action failed.');
+}
+//# sourceMappingURL=index.js.map
+
+/***/ }),
 
 /***/ 259:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
@@ -3057,86 +3137,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 749:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getReleasePlanMessage = void 0;
-const core = __importStar(__nccwpck_require__(41));
-const markdown_table_1 = __importDefault(__nccwpck_require__(61));
-const getReleasePlanMessage = (releasePlan) => {
-    if (!releasePlan)
-        return '';
-    const publishableReleases = releasePlan.releases.filter((x) => x.type !== 'none');
-    const tableRows = publishableReleases.map(({ name, type, newVersion: version, changesets }) => [
-        name,
-        version,
-        {
-            major: 'Major',
-            minor: 'Minor',
-            patch: 'Patch'
-        }[type],
-        changesets.map(c => `[.changeset/${c}.md]`).join(' ')
-    ]);
-    const tableHeader = ['Package Name', 'New Version', 'Type', 'Related Changeset Summaries'];
-    const table = (0, markdown_table_1.default)([tableHeader, ...tableRows]);
-    return `<details><summary>This PR includes ${releasePlan.changesets.length
-        ? `changesets to release ${publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`}`
-        : 'no changesets'}</summary>
-
-  ${publishableReleases.length
-        ? table
-        : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"}
-
-</details>`;
-};
-exports.getReleasePlanMessage = getReleasePlanMessage;
-try {
-    // const jsonString = "{\"changesets\":[{\"releases\":[{\"name\":\"saga\",\"type\":\"patch\"}],\"summary\":\"asdawd\",\"id\":\"sweet-horses-joke\"}],\"releases\":[{\"name\":\"saga\",\"type\":\"patch\",\"oldVersion\":\"0.0.2\",\"changesets\":[\"sweet-horses-joke\"],\"newVersion\":\"0.0.3\"}]}\n"
-    const jsonString = core.getInput('json-string', { required: true });
-    console.log('AA', jsonString);
-    const releasePlan = JSON.parse(jsonString);
-    console.log('BB', releasePlan);
-    const msg = (0, exports.getReleasePlanMessage)(releasePlan);
-    console.log('CC', msg);
-    core.setOutput('release-plan-message', msg);
-}
-catch (error) {
-    console.error(error);
-    core.setFailed('Action failed.');
-}
-
-
-/***/ }),
-
 /***/ 491:
 /***/ ((module) => {
 
@@ -3267,8 +3267,9 @@ module.exports = require("util");
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(749);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(225);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
 ;
+//# sourceMappingURL=index.js.map

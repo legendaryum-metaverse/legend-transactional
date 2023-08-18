@@ -29,3 +29,4 @@ export interface ReleasePlan {
     preState: PreState | undefined;
 }
 export declare const getReleasePlanMessage: (releasePlan: ReleasePlan | null) => string;
+//# sourceMappingURL=index.d.ts.map
