@@ -73,8 +73,10 @@ try {
     const jsonString = core.getInput('json-string', { required: true });
     console.log('AA', jsonString);
     const releasePlan = JSON.parse(jsonString);
+    const relasePlanHardCopy = JSON.parse(JSON.stringify(releasePlan));
     console.log('BB', releasePlan);
-    const msg = (0, exports.getReleasePlanMessage)(releasePlan);
+    console.log('CC', relasePlanHardCopy);
+    const msg = (0, exports.getReleasePlanMessage)(relasePlanHardCopy);
     console.log('CC', msg);
     core.setOutput('release-plan-message', msg);
 }
