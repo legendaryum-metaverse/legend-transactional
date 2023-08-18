@@ -5,10 +5,18 @@ describe('triggering action succeeds', () => {
         const jsonString =
             '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
         process.env['INPUT_JSON-STRING'] = jsonString;
+        process.env.GITHUB_REPOSITORY_OWNER = 'legendaryum-metaverse';
+        // GITHUB_REPOSITORY: 'legendaryum-metaverse/legend-transac',
+        process.env.GITHUB_REPOSITORY = 'legendaryum-metaverse/legend-transac';
+        // GITHUB_SHA: 'b243a1c8565da328b07a782ce92d60fe6b36708e',
+        process.env.GITHUB_SHA = 'b243a1c8565da328b07a782ce92d60fe6b36708e';
         // process.env.GITHUB_OUTPUT = './outputcmd.txt';
     });
     afterAll(() => {
         process.env['INPUT_JSON-STRING'] = '';
+        process.env.GITHUB_REPOSITORY_OWNER = '';
+        process.env.GITHUB_REPOSITORY = '';
+        process.env.GITHUB_SHA = '';
     });
     it('get the release plan with the correct columns in msg', () => {
         run();

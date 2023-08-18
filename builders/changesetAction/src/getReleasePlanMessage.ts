@@ -1,16 +1,26 @@
 import markdownTable from 'markdown-table';
 import * as github from '@actions/github';
 import { ComprehensiveRelease, ReleasePlan, VersionType } from './types';
+import { PullRequest } from '@octokit/webhooks-definitions/schema';
 
 // Helper function to generate changeset links
 // https://github.com/<username>/<repository>/blob/<commit_hash>/<file_path>
 // https://github.com/legendaryum-metaverse/legend-transac/blob/ae92063d4766c0f3b0071861db02e87f4ed95879/.changeset/sweet-horses-joke.md
 function createChangesetLink(changesetId: string) {
+    console.log('event name: ', github.context.eventName);
+    let pr_sha: string | null = null;
+    if (github.context.eventName === 'pull_request') {
+        const pr = github.context.payload as PullRequest;
+        // github.event.pull_request.head.sha
+        pr_sha = pr.head.sha;
+        // core.info(`The head commit is: ${pushPayload.head_commit}`);
+    }
     const {
         repo: { owner, repo },
         sha
     } = github.context;
-    const changesetUrl = `https://github.com/${owner}/${repo}/blob/${sha}/.changeset/${changesetId}.md`;
+
+    const changesetUrl = `https://github.com/${owner}/${repo}/blob/${pr_sha ?? sha}/.changeset/${changesetId}.md`;
     return `<a href="${changesetUrl}" target="_blank">.changeset/${changesetId}.md</a>`;
 }
 export const getReleasePlanMessage = (releasePlan: ReleasePlan | null) => {
