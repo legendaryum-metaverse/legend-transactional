@@ -3057,122 +3057,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 477:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getReleasePlanMessage = void 0;
-const markdown_table_1 = __importDefault(__nccwpck_require__(61));
-/*
-
-export const getReleasePlanMessage = (releasePlan: ReleasePlan | null) => {
-    if (!releasePlan) return '';
-
-    const publishableReleases = releasePlan.releases.filter(
-        (x): x is ComprehensiveRelease & { type: Exclude<VersionType, 'none'> } => x.type !== 'none'
-    );
-
-    const table = markdownTable([
-        ['Name', 'Type'],
-        ...publishableReleases.map(x => {
-            return [
-                x.name,
-                {
-                    major: 'Major',
-                    minor: 'Minor',
-                    patch: 'Patch'
-                }[x.type]
-            ];
-        })
-    ]);
-
-    return `<details><summary>This PR includes ${
-        releasePlan.changesets.length
-            ? `changesets to release ${
-                  publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`
-              }`
-            : 'no changesets'
-    }</summary>
-
-  ${
-      publishableReleases.length
-          ? table
-          : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"
-  }
-
-</details>`;
-};
-
-export const getReleasePlanMessage2 = (releasePlan: ReleasePlan | null) => {
-    if (!releasePlan) return '';
-
-    const publishableReleases = releasePlan.releases.filter(
-        (x): x is ComprehensiveRelease & { type: Exclude<VersionType, 'none'> } => x.type !== 'none'
-    );
-
-    const tableRows = publishableReleases.map(({ name, newVersion: version, changesets }) => [
-        name,
-        version,
-        changesets.map(c => `[.changeset/${c}.md]`).join(' ')
-    ]);
-
-    const tableHeader = ['Package Name', 'New Version', 'Related Changeset Summaries'];
-
-    const table = markdownTable([tableHeader, ...tableRows]);
-
-    return `<details><summary>This PR includes ${
-        releasePlan.changesets.length
-            ? `changesets to release ${
-                  publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`
-              }`
-            : 'no changesets'
-    }</summary>
-
-  ${
-      publishableReleases.length
-          ? table
-          : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"
-  }
-
-</details>`;
-};
-*/
-const getReleasePlanMessage = (releasePlan) => {
-    if (!releasePlan)
-        return '';
-    const publishableReleases = releasePlan.releases.filter((x) => x.type !== 'none');
-    const tableRows = publishableReleases.map(({ name, type, newVersion: version, changesets }) => [
-        name,
-        version,
-        {
-            major: 'Major',
-            minor: 'Minor',
-            patch: 'Patch'
-        }[type],
-        changesets.map(c => `[.changeset/${c}.md]`).join(' ')
-    ]);
-    const tableHeader = ['Package Name', 'New Version', 'Type', 'Related Changeset Summaries'];
-    const table = (0, markdown_table_1.default)([tableHeader, ...tableRows]);
-    return `<details><summary>This PR includes ${releasePlan.changesets.length
-        ? `changesets to release ${publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`}`
-        : 'no changesets'}</summary>
-
-  ${publishableReleases.length
-        ? table
-        : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"}
-
-</details>`;
-};
-exports.getReleasePlanMessage = getReleasePlanMessage;
-
-
-/***/ }),
-
 /***/ 749:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -3201,22 +3085,53 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getReleasePlanMessage = void 0;
 const core = __importStar(__nccwpck_require__(41));
-const getReleasePlanMessage_1 = __nccwpck_require__(477);
+const markdown_table_1 = __importDefault(__nccwpck_require__(61));
+const getReleasePlanMessage = (releasePlan) => {
+    if (!releasePlan)
+        return '';
+    const publishableReleases = releasePlan.releases.filter((x) => x.type !== 'none');
+    const tableRows = publishableReleases.map(({ name, type, newVersion: version, changesets }) => [
+        name,
+        version,
+        {
+            major: 'Major',
+            minor: 'Minor',
+            patch: 'Patch'
+        }[type],
+        changesets.map(c => `[.changeset/${c}.md]`).join(' ')
+    ]);
+    const tableHeader = ['Package Name', 'New Version', 'Type', 'Related Changeset Summaries'];
+    const table = (0, markdown_table_1.default)([tableHeader, ...tableRows]);
+    return `<details><summary>This PR includes ${releasePlan.changesets.length
+        ? `changesets to release ${publishableReleases.length === 1 ? '1 package' : `${publishableReleases.length} packages`}`
+        : 'no changesets'}</summary>
+
+  ${publishableReleases.length
+        ? table
+        : "When changesets are added to this PR, you'll see the packages that this PR includes changesets for and the associated semver types"}
+
+</details>`;
+};
+exports.getReleasePlanMessage = getReleasePlanMessage;
 try {
     // const jsonString = "{\"changesets\":[{\"releases\":[{\"name\":\"saga\",\"type\":\"patch\"}],\"summary\":\"asdawd\",\"id\":\"sweet-horses-joke\"}],\"releases\":[{\"name\":\"saga\",\"type\":\"patch\",\"oldVersion\":\"0.0.2\",\"changesets\":[\"sweet-horses-joke\"],\"newVersion\":\"0.0.3\"}]}\n"
     const jsonString = core.getInput('json-string', { required: true });
     console.log('AA', jsonString);
     const releasePlan = JSON.parse(jsonString);
     console.log('BB', releasePlan);
-    const msg = (0, getReleasePlanMessage_1.getReleasePlanMessage)(releasePlan);
+    const msg = (0, exports.getReleasePlanMessage)(releasePlan);
     console.log('CC', msg);
     core.setOutput('release-plan-message', msg);
 }
 catch (error) {
     console.error(error);
-    // core.setFailed('Action failed.');
+    core.setFailed('Action failed.');
 }
 
 
