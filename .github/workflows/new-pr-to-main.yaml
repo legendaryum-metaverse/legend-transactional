@@ -80,7 +80,7 @@ jobs:
       - name: Release Plan Message
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
         id: release_plan_message
-        uses: ./builders/changesetActione
+        uses: ./builders/changesetAction
         with:
           json-string: ${{ steps.changeset_status.outputs.json_string }}
 
