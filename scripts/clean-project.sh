@@ -6,7 +6,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIRECTORY="${DIR%/*}"
 cd "$PARENT_DIRECTORY"
 
-declare -a directories=("node_modules" "dist" ".turbo")
+declare -a directories=("node_modules" "dist" ".turbo" "coverage")
 
 clean_directories() {
   local dir

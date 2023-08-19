@@ -69,9 +69,9 @@ importers:
       '@actions/github':
         specifier: ^5.1.1
         version: 5.1.1
-      '@octokit/webhooks-definitions':
-        specifier: ^3.67.3
-        version: 3.67.3
+      '@octokit/webhooks-types':
+        specifier: ^7.2.0
+        version: 7.2.0
       '@types/markdown-table':
         specifier: ^2.0.0
         version: 2.0.0
@@ -1447,9 +1447,8 @@ packages:
       '@octokit/openapi-types': 12.11.0
     dev: true
 
-  /@octokit/webhooks-definitions@3.67.3:
-    resolution: {integrity: sha512-do4Z1r2OVhuI0ihJhQ8Hg+yPWnBYEBNuFNCrvtPKoYT1w81jD7pBXgGe86lYuuNirkDHb0Nxt+zt4O5GiFJfgA==}
-    deprecated: Use @octokit/webhooks-types, @octokit/webhooks-schemas, or @octokit/webhooks-examples instead. See https://github.com/octokit/webhooks/issues/447
+  /@octokit/webhooks-types@7.2.0:
+    resolution: {integrity: sha512-TX6347q0TJbKZD5M1wiMFUrq8T/GP6PkcnssLfw/fZ+//jkW8uRvOl63bNlhPGt82sml9Dy5nSPP0GIHW9XBTQ==}
     dev: true
 
   /@sinclair/typebox@0.27.8:

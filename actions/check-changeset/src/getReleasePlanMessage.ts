@@ -1,7 +1,7 @@
 import markdownTable from 'markdown-table';
 import * as github from '@actions/github';
 import { ComprehensiveRelease, ReleasePlan, VersionType } from './types';
-import { PullRequestEvent } from '@octokit/webhooks-definitions/schema';
+import { PullRequestEvent } from '@octokit/webhooks-types';
 
 // Helper function to generate changeset links
 // https://github.com/<username>/<repository>/blob/<commit_hash>/<file_path>
