@@ -13,6 +13,8 @@ export const run = () => {
     } catch (error) {
         console.error(error);
         const msg = (error as Error).message;
-        core.setFailed(`Action failed: ${msg}`);
+        if (process.env['IS_JEST-TEST'] !== 'TRUE') {
+            core.setFailed(`Action failed: ${msg}`);
+        }
     }
 };

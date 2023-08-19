@@ -61,6 +61,39 @@ importers:
         specifier: latest
         version: 5.1.6
 
+  actions/check-changeset:
+    devDependencies:
+      '@actions/core':
+        specifier: ^1.10.0
+        version: 1.10.0
+      '@actions/github':
+        specifier: ^5.1.1
+        version: 5.1.1
+      '@octokit/webhooks-definitions':
+        specifier: ^3.67.3
+        version: 3.67.3
+      '@types/markdown-table':
+        specifier: ^2.0.0
+        version: 2.0.0
+      '@vercel/ncc':
+        specifier: ^0.36.1
+        version: 0.36.1
+      chalk:
+        specifier: ^2.1.0
+        version: 2.4.2
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-custom
+      markdown-table:
+        specifier: ^2.0.0
+        version: 2.0.0
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      tty-table:
+        specifier: ^4.1.5
+        version: 4.2.1
+
   apps/image:
     dependencies:
       express:
@@ -117,39 +150,6 @@ importers:
       tsconfig:
         specifier: workspace:*
         version: link:../../packages/tsconfig
-
-  builders/changesetAction:
-    devDependencies:
-      '@actions/core':
-        specifier: ^1.10.0
-        version: 1.10.0
-      '@actions/github':
-        specifier: ^5.1.1
-        version: 5.1.1
-      '@octokit/webhooks-definitions':
-        specifier: ^3.67.3
-        version: 3.67.3
-      '@types/markdown-table':
-        specifier: ^2.0.0
-        version: 2.0.0
-      '@vercel/ncc':
-        specifier: ^0.36.1
-        version: 0.36.1
-      chalk:
-        specifier: ^2.1.0
-        version: 2.4.2
-      eslint-config-custom:
-        specifier: workspace:*
-        version: link:../../packages/eslint-config-custom
-      markdown-table:
-        specifier: ^2.0.0
-        version: 2.0.0
-      tsconfig:
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
-      tty-table:
-        specifier: ^4.1.5
-        version: 4.2.1
 
   packages/eslint-config-custom:
     dependencies:

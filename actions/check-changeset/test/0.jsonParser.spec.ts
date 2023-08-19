@@ -1,5 +1,7 @@
 import { jsonParser } from '@/parser';
 import { ReleasePlan } from '@/types';
+
+// Antes de todos los test se cargas env vars de scripts/run_test.sh
 describe('recursive jsonParser', () => {
     it('fails because is not a valid json string', () => {
         const invalidJsonString =

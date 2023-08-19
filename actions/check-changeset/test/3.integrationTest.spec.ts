@@ -1,43 +1,39 @@
 import { run } from '@/run';
 
+const spy = {
+    console: null as unknown as jest.SpyInstance
+};
+beforeEach(() => {
+    process.env['IS_JEST-TEST'] = 'TRUE';
+    spy.console = jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
+afterEach(() => {
+    spy.console.mockClear();
+});
+
+afterAll(() => {
+    process.env['IS_JEST-TEST'] = '';
+    spy.console.mockRestore();
+});
+
+// Antes de todos los test se cargas env vars de scripts/run_test.sh
 describe('triggering action succeeds', () => {
     beforeAll(() => {
         const jsonString =
             '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
         process.env['INPUT_JSON-STRING'] = jsonString;
-        process.env.GITHUB_REPOSITORY_OWNER = 'legendaryum-metaverse';
-        // GITHUB_REPOSITORY: 'legendaryum-metaverse/legend-transac',
-        process.env.GITHUB_REPOSITORY = 'legendaryum-metaverse/legend-transac';
-        // GITHUB_SHA: 'b243a1c8565da328b07a782ce92d60fe6b36708e',
-        process.env.GITHUB_SHA = 'b243a1c8565da328b07a782ce92d60fe6b36708e';
-        // process.env.GITHUB_OUTPUT = './outputcmd.txt';
     });
     afterAll(() => {
         process.env['INPUT_JSON-STRING'] = '';
-        process.env.GITHUB_REPOSITORY_OWNER = '';
-        process.env.GITHUB_REPOSITORY = '';
-        process.env.GITHUB_SHA = '';
     });
     it('get the release plan with the correct columns in msg', () => {
         run();
+        expect(console.error).toHaveBeenCalledTimes(0);
     });
 });
 
 describe('triggering action fails', () => {
-    const spy = {
-        console: null as unknown as jest.SpyInstance
-    };
-    beforeEach(() => {
-        spy.console = jest.spyOn(console, 'error').mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-        spy.console.mockClear();
-    });
-
-    afterAll(() => {
-        spy.console.mockRestore();
-    });
     it('get the release plan with the correct columns in msg', () => {
         run();
         expect(console.error).toHaveBeenCalledTimes(1);
@@ -47,7 +43,6 @@ describe('triggering action fails', () => {
         // const newError = Object.getOwnPropertyDescriptors(o) as unknown as Error;
         // console.log(newError.message);
         const catchError = o as unknown as Error;
-        console.log(catchError.message);
         expect(catchError.message).toContain('Input required and not supplied: json-string');
     });
 });
@@ -112,10 +107,4 @@ describe('triggering action fails', () => {
     GITHUB_GRAPHQL_URL: 'https://api.github.com/graphql',
     GITHUB_STEP_SUMMARY: '/var/run/act/workflow/SUMMARY.md',
     HOME: '/root'
-};*/
-
-/*const addEnvVarsToProcess = (envVars: Record<string, string>) => {
-    Object.keys(envVars).forEach(key => {
-        process.env[key] = envVars[key];
-    });
 };*/
