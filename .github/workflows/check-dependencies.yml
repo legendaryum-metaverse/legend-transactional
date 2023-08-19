@@ -12,7 +12,6 @@ defaults:
 # *************************   TRIGGERING FURTHER WORKFLOW RUNS ***************************
 # https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
 
-
 jobs:
   update_minor_dependencies:
     if: github.event.repository.full_name == github.repository
@@ -30,8 +29,8 @@ jobs:
       - name: Check dependencies
         id: check_dependencies
         run: |
-          output=$(npx npm-check-updates --target minor --jsonUpgraded)
-          num_properties=$(echo "$output" | jq 'length')
+          output=$(npx npm-check-updates --deep --target minor --jsonUpgraded)
+          num_properties=$(echo "$output" | jq '[.[] | length] | add')
           if [ "$num_properties" -gt 0 ]; then
             echo "The JSON contains properties."
           else
@@ -41,7 +40,7 @@ jobs:
       - name: Update dependencies
         if : ${{ steps.check_dependencies.outputs.num_properties > 0 }}
         run: |
-          npx npm-check-updates --target minor -u
+          npx npm-check-updates --deep --target minor -u
           pnpm install --no-frozen-lockfile && pnpm dedupe
       - name: Create PR
         uses: peter-evans/create-pull-request@v5
