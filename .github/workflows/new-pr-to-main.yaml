@@ -69,20 +69,20 @@ jobs:
         if: steps.changeset_detected.outputs.changeset_detected == 'true'
         id: changeset_status
         run: |
+          # https://github.com/changesets/changesets/issues/517#issuecomment-813282523
           git checkout ${{ github.event.pull_request.head.sha }}
-          changeset_status=$(pnpm exec changeset status --since=main --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
+          changeset_status=$(pnpm exec changeset status --since=origin/main --verbose --output status.json && cat status.json | jq -c -r '.' | jq -Rs .)
           echo "json_string=$changeset_status" >> $GITHUB_OUTPUT
+      - name: Build Release plan message action
+        if: steps.changeset_detected.outputs.changeset_detected == 'true'
+        run: |
+          pnpm --filter get-release-plan-message package
       - name: Release Plan Message
+        if: steps.changeset_detected.outputs.changeset_detected == 'true'
         id: release_plan_message
-        uses: ./.github/actions/release-plan-message
+        uses: ./actions/check-changeset
         with:
           json-string: ${{ steps.changeset_status.outputs.json_string }}
-      # Use the output from the `hello` step
-#      - name: Get the output time
-#        run: echo "The time was ${{ steps.hello.outputs.time }}"
-#      - name: Env vars
-#        run: |
-#          env
 
       - name: Comment changeset detected
         uses: peter-evans/create-or-update-comment@v3

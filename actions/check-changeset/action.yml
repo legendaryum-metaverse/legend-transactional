@@ -9,4 +9,4 @@ outputs:
     description: 'Release plan message'
 runs:
   using: 'node16'
-  main: 'bundle/index.js'
+  main: 'dist/index.js'

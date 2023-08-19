@@ -92,3 +92,27 @@ jobs:
           # Default: ignore
           pathspec_error_handling: ignore
           push: true
+  unit-test:
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    environment: testing
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+
+      - name: Run unit test
+        run: |
+          pnpm run test:report

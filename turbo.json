@@ -50,6 +50,12 @@
       "dependsOn": ["legend-transac#build:dev"],
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "outputMode": "new-only"
+    },
+    "test:report": {
+      "outputMode": "new-only"
     }
   }
 }
