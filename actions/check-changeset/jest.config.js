@@ -4,6 +4,7 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
+  reporters: [['github-actions', {silent: false}], 'summary'],
 
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

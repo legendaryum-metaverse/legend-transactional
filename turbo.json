@@ -55,6 +55,7 @@
       "outputMode": "new-only"
     },
     "test:report": {
+      "outputs": ["coverage/**/*"],
       "outputMode": "new-only"
     }
   }
