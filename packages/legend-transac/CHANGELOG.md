@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.1.2
+
+### Patch Changes
+
+-   e6b6922: Se añade micro y comandos para "notificaciones" y "liptv"
+
 ## 0.1.1
 
 ### Patch Changes
