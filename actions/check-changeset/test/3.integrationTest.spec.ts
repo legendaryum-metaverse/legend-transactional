@@ -5,7 +5,9 @@ const spy = {
 };
 beforeEach(() => {
     process.env['IS_JEST-TEST'] = 'TRUE';
-    spy.console = jest.spyOn(console, 'error').mockImplementation(() => {});
+    spy.console = jest.spyOn(console, 'error').mockImplementation(() => {
+        // do nothing
+    });
 });
 
 afterEach(() => {
