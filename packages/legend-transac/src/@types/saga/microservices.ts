@@ -9,7 +9,15 @@ export const availableMicroservices = {
     /**
      * Represents the "Mint" microservice.
      */
-    Mint: 'mint'
+    Mint: 'mint',
+    /**
+     * Represents the "notificaciones" microservice.
+     */
+    Notificaciones: 'notificaciones',
+    /**
+     * Represents the "liptv" microservice.
+     */
+    LipTV: 'liptv'
 } as const;
 /**
  * Type of available microservices in the system.
