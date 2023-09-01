@@ -41,7 +41,8 @@ module.exports = {
     "@typescript-eslint/no-misused-promises": "off",
     // Note: you must disable the base rule as it can report incorrect errors
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn"
     //    "@typescript-eslint/no-unsafe-assignment": "off",
     //    "@typescript-eslint/no-unsafe-member-access": "off",
     //    "@typescript-eslint/no-unsafe-call": "off"
