@@ -1,5 +1,5 @@
 /**
- * Different commands related to the "Social" microservice.
+ * Different commands related to the "social" microservice.
  */
 export const socialCommands = {
     /**
@@ -8,6 +8,6 @@ export const socialCommands = {
     PaymentStatus: 'payment_status'
 } as const;
 /**
- * Available commands for the "Mint" microservice.
+ * Available commands for the "social" microservice.
  */
 export type SocialCommands = (typeof socialCommands)[keyof typeof socialCommands];

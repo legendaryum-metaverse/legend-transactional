@@ -3,10 +3,12 @@
  */
 export const availableMicroservices = {
     /**
+     * Test purpose
      * Represents the "Image" microservice.
      */
     Image: 'image',
     /**
+     * Test purpose
      * Represents the "Mint" microservice.
      */
     Mint: 'mint',
@@ -19,11 +21,11 @@ export const availableMicroservices = {
      */
     LipTV: 'liptv',
     /**
-     * Represents the "liptv" microservice.
+     * Represents the "social" microservice.
      */
     Social: 'social',
     /**
-     * Represents the "liptv" microservice.
+     * Represents the "pagosv2" microservice.
      */
     Pagos: 'pagosv2'
 } as const;
