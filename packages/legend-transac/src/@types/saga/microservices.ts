@@ -17,7 +17,15 @@ export const availableMicroservices = {
     /**
      * Represents the "liptv" microservice.
      */
-    LipTV: 'liptv'
+    LipTV: 'liptv',
+    /**
+     * Represents the "liptv" microservice.
+     */
+    Social: 'social',
+    /**
+     * Represents the "liptv" microservice.
+     */
+    Pagos: 'pagosv2'
 } as const;
 /**
  * Type of available microservices in the system.
