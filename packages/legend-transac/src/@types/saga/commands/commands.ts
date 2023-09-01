@@ -10,10 +10,12 @@ import { PaymentCommands } from './pagosv2';
  */
 export interface CommandMap {
     /**
+     * Test purpose
      * Represents the mapping of "Image" microservice commands.
      */
     [availableMicroservices.Image]: ImageCommands;
     /**
+     * Test purpose
      * Represents the mapping of "Mint" microservice commands.
      */
     [availableMicroservices.Mint]: MintCommands;
