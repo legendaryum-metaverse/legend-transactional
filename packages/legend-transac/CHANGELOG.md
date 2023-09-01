@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.1.3
+
+### Patch Changes
+
+-   24ffe2b: pagsv2 y social micros
+
 ## 0.1.2
 
 ### Patch Changes
