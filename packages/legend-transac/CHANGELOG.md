@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.1.4
+
+### Patch Changes
+
+-   d84363d: se actualiza los comentarios
+
 ## 0.1.3
 
 ### Patch Changes
