@@ -1,7 +1,7 @@
 /**
  * Different commands related to the "notificaciones" microservice.
  */
-export const notificacionesCommands = {
+export const notificationCommands = {
     /**
      * Command to report a video.
      */
@@ -10,4 +10,4 @@ export const notificacionesCommands = {
 /**
  * Available commands for the "notificaciones" microservice.
  */
-export type NotificacionesCommands = (typeof notificacionesCommands)[keyof typeof notificacionesCommands];
+export type NotificationCommands = (typeof notificationCommands)[keyof typeof notificationCommands];

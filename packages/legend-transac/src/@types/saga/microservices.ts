@@ -1,21 +1,22 @@
 /**
  * Represents the available microservices in the system.
+ * The names are taken from the repository names in GitHub: https://github.com/orgs/legendaryum-metaverse/repositories?type=all
  */
 export const availableMicroservices = {
     /**
      * Test purpose
-     * Represents the "Image" microservice.
+     * Represents the "Image" test microservice.
      */
     Image: 'image',
     /**
      * Test purpose
-     * Represents the "Mint" microservice.
+     * Represents the "Mint" test microservice.
      */
     Mint: 'mint',
     /**
      * Represents the "notificaciones" microservice.
      */
-    Notificaciones: 'notificaciones',
+    Notifications: 'notificaciones',
     /**
      * Represents the "liptv" microservice.
      */
@@ -27,7 +28,11 @@ export const availableMicroservices = {
     /**
      * Represents the "pagosv2" microservice.
      */
-    Pagos: 'pagosv2'
+    Payments: 'pagosv2',
+    /**
+     * Represents the "legend-integrations" microservice.
+     */
+    Integrations: 'legend-integrations'
 } as const;
 /**
  * Type of available microservices in the system.
