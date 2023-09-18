@@ -2,9 +2,10 @@ import { ImageCommands } from './image';
 import { MintCommands } from './mint';
 import { AvailableMicroservices, availableMicroservices } from '../microservices';
 import { LipTVCommands } from './liptv';
-import { NotificacionesCommands } from './notificaciones';
 import { SocialCommands } from './social';
 import { PaymentCommands } from './pagosv2';
+import { NotificationCommands } from './notifications';
+import { IntegrationCommands } from './integrations';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -26,7 +27,7 @@ export interface CommandMap {
     /**
      * Represents the mapping of "notificaciones" microservice commands.
      */
-    [availableMicroservices.Notificaciones]: NotificacionesCommands;
+    [availableMicroservices.Notifications]: NotificationCommands;
     /**
      * Represents the mapping of "social" microservice commands.
      */
@@ -34,7 +35,11 @@ export interface CommandMap {
     /**
      * Represents the mapping of "pagosv2" microservice commands.
      */
-    [availableMicroservices.Pagos]: PaymentCommands;
+    [availableMicroservices.Payments]: PaymentCommands;
+    /**
+     * Represents the mapping of "legend-integrations" microservice commands.
+     */
+    [availableMicroservices.Integrations]: IntegrationCommands;
 }
 /**
  * Represents a command specific to a microservice.
