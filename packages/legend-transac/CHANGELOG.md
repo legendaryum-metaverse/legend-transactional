@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.2.0
+
+### Minor Changes
+
+-   49d522b: Se añade legend-integrations y pagosv2 a los microservicios disponible, se agregan comandos relacionados a la generacion de nfts
+
 ## 0.1.4
 
 ### Patch Changes
