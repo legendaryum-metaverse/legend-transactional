@@ -1,6 +1,9 @@
 import { AvailableMicroservices, SagaStep } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 
+type SagaId = number;
+type Occurrence = number;
+
 /**
  * Abstract class representing a consumer channel for processing messages in a microservices environment.
  *
@@ -23,6 +26,10 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * The saga step associated with the consumed message.
      */
     protected readonly step: SagaStep<T>;
+    /**
+     * The map of saga ids to occurrences.
+     */
+    protected sagaOccurrence = new Map<SagaId, Occurrence>();
 
     /**
      * Constructs a new instance of the ConsumeChannel class.
@@ -63,6 +70,32 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * @see MAX_NACK_RETRIES
      */
     public abstract nackWithDelayAndRetries(delay?: number, maxRetries?: number): Promise<number>;
+
+    /**
+     * This method negatively acknowledges a message using a Fibonacci delay strategy.
+     * The delay depends on the saga ID and the container's nacking occurrence.
+     * Due to memory persistence, another container will nack with a different delay in milliseconds.
+     *
+     * @param sagaId
+     * @returns {Promise<Object>} A promise resolving to the count of retries according to RabbitMQ, the delay in ms, and the occurrence of the nacking in the current container.
+     */
+    public abstract nackWithFibonacciStrategy(sagaId: number): Promise<{
+        count: number;
+        delay: number;
+        occurrence: number;
+    }>;
+
+    /**
+     * Method to update the saga occurrence map.
+     *
+     * @param {number} sagaId - The saga id.
+     * @returns {number} The updated occurrence.
+     */
+    protected updateSagaOccurrence = (sagaId: number): number => {
+        const occurrence = this.sagaOccurrence.get(sagaId) || 0;
+        this.sagaOccurrence.set(sagaId, occurrence + 1);
+        return occurrence + 1;
+    };
 }
 
 export default ConsumeChannel;
