@@ -5,6 +5,7 @@
 </div>
 
 # `legend-transac`
+
 ## Install
 
 The **recommended** way to install this project is by running the command below:
@@ -34,6 +35,7 @@ Join us on [Discord](https://astro.build/chat) to meet other maintainers. We'll 
 ## Directory
 
 ![Build the web you want](.github/assets/legend.jpg 'Build the web you want')
+
 <div style="text-align: center;">
   ![Build the web you want](.github/assets/cropped-legendaryum.png 'Build the web you want')
 </div>
@@ -51,9 +53,9 @@ Join us on [Discord](https://astro.build/chat) to meet other maintainers. We'll 
   <br/><br/>
 </p>
 
-
 ### ⚠ Importante leer antes de hacer merge a main
->Cerrar esta **PR** y abrirla de nuevo para que corran las **actions** 
-de **code-quality-check**. 
 
->Luego _merge_ a **main**.
+> Cerrar esta **PR** y abrirla de nuevo para que corran las **actions**
+> de **code-quality-check**.
+
+> Luego _merge_ a **main**.
