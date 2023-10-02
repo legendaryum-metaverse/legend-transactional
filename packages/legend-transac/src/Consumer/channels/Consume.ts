@@ -1,7 +1,8 @@
 import { AvailableMicroservices, SagaStep } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
+import crypto from 'crypto';
 
-type SagaId = number;
+type StepHashId = string;
 type Occurrence = number;
 
 /**
@@ -27,9 +28,9 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      */
     protected readonly step: SagaStep<T>;
     /**
-     * The map of saga ids to occurrences.
+     * The map of saga step occurrences.
      */
-    protected sagaOccurrence = new Map<SagaId, Occurrence>();
+    static readonly sagaStepOccurrence = new Map<StepHashId, Occurrence>();
 
     /**
      * Constructs a new instance of the ConsumeChannel class.
@@ -73,28 +74,43 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
 
     /**
      * This method negatively acknowledges a message using a Fibonacci delay strategy.
-     * The delay depends on the saga ID and the container's nacking occurrence.
      * Due to memory persistence, another container will nack with a different delay in milliseconds.
      *
-     * @param sagaId
+     * @param {string} [salt] - The salt to use for hashing the saga step.
+     *
      * @returns {Promise<Object>} A promise resolving to the count of retries according to RabbitMQ, the delay in ms, and the occurrence of the nacking in the current container.
      */
-    public abstract nackWithFibonacciStrategy(sagaId: number): Promise<{
+    public abstract nackWithFibonacciStrategy(salt?: string): Promise<{
         count: number;
         delay: number;
         occurrence: number;
     }>;
 
     /**
-     * Method to update the saga occurrence map.
+     * Method to update the saga step occurrence map.
      *
-     * @param {number} sagaId - The saga id.
-     * @returns {number} The updated occurrence.
+     * @param {string} salt - The salt to use for hashing the saga step.
+     * @returns {number} The updated occurrence in a saga step.
      */
-    protected updateSagaOccurrence = (sagaId: number): number => {
-        const occurrence = this.sagaOccurrence.get(sagaId) || 0;
-        this.sagaOccurrence.set(sagaId, occurrence + 1);
+    protected updateSagaStepOccurrence = (salt: string): number => {
+        const hashId = this.getStepHashId(salt);
+        const occurrence = ConsumeChannel.sagaStepOccurrence.get(hashId) || 0;
+        ConsumeChannel.sagaStepOccurrence.set(hashId, occurrence + 1);
         return occurrence + 1;
+    };
+
+    /**
+     * Method to get the hash id of a saga step.
+     * The hash id is used to identify a saga step in the saga step occurrence map.
+     *
+     * @param {string} salt - The salt to use for hashing the saga step.
+     * @returns {string} The hash id of the saga step.
+     */
+    private getStepHashId = (salt: string): string => {
+        const { sagaId, command, payload } = this.step;
+        const hash = crypto.createHash('sha256');
+        hash.update(`${sagaId}-${command}-${JSON.stringify(payload)}-${salt}`);
+        return hash.digest('hex').slice(0, 10);
     };
 }
 

@@ -24,11 +24,10 @@ export class SagaConsumeChannel<T extends AvailableMicroservices> extends Consum
         return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
     }
 
-    async nackWithFibonacciStrategy(sagaId: number) {
-        const occurrence = this.updateSagaOccurrence(sagaId);
-        const fibonacciNumber = fibonacci(occurrence);
-        const delay = fibonacciNumber * 1000; // ms
-        const count = await nackWithDelay(this.msg, this.queueName, delay, Infinity);
+    async nackWithFibonacciStrategy(salt = '') {
+        const occurrence = this.updateSagaStepOccurrence(`SagaConsumeChannel-${salt}`);
+        const delay = fibonacci(occurrence) * 1000; // ms
+        const count = await this.nackWithDelayAndRetries(delay, Infinity);
         return {
             count,
             delay,
