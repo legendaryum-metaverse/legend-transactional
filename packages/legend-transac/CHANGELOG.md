@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.3.0
+
+### Minor Changes
+
+-   f5f61ba: Comandos para poner y cancelar venta de nfts
+
 ## 0.2.0
 
 ### Minor Changes
