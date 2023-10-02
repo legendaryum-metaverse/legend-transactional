@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.4.0
+
+### Minor Changes
+
+-   b9a7c0e: Se diseña nacking sin limite de nackeo con delay siguiendo la serie de fiboncacci
+
 ## 0.3.0
 
 ### Minor Changes
