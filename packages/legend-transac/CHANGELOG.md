@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.4.2
+
+### Patch Changes
+
+-   668c7c8: Se agrega los comandos para recargar balance al usuario
+
 ## 0.4.1
 
 ### Patch Changes
