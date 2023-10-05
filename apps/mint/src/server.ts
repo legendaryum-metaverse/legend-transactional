@@ -16,9 +16,8 @@ app.get('/ping', (_req: Request, res: Response) => {
 
 app.listen(PORT, async () => {
     const RABBIT_URI = process.env.RABBIT_URI ?? 'amqp://rabbit:1234@localhost:5672';
-    const emitter = await connectToSagaCommandEmitter(RABBIT_URI, 'mint');
-
-    emitter.on('mint_image', handler);
+    const e = await connectToSagaCommandEmitter(RABBIT_URI, 'test-mint');
+    e.on('mint_image', handler);
     console.info(`${String.fromCodePoint(0x1f680)} Server is running on port ${PORT}`);
 });
 

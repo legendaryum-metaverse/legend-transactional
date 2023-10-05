@@ -7,32 +7,32 @@ export const availableMicroservices = {
      * Test purpose
      * Represents the "Image" test microservice.
      */
-    Image: 'image',
+    TestImage: 'test-image',
     /**
      * Test purpose
      * Represents the "Mint" test microservice.
      */
-    Mint: 'mint',
+    TestMint: 'test-mint',
     /**
-     * Represents the "notificaciones" microservice.
+     * Represents the "legend-integrations" microservice.
      */
-    Notifications: 'notificaciones',
+    Integrations: 'legend-integrations',
     /**
      * Represents the "liptv" microservice.
      */
     LipTV: 'liptv',
     /**
-     * Represents the "social" microservice.
+     * Represents the "notificaciones" microservice.
      */
-    Social: 'social',
+    Notifications: 'notificaciones',
     /**
      * Represents the "pagosv2" microservice.
      */
     Payments: 'pagosv2',
     /**
-     * Represents the "legend-integrations" microservice.
+     * Represents the "social" microservice.
      */
-    Integrations: 'legend-integrations'
+    Social: 'social'
 } as const;
 /**
  * Type of available microservices in the system.

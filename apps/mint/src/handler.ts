@@ -7,7 +7,7 @@ const waitWithMessage = async (msg: string, time: number) => {
     await new Promise(resolve => setTimeout(resolve, time));
     console.log(msg);
 };
-export const handler = async ({ channel, sagaId, payload }: CommandHandler<'mint'>) => {
+export const handler = async ({ channel, sagaId, payload }: CommandHandler<'test-mint'>) => {
     if (needToRequeueWithDelay()) {
         console.log(`NACK - Requeue 'mint_image' with delay`);
         await channel.nackWithDelayAndRetries(1000, 30);
