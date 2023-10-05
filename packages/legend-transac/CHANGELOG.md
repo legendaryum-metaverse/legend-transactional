@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.5.0
+
+### Minor Changes
+
+-   c13aa12: Se cambia los nombres de los microservicios de test junto a sus comandos
+
 ## 0.4.2
 
 ### Patch Changes
