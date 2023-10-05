@@ -8,7 +8,10 @@ const waitWithMessage = async (msg: string, time: number) => {
 const needToRequeueWithDelay = () => {
     return Math.random() >= 0.6;
 };
-export const handler = async (command: CommandMap['image'], { channel, sagaId, payload }: CommandHandler<'image'>) => {
+export const handler = async (
+    command: CommandMap['test-image'],
+    { channel, sagaId, payload }: CommandHandler<'test-image'>
+) => {
     if (needToRequeueWithDelay()) {
         const count = await channel.nackWithDelayAndRetries(1000, 30);
         console.log(`NACK - Requeue ${command} with delay and retries:`, count);

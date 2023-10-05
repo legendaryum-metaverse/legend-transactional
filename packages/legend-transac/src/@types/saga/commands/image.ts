@@ -1,7 +1,7 @@
 /**
  * Different commands related to the "Image" microservice.
  */
-export const imageCommands = {
+export const testImageCommands = {
     /**
      * Command to create an image.
      */
@@ -14,4 +14,4 @@ export const imageCommands = {
 /**
  * Available commands for the "Image" microservice.
  */
-export type ImageCommands = (typeof imageCommands)[keyof typeof imageCommands];
+export type TestImageCommands = (typeof testImageCommands)[keyof typeof testImageCommands];

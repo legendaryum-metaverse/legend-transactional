@@ -1,7 +1,7 @@
 /**
  * Different commands related to the "Mint" microservice.
  */
-export const mintCommands = {
+export const testMintCommands = {
     /**
      * Command to mint an image.
      */
@@ -10,4 +10,4 @@ export const mintCommands = {
 /**
  * Available commands for the "Mint" microservice.
  */
-export type MintCommands = (typeof mintCommands)[keyof typeof mintCommands];
+export type TestMintCommands = (typeof testMintCommands)[keyof typeof testMintCommands];
