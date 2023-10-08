@@ -10,9 +10,19 @@ import { fibonacci } from '../../utils';
  * @typeparam T - The type of available microservices.
  */
 export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extends ConsumeChannel<T> {
-    ackMessage(payloadForNextStep: Record<string, any>): void {
+    ackMessage(payloadForNextStep: Record<string, unknown> = {}): void {
         this.step.status = status.Success;
-        this.step.payload = payloadForNextStep;
+        const previousPayload = this.step.previousPayload;
+        let metaData = {};
+        if (previousPayload) {
+            metaData = Object.keys(previousPayload)
+                .filter(key => key.startsWith('__'))
+                .reduce((obj, key) => ((obj[key] = previousPayload[key]), obj), {} as Record<string, unknown>);
+        }
+        this.step.payload = {
+            ...payloadForNextStep,
+            ...metaData
+        };
 
         sendToQueue(queue.ReplyToSaga, this.step)
             .then(() => {

@@ -50,9 +50,9 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
     /**
      * Method to acknowledge the message, optionally providing payload for the next step.
      *
-     * @param {Record<string, any>} [payloadForNextStep] - Payload for the next step.
+     * @param {Record<string, unknown>} [payloadForNextStep] - Payload for the next step.
      */
-    public abstract ackMessage(payloadForNextStep?: Record<string, any>): void;
+    public abstract ackMessage(payloadForNextStep?: Record<string, unknown>): void;
 
     /**
      * Method to negatively acknowledge the message.
