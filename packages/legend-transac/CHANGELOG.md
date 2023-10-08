@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.5.1
+
+### Patch Changes
+
+-   726f5c4: Se añada "\_\_metadata" keys en el payload, este payload siempre será incluido en todo el saga incluso si no se pasa el payload al siguiente paso explícitamente.
+
 ## 0.5.0
 
 ### Minor Changes
