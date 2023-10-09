@@ -1,5 +1,12 @@
 # legend-transac
 
+## 0.5.2
+
+### Patch Changes
+
+-   d0f033b: To prevent large delays, the maxOccurrence is used to reset the occurrence to 0 making the next
+    delay reset to the first value of a fibonacci sequence: 1s.
+
 ## 0.5.1
 
 ### Patch Changes
