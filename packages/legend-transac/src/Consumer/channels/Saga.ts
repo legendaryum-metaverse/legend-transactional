@@ -2,6 +2,7 @@ import { nackWithDelay } from '../nack';
 import ConsumeChannel from './Consume';
 import { AvailableMicroservices } from '../../@types';
 import { fibonacci } from '../../utils';
+import { MAX_OCCURRENCE } from '../../constants';
 
 /**
  * Represents a **_consume_** channel for handling saga events/commands.
@@ -24,8 +25,8 @@ export class SagaConsumeChannel<T extends AvailableMicroservices> extends Consum
         return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
     }
 
-    async nackWithFibonacciStrategy(salt = '') {
-        const occurrence = this.updateSagaStepOccurrence(`SagaConsumeChannel-${salt}`);
+    async nackWithFibonacciStrategy(salt = '', maxOccurrence = MAX_OCCURRENCE) {
+        const occurrence = this.updateSagaStepOccurrence(`SagaConsumeChannel-${salt}`, maxOccurrence);
         const delay = fibonacci(occurrence) * 1000; // ms
         const count = await this.nackWithDelayAndRetries(delay, Infinity);
         return {
