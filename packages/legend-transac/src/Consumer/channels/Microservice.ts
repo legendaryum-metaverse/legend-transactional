@@ -3,6 +3,7 @@ import { sendToQueue } from '../../Broker';
 import { nackWithDelay } from '../nack';
 import ConsumeChannel from './Consume';
 import { fibonacci } from '../../utils';
+import { MAX_OCCURRENCE } from '../../constants';
 /**
  * Represents a **_consume_** channel for a specific microservice.
  * Extends the abstract ConsumeChannel class.
@@ -47,8 +48,8 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
     async nackWithDelayAndRetries(delay?: number, maxRetries?: number) {
         return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
     }
-    async nackWithFibonacciStrategy(salt = '') {
-        const occurrence = this.updateSagaStepOccurrence(`MicroserviceConsumeChannel-${salt}`);
+    async nackWithFibonacciStrategy(salt = '', maxOccurrence = MAX_OCCURRENCE) {
+        const occurrence = this.updateSagaStepOccurrence(`MicroserviceConsumeChannel-${salt}`, maxOccurrence);
         const delay = fibonacci(occurrence) * 1000; // ms
         const count = await this.nackWithDelayAndRetries(delay, Infinity);
         return {

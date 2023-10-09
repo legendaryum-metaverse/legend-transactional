@@ -76,11 +76,19 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * This method negatively acknowledges a message using a Fibonacci delay strategy.
      * Due to memory persistence, another container will nack with a different delay in milliseconds.
      *
+     * To prevent large delays, the maxOccurrence is used to reset the occurrence to 0
+     * making the next delay reset to the first value of a fibonacci sequence: 1s.
      * @param {string} [salt] - The salt to use for hashing the saga step.
+     * @param {number} [maxOccurrence] - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
      *
      * @returns {Promise<Object>} A promise resolving to the count of retries according to RabbitMQ, the delay in ms, and the occurrence of the nacking in the current container.
+     *
+     * @see MAX_OCCURRENCE
      */
-    public abstract nackWithFibonacciStrategy(salt?: string): Promise<{
+    public abstract nackWithFibonacciStrategy(
+        salt?: string,
+        maxOccurrence?: number
+    ): Promise<{
         count: number;
         delay: number;
         occurrence: number;
@@ -90,11 +98,19 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * Method to update the saga step occurrence map.
      *
      * @param {string} salt - The salt to use for hashing the saga step.
+     * @param {number} maxOccurrence - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
      * @returns {number} The updated occurrence in a saga step.
+     *
+     * @see MAX_OCCURRENCE
      */
-    protected updateSagaStepOccurrence = (salt: string): number => {
+    protected updateSagaStepOccurrence = (salt: string, maxOccurrence: number): number => {
         const hashId = this.getStepHashId(salt);
-        const occurrence = ConsumeChannel.sagaStepOccurrence.get(hashId) || 0;
+        let occurrence = ConsumeChannel.sagaStepOccurrence.get(hashId) || 0;
+        if (occurrence >= maxOccurrence) {
+            // the occurrence is reset to 0 to avoid large delay in the next nack
+            occurrence = 0;
+        }
+
         ConsumeChannel.sagaStepOccurrence.set(hashId, occurrence + 1);
         return occurrence + 1;
     };
