@@ -1,5 +1,12 @@
 # micro-mint
 
+## 0.0.14
+
+### Patch Changes
+
+-   Updated dependencies [ecbb50d]
+    -   legend-transac@0.5.3
+
 ## 0.0.13
 
 ### Patch Changes

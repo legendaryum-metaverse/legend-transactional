@@ -1,5 +1,12 @@
 # micro-image
 
+## 0.0.16
+
+### Patch Changes
+
+-   Updated dependencies [ecbb50d]
+    -   legend-transac@0.5.3
+
 ## 0.0.15
 
 ### Patch Changes
