@@ -1,4 +1,6 @@
+export * from './analytics';
 export * from './commands';
+export * from './eventsadmin';
 export * from './image';
 export * from './integrations';
 export * from './liptv';

@@ -6,6 +6,8 @@ import { SocialCommands } from './social';
 import { PaymentCommands } from './pagosv2';
 import { NotificationCommands } from './notifications';
 import { IntegrationCommands } from './integrations';
+import { AnalyticsCommands } from './analytics';
+import { EventsAdminCommandsCommands } from './eventsadmin';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -20,6 +22,14 @@ export interface CommandMap {
      * Represents the mapping of "Mint" microservice commands.
      */
     [availableMicroservices.TestMint]: TestMintCommands;
+    /**
+     * Represents the mapping of "legend-analytics" microservice commands.
+     */
+    [availableMicroservices.Analytics]: AnalyticsCommands;
+    /**
+     * Represents the mapping of "events-admin" microservice commands.
+     */
+    [availableMicroservices.EventsAdmin]: EventsAdminCommandsCommands;
     /**
      * Represents the mapping of "legend-integrations" microservice commands.
      */
