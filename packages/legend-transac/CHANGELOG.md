@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.6.0
+
+### Minor Changes
+
+-   41204da: Se agrega los microservicos de **events-admin** y **legend-analytics** junto con los comandos para comprar productos
+
 ## 0.5.3
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # micro-image
 
+## 0.0.17
+
+### Patch Changes
+
+-   Updated dependencies [41204da]
+    -   legend-transac@0.6.0
+
 ## 0.0.16
 
 ### Patch Changes
