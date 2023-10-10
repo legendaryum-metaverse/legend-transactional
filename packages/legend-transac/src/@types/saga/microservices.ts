@@ -14,6 +14,14 @@ export const availableMicroservices = {
      */
     TestMint: 'test-mint',
     /**
+     * Represents the "legend-analytics" microservice.
+     */
+    Analytics: 'legend-analytics',
+    /**
+     * Represents the "events-admin" microservice.
+     */
+    EventsAdmin: 'events-admin',
+    /**
      * Represents the "legend-integrations" microservice.
      */
     Integrations: 'legend-integrations',
