@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.5.3
+
+### Patch Changes
+
+-   ecbb50d: Se elimina el comando que obtiene el user blockchain y se renombra el comando que persiste la compra usando redsys
+
 ## 0.5.2
 
 ### Patch Changes
