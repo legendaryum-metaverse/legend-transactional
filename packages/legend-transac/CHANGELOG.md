@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.6.1
+
+### Patch Changes
+
+-   dcf8c24: Fix events admin cmds typo
+
 ## 0.6.0
 
 ### Minor Changes
