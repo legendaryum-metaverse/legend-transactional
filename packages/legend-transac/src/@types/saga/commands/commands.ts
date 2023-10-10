@@ -7,7 +7,7 @@ import { PaymentCommands } from './pagosv2';
 import { NotificationCommands } from './notifications';
 import { IntegrationCommands } from './integrations';
 import { AnalyticsCommands } from './analytics';
-import { EventsAdminCommandsCommands } from './eventsadmin';
+import { EventsAdminCommands } from './eventsadmin';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -29,7 +29,7 @@ export interface CommandMap {
     /**
      * Represents the mapping of "events-admin" microservice commands.
      */
-    [availableMicroservices.EventsAdmin]: EventsAdminCommandsCommands;
+    [availableMicroservices.EventsAdmin]: EventsAdminCommands;
     /**
      * Represents the mapping of "legend-integrations" microservice commands.
      */

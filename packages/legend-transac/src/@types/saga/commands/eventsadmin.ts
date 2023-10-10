@@ -18,4 +18,4 @@ export const eventsAdminCommands = {
 /**
  * Available commands for the "events-admin" microservice.
  */
-export type EventsAdminCommandsCommands = (typeof eventsAdminCommands)[keyof typeof eventsAdminCommands];
+export type EventsAdminCommands = (typeof eventsAdminCommands)[keyof typeof eventsAdminCommands];
