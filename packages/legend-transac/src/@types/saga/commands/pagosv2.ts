@@ -11,10 +11,6 @@ export const paymentCommands = {
      */
     CancelSale: 'cancel_sale',
     /**
-     * Command to get the blockchain user with userId mongo id.
-     */
-    GetBlockchainUser: 'get_blockchain_user',
-    /**
      * Command to get the owner NFTs filtered by IPFS hashes. 'get_owner_nfts:filter:ipfsHashes'
      */
     GetOwnerNFTsFilterIPFSHashes: 'get_owner_nfts:filter:ipfsHashes',
@@ -27,9 +23,9 @@ export const paymentCommands = {
      */
     MintImages: 'mint_images',
     /**
-     * Command to persist a balance recharge.
+     * Command to persist a successful redsys purchase.
      */
-    PersistRecharge: 'persist_recharge',
+    PersistRedsysPurchase: 'persist_redsys_purchase',
     /**
      * Command to put an NFT on sale.
      */
