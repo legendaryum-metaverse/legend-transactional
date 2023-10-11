@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.0
+
+### Major Changes
+
+-   c6416ba: Major realease
+
 ## 0.6.2
 
 ### Patch Changes
