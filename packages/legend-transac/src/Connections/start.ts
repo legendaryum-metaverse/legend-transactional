@@ -147,15 +147,15 @@ export const commenceSagaListener = async <T extends Record<string, any>>(): Pro
  * @see startGlobalSagaStepListener
  * @see commenceSagaListener
  */
-export const startSaga = async (
+export const startSaga = async <T extends AvailableMicroservices, U extends Record<string, any>>(
     url: string
 ): Promise<{
-    globalSagaStepListener: Emitter<ConsumerSagaEvents<AvailableMicroservices>>;
-    commenceSagaListener: Emitter<ConsumerCommenceSaga<Record<string, any>>>;
+    globalSagaStepListener: Emitter<ConsumerSagaEvents<T>>;
+    commenceSagaListener: Emitter<ConsumerCommenceSaga<U>>;
 }> => {
     await prepare(url);
-    const g = await startGlobalSagaStepListener();
-    const c = await commenceSagaListener();
+    const g = await startGlobalSagaStepListener<T>();
+    const c = await commenceSagaListener<U>();
     return {
         globalSagaStepListener: g,
         commenceSagaListener: c
