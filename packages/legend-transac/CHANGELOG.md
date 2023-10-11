@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.1
+
+### Patch Changes
+
+-   74836ca: Types en saga payload en el saga commencer
+
 ## 1.0.0
 
 ### Major Changes
