@@ -9,7 +9,7 @@ import { getConsumeChannel } from '../Connections';
  * @param {(msg: ConsumeMessage | null, channel: Channel, e: Emitter<E>, queueName: string) => void} cb - The callback function to process consumed messages.
  * @throws {Error} If there is an issue with establishing the consume channel or consuming messages.
  *
- * @template E
+ * @typeParam E - The event type(s) associated with the consumed messages.
  */
 export const consume = async <E extends Record<EventType, unknown>>(
     e: Emitter<E>,
