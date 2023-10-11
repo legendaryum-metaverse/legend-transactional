@@ -48,7 +48,7 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
     async nackWithDelayAndRetries(delay?: number, maxRetries?: number) {
         return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
     }
-    async nackWithFibonacciStrategy(salt = '', maxOccurrence = MAX_OCCURRENCE) {
+    async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
         const occurrence = this.updateSagaStepOccurrence(`MicroserviceConsumeChannel-${salt}`, maxOccurrence);
         const delay = fibonacci(occurrence) * 1000; // ms
         const count = await this.nackWithDelayAndRetries(delay, Infinity);
