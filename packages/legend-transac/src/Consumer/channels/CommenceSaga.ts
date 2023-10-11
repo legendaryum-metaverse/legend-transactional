@@ -12,7 +12,7 @@ type Occurrence = number;
  * Class representing a consumer channel for processing sagas in a microservice environment.
  *
  */
-export class SagaCommenceConsumeChannel<T extends Record<string, any>> {
+export class SagaCommenceConsumeChannel {
     /**
      * The channel to interact with the message broker.
      */
@@ -28,7 +28,7 @@ export class SagaCommenceConsumeChannel<T extends Record<string, any>> {
     /**
      * The saga associated with the consumed message.
      */
-    protected readonly saga: CommenceSaga<T>;
+    protected readonly saga: CommenceSaga<Record<string, any>>;
     /**
      * The map of saga occurrences.
      */
@@ -42,7 +42,12 @@ export class SagaCommenceConsumeChannel<T extends Record<string, any>> {
      * @param {string} queueName - The name of the queue from which the message was consumed.
      * @param {CommenceSaga} saga - The saga associated with the consumed message.
      */
-    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, saga: CommenceSaga<T>) {
+    public constructor(
+        channel: Channel,
+        msg: ConsumeMessage,
+        queueName: string,
+        saga: CommenceSaga<Record<string, any>>
+    ) {
         this.channel = channel;
         this.msg = msg;
         this.queueName = queueName;

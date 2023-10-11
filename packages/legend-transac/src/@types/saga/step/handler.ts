@@ -30,7 +30,7 @@ export interface SagaHandler<T extends AvailableMicroservices> {
     channel: ConsumeChannel<T>;
 }
 
-export interface CommenceSagaHandler<T extends Record<string, any>> {
+export interface CommenceSagaHandler<T = any> {
     /**
      * The saga associated with the event.
      */
@@ -38,5 +38,5 @@ export interface CommenceSagaHandler<T extends Record<string, any>> {
     /**
      * The channel used for consuming the event.
      */
-    channel: SagaCommenceConsumeChannel<T>;
+    channel: SagaCommenceConsumeChannel;
 }

@@ -16,7 +16,7 @@ export type SagaTitle = (typeof sagaTitle)[keyof typeof sagaTitle];
 /**
  * Represents the payload of a saga commence event.
  */
-export interface CommenceSaga<T extends Record<string, any>> {
+export interface CommenceSaga<T> {
     /*
      * The title of the saga in the event.
      */
