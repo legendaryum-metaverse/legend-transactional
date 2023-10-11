@@ -10,25 +10,25 @@ import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
  * @param {Emitter<ConsumerCommenceSaga>} e - The emitter to emit events.
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
-export const commenceSagaConsumeCallback = <T extends Record<string, any>>(
+export const commenceSagaConsumeCallback = (
     msg: ConsumeMessage | null,
     channel: Channel,
-    e: Emitter<ConsumerCommenceSaga<T>>,
+    e: Emitter<ConsumerCommenceSaga>,
     queueName: string
 ) => {
     if (!msg) {
         console.error('NO MSG AVAILABLE');
         return;
     }
-    let saga: CommenceSaga<T>;
+    let saga: CommenceSaga<Record<string, any>>;
     try {
-        saga = JSON.parse(msg.content.toString()) as CommenceSaga<T>;
+        saga = JSON.parse(msg.content.toString()) as CommenceSaga<Record<string, any>>;
     } catch (error) {
         console.error('ERROR PARSING MSG', error);
         channel.nack(msg, false, false);
         return;
     }
-    const responseChannel = new SagaCommenceConsumeChannel<T>(channel, msg, queueName, saga);
+    const responseChannel = new SagaCommenceConsumeChannel(channel, msg, queueName, saga);
 
     e.emit(saga.title, { saga, channel: responseChannel });
 };

@@ -115,16 +115,14 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
  * @see connectToSagaCommandEmitter
  * @see startGlobalSagaStepListener
  */
-export const commenceSagaListener = async <T extends Record<string, any>>(): Promise<
-    Emitter<ConsumerCommenceSaga<T>>
-> => {
+export const commenceSagaListener = async (): Promise<Emitter<ConsumerCommenceSaga>> => {
     const q = {
         queueName: queue.CommenceSaga,
         exchange: exchange.CommenceSaga
     };
-    const e = mitt<ConsumerCommenceSaga<T>>();
+    const e = mitt<ConsumerCommenceSaga>();
     await createConsumers([q]);
-    void consume<ConsumerCommenceSaga<T>>(e, q.queueName, commenceSagaConsumeCallback);
+    void consume<ConsumerCommenceSaga>(e, q.queueName, commenceSagaConsumeCallback);
     return e;
 };
 /**
@@ -147,15 +145,15 @@ export const commenceSagaListener = async <T extends Record<string, any>>(): Pro
  * @see startGlobalSagaStepListener
  * @see commenceSagaListener
  */
-export const startSaga = async <T extends AvailableMicroservices, U extends Record<string, any>>(
+export const startSaga = async <T extends AvailableMicroservices>(
     url: string
 ): Promise<{
     globalSagaStepListener: Emitter<ConsumerSagaEvents<T>>;
-    commenceSagaListener: Emitter<ConsumerCommenceSaga<U>>;
+    commenceSagaListener: Emitter<ConsumerCommenceSaga>;
 }> => {
     await prepare(url);
     const g = await startGlobalSagaStepListener<T>();
-    const c = await commenceSagaListener<U>();
+    const c = await commenceSagaListener();
     return {
         globalSagaStepListener: g,
         commenceSagaListener: c

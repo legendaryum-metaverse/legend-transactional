@@ -12,8 +12,8 @@ export type ConsumerEvents<T extends AvailableMicroservices> = {
 /**
  * Represents the saga title emitted by a consumer to commence a saga.
  */
-export type ConsumerCommenceSaga<T extends Record<string, any>> = {
-    [key in SagaTitle]: CommenceSagaHandler<T>;
+export type ConsumerCommenceSaga = {
+    [key in SagaTitle]: CommenceSagaHandler;
 };
 /**
  * Represents the saga events/events/step/command emitted by a consumer from a specific microservice to the saga.
