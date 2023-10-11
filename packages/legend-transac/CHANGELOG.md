@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.2
+
+### Patch Changes
+
+-   4f79c30: types en startSaga
+
 ## 1.0.1
 
 ### Patch Changes
