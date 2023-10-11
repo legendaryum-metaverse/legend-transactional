@@ -38,14 +38,12 @@ export const sendToQueue = async <T extends Record<string, any>>(queueName: stri
 /**
  * Commence a saga by sending a message payload to the **_CommenceSaga_** queue.
  *
+ * @typeparam T - The type of the message payload.
  * @param {string} sagaTitle - The name of the saga to commence.
- * @param {Record<string, unknown>} payload - The message payload to send.
+ * @param {Record<string, any>} payload - The message payload to send.
  */
-export const commenceSaga = async <T extends Record<string, unknown>>(
-    sagaTitle: SagaTitle,
-    payload: T
-): Promise<void> => {
-    const saga: CommenceSaga = {
+export const commenceSaga = async <T extends Record<string, any>>(sagaTitle: SagaTitle, payload: T): Promise<void> => {
+    const saga: CommenceSaga<T> = {
         title: sagaTitle,
         payload
     };
