@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { stopRabbitMQ, startGlobalSagaListener } from 'legend-transac';
+import { stopRabbitMQ, startGlobalSagaStepListener, prepare } from 'legend-transac';
 import { handler } from './handler';
 
 const app = express();
@@ -16,7 +16,8 @@ app.get('/ping', (_req: Request, res: Response) => {
 
 app.listen(PORT, async () => {
     const RABBIT_URI = process.env.RABBIT_URI ?? 'amqp://rabbit:1234@localhost:5672';
-    const e = await startGlobalSagaListener(RABBIT_URI);
+    await prepare(RABBIT_URI);
+    const e = await startGlobalSagaStepListener();
     e.on('*', handler);
 
     console.info(`${String.fromCodePoint(0x1f680)} Server is running on port ${PORT}`);
