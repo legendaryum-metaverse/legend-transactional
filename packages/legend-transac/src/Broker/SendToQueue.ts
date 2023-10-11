@@ -1,5 +1,6 @@
 import { getRabbitMQConn } from '../Connections';
 import { Channel } from 'amqplib';
+import { CommenceSaga, queue, SagaTitle } from '../@types';
 
 let sendChannel: Channel | null = null;
 /**
@@ -33,6 +34,22 @@ export const sendToQueue = async <T extends Record<string, any>>(queueName: stri
     channel.sendToQueue(queueName, Buffer.from(JSON.stringify(payload)), {
         persistent: true
     });
+};
+/**
+ * Commence a saga by sending a message payload to the **_CommenceSaga_** queue.
+ *
+ * @param {string} sagaTitle - The name of the saga to commence.
+ * @param {Record<string, unknown>} payload - The message payload to send.
+ */
+export const commenceSaga = async <T extends Record<string, unknown>>(
+    sagaTitle: SagaTitle,
+    payload: T
+): Promise<void> => {
+    const saga: CommenceSaga = {
+        title: sagaTitle,
+        payload
+    };
+    await sendToQueue(queue.CommenceSaga, saga);
 };
 /**
  * Close the **_send_** channel if it is open.

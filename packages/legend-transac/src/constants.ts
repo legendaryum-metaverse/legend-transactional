@@ -9,6 +9,9 @@ export const NACKING_DELAY_MS = 2000;
  * Define the maximum occurrence in a fail saga step of the nack delay with fibonacci strategy
  * | Occurrence | Delay in the next nack       |
  * |------------|-------------|
+ * | 17         | 0.44 hours  |
+ * | 18         | 0.72 hours  |
+ * | 19         | 1.18 hours  |
  * | 20         | 1.88 hours  |
  * | 21         | 3.04 hours  |
  * | 22         | 4.92 hours  |
@@ -20,7 +23,7 @@ export const NACKING_DELAY_MS = 2000;
  *
  * @see ConsumeChannel
  */
-export const MAX_OCCURRENCE = 24;
+export const MAX_OCCURRENCE = 19;
 /**
  * Define the maximum number of nack retries
  * @default

@@ -9,7 +9,9 @@ let url: string | null = null;
  * @param {string} uri - The RabbitMQ URI to save.
  */
 export const saveUri = (uri: string) => {
-    url = uri;
+    if (!url) {
+        url = uri;
+    }
 };
 /**
  * Get the saved RabbitMQ URI.
@@ -43,5 +45,6 @@ export const closeRabbitMQConn = async (): Promise<void> => {
     if (conn !== null) {
         await conn.close();
         conn = null;
+        url = null;
     }
 };

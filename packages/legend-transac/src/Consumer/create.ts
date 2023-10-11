@@ -17,7 +17,7 @@ import { getConsumeChannel } from '../Connections';
  * await createConsumers(consumers);
  *
  * // Once consumers are set up, they will start processing messages.
- * @see startGlobalSagaListener
+ * @see startGlobalSagaStepListener
  * @see connectToSagaCommandEmitter
  */
 export const createConsumers = async (consumers: QueueConsumerProps[]) => {
