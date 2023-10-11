@@ -1,5 +1,11 @@
 # legend-transac
 
+## 0.6.2
+
+### Patch Changes
+
+-   5870d0c: Se agrega el listener para escuchar saga
+
 ## 0.6.1
 
 ### Patch Changes
