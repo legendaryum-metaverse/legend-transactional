@@ -76,14 +76,14 @@ export class SagaCommenceConsumeChannel {
      *
      * To prevent large delays, the maxOccurrence is used to reset the occurrence to 0
      * making the next delay reset to the first value of a fibonacci sequence: 1s.
-     * @param {string} [salt] - The salt to use for hashing the saga step.
      * @param {number} [maxOccurrence] - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
+     * @param {string} [salt] - The salt to use for hashing the saga step.
      *
      * @returns {Promise<Object>} A promise resolving to the count of retries according to RabbitMQ, the delay in ms, and the occurrence of the nacking in the current container.
      *
      * @see MAX_OCCURRENCE
      */
-    async nackWithFibonacciStrategy(salt = '', maxOccurrence = MAX_OCCURRENCE) {
+    async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
         const occurrence = this.updateSagaOccurrence(`SagaCommenceConsumeChannel-${salt}`, maxOccurrence);
         const delay = fibonacci(occurrence) * 1000; // ms
         const count = await this.nackWithDelayAndRetries(delay, Infinity);
