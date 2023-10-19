@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.4
+
+### Patch Changes
+
+-   7b7cc00: Se agrega el comando products:send:email
+
 ## 1.0.3
 
 ### Patch Changes
