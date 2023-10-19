@@ -13,7 +13,11 @@ export const eventsAdminCommands = {
     /**
      * Command to emit a payment confirmation.
      */
-    EmitPaymentConfirmation: 'emit_payment:confirmation'
+    EmitPaymentConfirmation: 'emit_payment:confirmation',
+    /**
+     * Command to send an email with the products.
+     */
+    SendEmailProducts: 'products:send:email'
 } as const;
 /**
  * Available commands for the "events-admin" microservice.
