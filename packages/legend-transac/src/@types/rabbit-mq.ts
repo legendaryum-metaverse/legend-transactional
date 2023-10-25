@@ -24,6 +24,9 @@ export const exchange = {
      * Exchange used for replying to saga events from consumers.
      */
     ReplyToSaga: 'reply_exchange',
+    /**
+     * Exchange used for starting a saga.
+     */
     CommenceSaga: 'commence_saga_exchange'
 } as const;
 /**
