@@ -14,7 +14,7 @@
     "eslint-config-custom": "workspace:*",
     "markdown-table": "^2.0.0",
     "tsconfig": "workspace:*",
-    "tty-table": "^4.2.2"
+    "tty-table": "^4.2.3"
   },
   "scripts": {
     "build": "swc src -d dist",
