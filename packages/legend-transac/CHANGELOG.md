@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.5
+
+### Patch Changes
+
+-   541eee9: Nuevos comandos pagos persitir redsys en db y blockchain
+
 ## 1.0.4
 
 ### Patch Changes
