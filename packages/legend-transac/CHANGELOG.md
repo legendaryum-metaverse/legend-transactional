@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.6
+
+### Patch Changes
+
+-   a06393c: Nuevo saga persist_redsys
+
 ## 1.0.5
 
 ### Patch Changes
