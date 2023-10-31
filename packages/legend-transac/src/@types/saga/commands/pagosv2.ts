@@ -23,9 +23,13 @@ export const paymentCommands = {
      */
     MintImages: 'mint_images',
     /**
-     * Command to persist a successful redsys purchase.
+     * Command to persist a successful redsys purchase in the database.
      */
-    PersistRedsysPurchase: 'persist_redsys_purchase',
+    PersistRedsysPurchaseDB: 'persist_redsys_purchase:database',
+    /**
+     * Command to persist a successful redsys purchase in the blockchain.
+     */
+    PersistRedsysPurchaseBlockchain: 'persist_redsys_purchase:blockchain',
     /**
      * Command to put an NFT on sale.
      */
