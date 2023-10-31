@@ -6,7 +6,11 @@ export const sagaTitle = {
     /**
      * Saga used to buy products.
      */
-    BuyProducts: 'buy_products'
+    BuyProducts: 'buy_products',
+    /**
+     * Saga used to persist the redsys response.
+     */
+    PersistRedsys: 'persist_redsys'
 } as const;
 /**
  * Available saga titles.
