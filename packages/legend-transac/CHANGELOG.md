@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.9
+
+### Patch Changes
+
+-   66ff36c: mejores logs de error
+
 ## 1.0.8
 
 ### Patch Changes

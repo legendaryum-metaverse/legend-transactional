@@ -1,5 +1,12 @@
 # saga
 
+## 0.0.27
+
+### Patch Changes
+
+-   Updated dependencies [66ff36c]
+    -   legend-transac@1.0.9
+
 ## 0.0.26
 
 ### Patch Changes
