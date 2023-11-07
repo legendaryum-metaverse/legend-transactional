@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.8
+
+### Patch Changes
+
+-   ad93188: Se agrega isConnectionHealthy
+
 ## 1.0.7
 
 ### Patch Changes
