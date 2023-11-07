@@ -30,11 +30,11 @@ const getUri = (): string => {
 const startListeners = (c: amqp.Connection) => {
     c.addListener('close', (e: Error) => {
         isTheConnectionClosed = true;
-        console.error('[__Connection closed__]', e.message);
+        console.error('[legend_transac:__Connection closed__]', e.message);
     });
     c.addListener('error', (e: Error) => {
         isTheConnectionClosed = true;
-        console.error('[__Connection error__]', e.message);
+        console.error('[legend_transac:__Connection error__]', e.message);
     });
 };
 
@@ -77,12 +77,12 @@ export const isConnectionHealthy = async (queue: string): Promise<boolean> => {
     // https://github.com/amqp-node/amqplib/issues/649
     const closeListener = (e: Error) => {
         isTheConnectionClosed = true;
-        console.error('[health_check_listener:__Connection closed__]', e.message);
+        console.error('[legend_transac:health_check_listener:__Connection closed__]', e.message);
     };
 
     const errorListener = (e: Error) => {
         isTheConnectionClosed = true;
-        console.error('[health_check_listener:__Connection error__]', e.message);
+        console.error('[legend_transac:health_check_listener:__Connection error__]', e.message);
     };
 
     conn.addListener('close', closeListener);
@@ -99,7 +99,7 @@ export const isConnectionHealthy = async (queue: string): Promise<boolean> => {
                     resolve();
                 })
                 .catch(e => {
-                    console.error('[Check failed]', (e as Error).message);
+                    console.error('[legend_transac:health_check_listener:Check failed]', (e as Error).message);
                     reject(e);
                 });
         });
