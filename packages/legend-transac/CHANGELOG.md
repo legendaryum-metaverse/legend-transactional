@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.7
+
+### Patch Changes
+
+-   179420b: Queue Healthy para health checks
+
 ## 1.0.6
 
 ### Patch Changes
