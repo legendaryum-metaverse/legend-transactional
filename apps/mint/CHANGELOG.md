@@ -1,5 +1,12 @@
 # micro-mint
 
+## 0.0.26
+
+### Patch Changes
+
+-   Updated dependencies [ad93188]
+    -   legend-transac@1.0.8
+
 ## 0.0.25
 
 ### Patch Changes
