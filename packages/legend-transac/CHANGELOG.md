@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.0.10
+
+### Patch Changes
+
+-   fdcf311: Se añade el legend-avatar-clothes a los microservicios junto con sus comandos
+
 ## 1.0.9
 
 ### Patch Changes
