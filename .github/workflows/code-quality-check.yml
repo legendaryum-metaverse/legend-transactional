@@ -57,8 +57,11 @@ jobs:
         run: |
           pnpm run lint
       - name: Fix possible lint warnings
+        env:
+          TIMING: 1
         run: |
           pnpm run lint:fix
+          pnpm run format
       - name: Check if files changed
         id: check-if-files-changed
         continue-on-error: true
