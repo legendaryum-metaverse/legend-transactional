@@ -8,6 +8,7 @@ import { NotificationCommands } from './notifications';
 import { IntegrationCommands } from './integrations';
 import { AnalyticsCommands } from './analytics';
 import { EventsAdminCommands } from './eventsadmin';
+import { AvatarClothesCommands } from './avatarClothes';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -26,6 +27,10 @@ export interface CommandMap {
      * Represents the mapping of "legend-analytics" microservice commands.
      */
     [availableMicroservices.Analytics]: AnalyticsCommands;
+    /**
+     * Represents the mapping of "legend-avatar-clothes" microservice commands.
+     */
+    [availableMicroservices.AvatarClothes]: AvatarClothesCommands;
     /**
      * Represents the mapping of "events-admin" microservice commands.
      */

@@ -1,4 +1,5 @@
 export * from './analytics';
+export * from './avatarClothes';
 export * from './commands';
 export * from './eventsadmin';
 export * from './image';
