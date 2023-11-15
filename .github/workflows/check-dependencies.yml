@@ -14,6 +14,7 @@ defaults:
 
 jobs:
   update_minor_dependencies:
+    timeout-minutes: 2
     if: github.event.repository.full_name == github.repository
     runs-on: ubuntu-latest
     steps:

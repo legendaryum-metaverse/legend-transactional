@@ -24,6 +24,7 @@ jobs:
     uses: ./.github/workflows/code-quality-check.yml
     secrets: inherit
   check_changeset:
+    timeout-minutes: 1
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:

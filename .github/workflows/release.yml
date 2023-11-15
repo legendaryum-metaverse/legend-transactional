@@ -20,6 +20,7 @@ env:
 
 jobs:
   changelog:
+    timeout-minutes: 2
     if: github.event.repository.full_name == github.repository
     name: Changelog PR or Release
     runs-on: ubuntu-latest
