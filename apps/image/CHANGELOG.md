@@ -1,5 +1,12 @@
 # micro-image
 
+## 0.0.30
+
+### Patch Changes
+
+-   Updated dependencies [fdcf311]
+    -   legend-transac@1.0.10
+
 ## 0.0.29
 
 ### Patch Changes
