@@ -20,18 +20,14 @@
       "name": "saga",
       "type": "minor",
       "oldVersion": "0.0.2",
-      "changesets": [
-        "smart-gorillas-type"
-      ],
+      "changesets": ["smart-gorillas-type"],
       "newVersion": "0.1.0"
     },
     {
       "name": "legend-transac",
       "type": "patch",
       "oldVersion": "0.1.1",
-      "changesets": [
-        "smart-gorillas-type"
-      ],
+      "changesets": ["smart-gorillas-type"],
       "newVersion": "0.1.2"
     },
     {

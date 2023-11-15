@@ -5,7 +5,7 @@
   "main": "./dist/server.js",
   "private": true,
   "dependencies": {
-    "legend-transac": "workspace:*",
+    "legend-transactional": "workspace:*",
     "express": "latest"
   },
   "devDependencies": {

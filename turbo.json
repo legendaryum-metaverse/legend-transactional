@@ -4,12 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": [
-        "**/*",
-        "!.turbo/**/*",
-        "!e2e/**/*",
-        "!performance/**/*"
-      ],
+      "inputs": ["**/*", "!.turbo/**/*", "!e2e/**/*", "!performance/**/*"],
       "outputs": ["dist/**/*"],
       "outputMode": "new-only"
     },
@@ -31,15 +26,15 @@
       "outputMode": "new-only"
     },
     "saga#type-check": {
-      "dependsOn": ["legend-transac#build:dev"],
+      "dependsOn": ["legend-transactional#build:dev"],
       "inputs": ["src/**"]
     },
     "micro-image#type-check": {
-      "dependsOn": ["legend-transac#build:dev"],
+      "dependsOn": ["legend-transactional#build:dev"],
       "inputs": ["src/**"]
     },
     "micro-mint#type-check": {
-      "dependsOn": ["legend-transac#build:dev"],
+      "dependsOn": ["legend-transactional#build:dev"],
       "inputs": ["src/**"]
     },
     "type-check": {
@@ -47,7 +42,7 @@
       "outputMode": "new-only"
     },
     "dev": {
-      "dependsOn": ["legend-transac#build:dev"],
+      "dependsOn": ["legend-transactional#build:dev"],
       "cache": false,
       "persistent": true
     },
