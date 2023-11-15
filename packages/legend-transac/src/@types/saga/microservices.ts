@@ -18,6 +18,10 @@ export const availableMicroservices = {
      */
     Analytics: 'legend-analytics',
     /**
+     * Represents the "legend-avatar-clothes" microservice.
+     */
+    AvatarClothes: 'legend-avatar-clothes',
+    /**
      * Represents the "events-admin" microservice.
      */
     EventsAdmin: 'events-admin',
