@@ -1,5 +1,11 @@
 # legend-transac
 
+## 1.1.0
+
+### Minor Changes
+
+-   49eac13: Se trata de arreglar la 1.0.10 que no publico
+
 ## 1.0.10
 
 ### Patch Changes
