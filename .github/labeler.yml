@@ -1,10 +1,7 @@
 # See https://github.com/actions/labeler
 
-
 '🚨 action':
-- .github/workflows/**
+  - .github/workflows/**
 
-'pkg: legend-transac':
-- packages/legend-transac/**
-
-
+'pkg: legend-transactional':
+  - packages/legend-transac/**

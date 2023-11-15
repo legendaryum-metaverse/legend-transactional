@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transac';
+import { connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transactional';
 import { handler } from './handler';
 
 const app = express();

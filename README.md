@@ -4,7 +4,7 @@
 <img src=".github/assets/legend.jpg" alt="Astro Dev Version" style="width: 30%;"/>
 </div>
 
-# `legend-transac`
+# `legend-transactional`
 
 ## Install
 

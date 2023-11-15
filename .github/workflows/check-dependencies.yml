@@ -38,7 +38,7 @@ jobs:
           fi
           echo "num_properties=$num_properties" >> $GITHUB_OUTPUT
       - name: Update dependencies
-        if : ${{ steps.check_dependencies.outputs.num_properties > 0 }}
+        if: ${{ steps.check_dependencies.outputs.num_properties > 0 }}
         run: |
           npx npm-check-updates --deep --target minor -u
           pnpm install --no-frozen-lockfile && pnpm dedupe
@@ -52,7 +52,5 @@ jobs:
             ### ⚠ Importante leer antes de hacer merge a main
             >Cerrar esta **PR** y abrirla de nuevo para que corran las **actions**
             de **code-quality-check**.
-  
+
             >Luego _merge_ a **main**.
-
-

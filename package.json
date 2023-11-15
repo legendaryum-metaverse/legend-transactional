@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "type-check": "turbo run type-check",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write \"**/*.{ts,md,json,yaml,yml}\"",
     "preinstall": "npx only-allow pnpm",
     "test": "turbo run test --concurrency=1",
     "test:report": "turbo run test:report --concurrency=1"

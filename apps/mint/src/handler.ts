@@ -1,4 +1,4 @@
-import { CommandHandler } from 'legend-transac';
+import { CommandHandler } from 'legend-transactional';
 
 const needToRequeueWithDelay = () => {
     return Math.random() >= 0.6;

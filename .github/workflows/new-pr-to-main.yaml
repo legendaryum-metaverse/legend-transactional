@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - "**/*.md"
+      - '**/*.md'
 
 env:
   FORCE_COLOR: 3
@@ -44,10 +44,10 @@ jobs:
         id: changeset_detected
         run: |
           changeset_folder=".changeset"
-          
+
           # Get a list of .md files (excluding README.md) in the .changeset folder
           md_files=$(find "$changeset_folder" -name '*.md' ! -name 'README.md')
-          
+
           # Check if there are any .md files other than README.md
           if [ -n "$md_files" ]; then
             echo "There are .md files other than README.md in the $changeset_folder folder:"
@@ -96,12 +96,12 @@ jobs:
             changeset_comment
             -->
             ###  🦋  Changeset detected
-            
+
             _Latest commit:_ ${{ github.event.pull_request.head.sha }}
-            
+
             Mergear esta PR generará un aumento de versión en los siguientes paquetes:
             ${{ steps.release_plan_message.outputs.release-plan-message }}
-            
+
             [¿Qué son los conjuntos de cambios (changesets) y cómo agregar uno?](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md)
           reactions: eyes
 
@@ -117,14 +117,12 @@ jobs:
             changeset_comment
             -->
             ###  ⚠️  No Changeset found
-            
+
             _Latest commit:_ ${{ github.event.pull_request.head.sha }}
-            
+
             Mergear esta PR **no** generará un aumento de versión en ningún paquete. Si estos cambios no deberían resultar en una nueva versión, puedes proceder.
-            
+
             **Si estos cambios deben resultar en un aumento de versión se necesita agregar un conjunto de cambios _changeset_.**
-            
+
             [¿Qué son los conjuntos de cambios (changesets) y cómo agregar uno?](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md#i-am-in-a-multi-package-repository-a-mono-repo)
           reactions: eyes
-
-

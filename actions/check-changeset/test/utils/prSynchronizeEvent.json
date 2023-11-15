@@ -19,30 +19,14 @@
   },
   "pull_request": {
     "_links": {
-      "comments": [
-        null
-      ],
-      "commits": [
-        null
-      ],
-      "html": [
-        null
-      ],
-      "issue": [
-        null
-      ],
-      "review_comment": [
-        null
-      ],
-      "review_comments": [
-        null
-      ],
-      "self": [
-        null
-      ],
-      "statuses": [
-        null
-      ]
+      "comments": [null],
+      "commits": [null],
+      "html": [null],
+      "issue": [null],
+      "review_comment": [null],
+      "review_comments": [null],
+      "self": [null],
+      "statuses": [null]
     },
     "active_lock_reason": null,
     "additions": 2665,
@@ -53,13 +37,9 @@
     "base": {
       "label": "legendaryum-metaverse:main",
       "ref": "main",
-      "repo": [
-        null
-      ],
+      "repo": [null],
       "sha": "d18403eb30e72e1011151f86751da5da2fd52149",
-      "user": [
-        null
-      ]
+      "user": [null]
     },
     "body": "### `Cambios` \r\n\r\n- ¿Qué cambio?\r\n- Las capturas de pantalla antes/después también pueden ser útiles.\r\n- No olvides a **changeset**! `pnpm exec changeset`\r\n\r\n### `docs`\r\n<!-- ¿Se creó los correspondientes jsdoc y tsdoc a los cambios? -->\r\n<!-- No borres esta sección, sino hay documentación explica porqué-->\r\n",
     "changed_files": 50,
@@ -75,13 +55,9 @@
     "head": {
       "label": "legendaryum-metaverse:test_comment_changeset",
       "ref": "test_comment_changeset",
-      "repo": [
-        null
-      ],
+      "repo": [null],
       "sha": "3c7d952bd00158ab4c8d7bb5992883617b00e0f8",
-      "user": [
-        null
-      ]
+      "user": [null]
     },
     "html_url": "https://github.com/legendaryum-metaverse/legend-transac/pull/13",
     "id": 1479866972,

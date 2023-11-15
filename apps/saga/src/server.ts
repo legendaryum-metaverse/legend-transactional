@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { stopRabbitMQ, startGlobalSagaStepListener, prepare } from 'legend-transac';
+import { stopRabbitMQ, startGlobalSagaStepListener, prepare } from 'legend-transactional';
 import { handler } from './handler';
 
 const app = express();

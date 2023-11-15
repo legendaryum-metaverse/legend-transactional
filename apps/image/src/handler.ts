@@ -1,4 +1,4 @@
-import { CommandHandler, CommandMap } from 'legend-transac';
+import { CommandHandler, CommandMap } from 'legend-transactional';
 
 const waitWithMessage = async (msg: string, time: number) => {
     await new Promise(resolve => setTimeout(resolve, time));
