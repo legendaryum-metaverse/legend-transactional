@@ -3,6 +3,10 @@
  */
 export const socialCommands = {
     /**
+     * Command to assign a virtual product to a user.
+     */
+    AssignVirtualProductUser: 'assign:virtual-product:user',
+    /**
      * Command to listen of the payment's status.
      */
     PaymentStatus: 'payment_status'

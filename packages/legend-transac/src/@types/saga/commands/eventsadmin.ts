@@ -17,7 +17,15 @@ export const eventsAdminCommands = {
     /**
      * Command to send an email with the products.
      */
-    SendEmailProducts: 'products:send:email'
+    SendEmailProducts: 'products:send:email',
+    /**
+     * Command to update the remaining of a virtual product.
+     */
+    UpdateVirtualProductRemaining: 'update:virtual-product:remaining',
+    /**
+     * Command to unlock a virtual product for a user.
+     */
+    UnlockVirtualProductUser: 'unlock:virtual-product:user'
 } as const;
 /**
  * Available commands for the "events-admin" microservice.
