@@ -3,6 +3,10 @@
  */
 export const integrationCommands = {
     /**
+     * Command to assign a virtual product to a user.
+     */
+    AssignVirtualProductUser: 'assign:virtual-product:user',
+    /**
      * Command to emit NFTs generated to the client from "legend-integrations".
      */
     EmitNft: 'emit_nft',
