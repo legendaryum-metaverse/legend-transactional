@@ -47,7 +47,8 @@
       "persistent": true
     },
     "test": {
-      "outputMode": "new-only"
+      "outputMode": "new-only",
+      "env": ["INPUT_JSON-STRING", "IS_JEST-TEST"]
     },
     "test:report": {
       "outputs": ["coverage/**/*"],
