@@ -56,10 +56,61 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Needs access to publish to npm
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      # TODO: que se genere notificaciones al slack -> develop, al luis a alexis, etc.-...
-      # pero tienen que ser 'secrets' cualquier url.
-      - name: Generate Notification
-        id: notification
+      - name: Set legend-transactional Package and Version
+        id: set_env
         if: steps.changesets.outputs.published == 'true'
         run: |
-          echo "Published Packages: ${{ steps.changesets.outputs.publishedPackages }}"
+          echo "LEGEND_PACKAGE=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].name')" >> $GITHUB_ENV
+          echo "LEGEND_VERSION=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[0].version')" >> $GITHUB_ENV
+      - name: Generate Notification
+        id: notification
+        # steps.changesets.outputs.publishedPackages -> [{"name":"legend-transactional","version":"0.0.2"}]
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "Release Notification: ${{ github.repository }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":tada: *New Release Available* :tada:"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n${{ github.repository }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch:*\n${{ github.ref_name }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit SHA:*\n${{ github.sha }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Release Details"
+                      },
+                      "url": "https://github.com/${{ github.repository }}/releases/tag/${{ env.LEGEND_PACKAGE }}%40${{ env.LEGEND_VERSION }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
