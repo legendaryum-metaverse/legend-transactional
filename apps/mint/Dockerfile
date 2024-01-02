@@ -18,7 +18,6 @@ WORKDIR /app
 
 RUN pnpm install turbo --global
 RUN pnpm install "@swc/cli" --global
-RUN pnpm install "@swc/core" --global
 RUN pnpm install tsup --global
 RUN pnpm install typescript --global
 
