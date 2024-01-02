@@ -53,9 +53,6 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm install
-      - name: Lint files
-        run: |
-          pnpm run lint
       - name: Fix possible lint warnings
         env:
           TIMING: 1
