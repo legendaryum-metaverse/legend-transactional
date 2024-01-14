@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.0.5
+
+### Patch Changes
+
+- 5c9dd1c: Se elimina report video y el micro de liptv que no se estaba usando
+
 ## 0.0.4
 
 ### Patch Changes
