@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.0.4
+
+### Patch Changes
+
+- 5ae462b: Se agrega commence saga y los steps para enviar token de recuperación de password
+
 ## 0.0.3
 
 ### Patch Changes
