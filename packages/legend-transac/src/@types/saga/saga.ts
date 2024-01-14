@@ -10,7 +10,11 @@ export const sagaTitle = {
     /**
      * Saga used to persist the redsys response.
      */
-    PersistRedsys: 'persist_redsys'
+    PersistRedsys: 'persist_redsys',
+    /**
+     * Saga used to send an email with a token to recover the password in auth.
+     */
+    SendEmailToken: 'send_email:token'
 } as const;
 /**
  * Available saga titles.
