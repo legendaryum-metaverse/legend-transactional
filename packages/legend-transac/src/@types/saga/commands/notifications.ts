@@ -7,6 +7,14 @@ export const notificationCommands = {
      */
     SendEmailReportVideo: 'send_email:report_video',
     /**
+     * Command to send a recovery password email.
+     */
+    SendEmailToken: 'send_email:token',
+    /**
+     * Command to persist send email token action.
+     */
+    SendEmailTokenPersist: 'send_email:token:persist',
+    /**
      * Command to send mail to the user.
      */
     SendMailThanks: 'send:mail:thanks'
