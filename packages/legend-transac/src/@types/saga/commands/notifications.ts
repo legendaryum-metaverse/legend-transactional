@@ -3,10 +3,6 @@
  */
 export const notificationCommands = {
     /**
-     * Command to report a video.
-     */
-    SendEmailReportVideo: 'send_email:report_video',
-    /**
      * Command to send a recovery password email.
      */
     SendEmailToken: 'send_email:token',

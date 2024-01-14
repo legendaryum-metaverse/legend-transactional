@@ -30,10 +30,6 @@ export const availableMicroservices = {
      */
     Integrations: 'legend-integrations',
     /**
-     * Represents the "liptv" microservice.
-     */
-    LipTV: 'liptv',
-    /**
      * Represents the "notificaciones" microservice.
      */
     Notifications: 'notificaciones',
