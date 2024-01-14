@@ -1,7 +1,6 @@
 import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
 import { AvailableMicroservices, availableMicroservices } from '../microservices';
-import { LipTVCommands } from './liptv';
 import { SocialCommands } from './social';
 import { PaymentCommands } from './pagosv2';
 import { NotificationCommands } from './notifications';
@@ -39,10 +38,6 @@ export interface CommandMap {
      * Represents the mapping of "legend-integrations" microservice commands.
      */
     [availableMicroservices.Integrations]: IntegrationCommands;
-    /**
-     * Represents the mapping of "liptv" microservice commands.
-     */
-    [availableMicroservices.LipTV]: LipTVCommands;
     /**
      * Represents the mapping of "notificaciones" microservice commands.
      */
