@@ -1,5 +1,12 @@
 # micro-image
 
+## 0.0.36
+
+### Patch Changes
+
+- Updated dependencies [5c9dd1c]
+  - legend-transactional@0.0.5
+
 ## 0.0.35
 
 ### Patch Changes
