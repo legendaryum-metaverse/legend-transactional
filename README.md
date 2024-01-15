@@ -1,7 +1,7 @@
 <div style="text-align: center;">
   <br/>
   <br/>
-<img src=".github/assets/legend.jpg" alt="legendaryum" style="width: 40%;"/>
+<img src=".github/assets/legend.jpg" alt="legendaryum" style="width: 10%;"/>
 </div>
 
 # `legend-transactional`
