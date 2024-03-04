@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.0.6
+
+### Patch Changes
+
+- 585a480: checking build
+
 ## 0.0.5
 
 ### Patch Changes
