@@ -33,5 +33,8 @@
     "node": ">=16.12.0",
     "pnpm": ">=8.6.2"
   },
-  "name": "my-turborepo-pnpm"
+  "name": "my-turborepo-pnpm",
+  "dependencies": {
+    "@types/node": "^20.11.24"
+  }
 }
