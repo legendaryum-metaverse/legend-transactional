@@ -36,7 +36,7 @@ export const nackWithDelay = async (
     channel.nack(msg, false, false); // nack without requeueing immediately
 
     let count = 1;
-    if (msg.properties.headers['x-death']) {
+    if (msg.properties.headers && msg.properties.headers['x-death']) {
         count = msg.properties.headers['x-death'][0].count + 1;
     }
     // console.log('nacking', msg.properties.headers['x-death'], { count });
@@ -49,7 +49,7 @@ export const nackWithDelay = async (
     // console.log('count', count);
     // headers['x-retry-count'] = count + 1;
 
-    if (msg.properties.headers['x-death'] && msg.properties.headers['x-death'].length > 1) {
+    if (msg.properties.headers && msg.properties.headers['x-death'] && msg.properties.headers['x-death'].length > 1) {
         const logData = {
             'x-death': msg.properties.headers['x-death'],
             queueName,
