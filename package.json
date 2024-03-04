@@ -12,16 +12,11 @@
     "test": "turbo run test --concurrency=1",
     "test:report": "turbo run test:report --concurrency=1"
   },
-  "dependencies": {
-    "@types/node": "latest"
-  },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@swc/cli": "^0.1.65",
     "@swc/jest": "^0.2.36",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.20",
-    "chokidar": "^3.6.0",
     "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-config-custom": "workspace:*",
