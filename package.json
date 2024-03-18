@@ -35,6 +35,6 @@
   },
   "name": "my-turborepo-pnpm",
   "dependencies": {
-    "@types/node": "^20.11.25"
+    "@types/node": "^20.11.28"
   }
 }
