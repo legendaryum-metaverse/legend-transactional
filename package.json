@@ -24,7 +24,7 @@
     "nodemon": "latest",
     "prettier": "^3.2.5",
     "tsup": "latest",
-    "turbo": "^1.12.4",
+    "turbo": "^1.13.2",
     "typescript": "latest"
   },
   "packageManager": "pnpm@8.6.10",
@@ -35,6 +35,6 @@
   },
   "name": "my-turborepo-pnpm",
   "dependencies": {
-    "@types/node": "^20.11.24"
+    "@types/node": "^20.12.7"
   }
 }
