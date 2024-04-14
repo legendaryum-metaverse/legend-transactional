@@ -8,6 +8,9 @@ import { IntegrationCommands } from './integrations';
 import { AnalyticsCommands } from './analytics';
 import { EventsAdminCommands } from './eventsadmin';
 import { AvatarClothesCommands } from './avatarClothes';
+import { RoomCreatorCommands } from './roomCreator';
+import { AuthCommands } from './auth';
+import { ShowcaseCommands } from './showcase';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -26,6 +29,10 @@ export interface CommandMap {
      * Represents the mapping of "legend-analytics" microservice commands.
      */
     [availableMicroservices.Analytics]: AnalyticsCommands;
+    /**
+     * Represents the mapping of "auth" microservice commands.
+     */
+    [availableMicroservices.Auth]: AuthCommands;
     /**
      * Represents the mapping of "legend-avatar-clothes" microservice commands.
      */
@@ -46,6 +53,14 @@ export interface CommandMap {
      * Represents the mapping of "pagosv2" microservice commands.
      */
     [availableMicroservices.Payments]: PaymentCommands;
+    /**
+     * Represents the mapping of "room-creator" microservice commands.
+     */
+    [availableMicroservices.RoomCreator]: RoomCreatorCommands;
+    /**
+     * Represents the mapping of "social" microservice commands.
+     */
+    [availableMicroservices.Showcase]: ShowcaseCommands;
     /**
      * Represents the mapping of "social" microservice commands.
      */

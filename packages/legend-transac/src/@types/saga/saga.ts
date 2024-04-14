@@ -1,20 +1,28 @@
 export const sagaTitle = {
     /**
      * Saga used to recharge the balance of a user.
+     * @deprecated
      */
     RechargeBalance: 'recharge_balance',
     /**
      * Saga used to buy products.
+     * @deprecated
      */
     BuyProducts: 'buy_products',
     /**
      * Saga used to persist the redsys response.
+     * @deprecated
      */
     PersistRedsys: 'persist_redsys',
     /**
      * Saga used to send an email with a token to recover the password in auth.
+     * @deprecated
      */
-    SendEmailToken: 'send_email:token'
+    SendEmailToken: 'send_email:token',
+    /**
+     * Saga used to create a social user.
+     */
+    CreateSocialUser: 'create_social_user'
 } as const;
 /**
  * Available saga titles.

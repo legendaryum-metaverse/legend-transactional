@@ -14,6 +14,10 @@ export const availableMicroservices = {
      */
     TestMint: 'test-mint',
     /**
+     * Represents the "auth" microservice.
+     */
+    Auth: 'auth',
+    /**
      * Represents the "legend-analytics" microservice.
      */
     Analytics: 'legend-analytics',
@@ -37,6 +41,14 @@ export const availableMicroservices = {
      * Represents the "pagosv2" microservice.
      */
     Payments: 'pagosv2',
+    /**
+     * Represents the "room-creator" microservice.
+     */
+    RoomCreator: 'room-creator',
+    /**
+     * Represents the "legend-showcase" microservice.
+     */
+    Showcase: 'legend-showcase',
     /**
      * Represents the "social" microservice.
      */
