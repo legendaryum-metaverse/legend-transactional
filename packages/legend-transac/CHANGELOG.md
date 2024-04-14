@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.1.0
+
+### Minor Changes
+
+- d0e3634: Crate new user transaction: commands and new microservices: auth room-creator showcase
+
 ## 0.0.6
 
 ### Patch Changes
