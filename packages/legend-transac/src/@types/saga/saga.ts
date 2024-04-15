@@ -18,11 +18,7 @@ export const sagaTitle = {
      * Saga used to send an email with a token to recover the password in auth.
      * @deprecated
      */
-    SendEmailToken: 'send_email:token',
-    /**
-     * Saga used to create a social user.
-     */
-    CreateSocialUser: 'create_social_user'
+    SendEmailToken: 'send_email:token'
 } as const;
 /**
  * Available saga titles.
