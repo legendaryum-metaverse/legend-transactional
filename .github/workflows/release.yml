@@ -66,7 +66,7 @@ jobs:
         id: notification
         # steps.changesets.outputs.publishedPackages -> [{"name":"legend-transactional","version":"0.0.2"}]
         if: steps.changesets.outputs.published == 'true'
-        uses: slackapi/slack-github-action@v1.24.0
+        uses: slackapi/slack-github-action@v1.25.0
         with:
           payload: |
             {
