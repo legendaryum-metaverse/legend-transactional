@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.1.1
+
+### Patch Changes
+
+- 54e3d95: Removing create social user in commence saga, now in api rest
+
 ## 0.1.0
 
 ### Minor Changes
