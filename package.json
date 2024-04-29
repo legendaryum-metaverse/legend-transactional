@@ -24,7 +24,7 @@
     "nodemon": "latest",
     "prettier": "^3.2.5",
     "tsup": "latest",
-    "turbo": "^1.13.2",
+    "turbo": "^1.13.3",
     "typescript": "latest"
   },
   "packageManager": "pnpm@8.6.10",
