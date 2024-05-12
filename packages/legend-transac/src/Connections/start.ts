@@ -1,10 +1,12 @@
 import {
-    ConsumerEvents,
-    ConsumerSagaEvents,
+    MicroserviceConsumeSagaEvents,
+    SagaConsumeSagaEvents,
     exchange,
     queue,
     AvailableMicroservices,
-    ConsumerCommenceSaga
+    CommenceSagaEvents,
+    MicroserviceEvent,
+    MicroserviceConsumeEvents
 } from '../@types';
 import { getRabbitMQConn, saveUri } from './rabbitConn';
 import { getConsumeChannel } from './consumeChannel';
@@ -12,8 +14,10 @@ import {
     commenceSagaConsumeCallback,
     consume,
     createConsumers,
-    microserviceConsumeCallback,
-    sagaConsumeCallback
+    createHeaderConsumers,
+    sagaStepCallback,
+    sagaConsumeCallback,
+    eventCallback
 } from '../Consumer';
 import { getQueueConsumer } from '../utils';
 import mitt, { Emitter } from 'mitt';
@@ -70,15 +74,15 @@ export const prepare = async (url: string) => {
  * @see commenceSagaListener
  */
 export const startGlobalSagaStepListener = async <T extends AvailableMicroservices>(): Promise<
-    Emitter<ConsumerSagaEvents<T>>
+    Emitter<SagaConsumeSagaEvents<T>>
 > => {
     const queueO = {
         queueName: queue.ReplyToSaga,
         exchange: exchange.ReplyToSaga
     };
-    const e = mitt<ConsumerSagaEvents<T>>();
+    const e = mitt<SagaConsumeSagaEvents<T>>();
     await createConsumers([queueO]);
-    void consume<ConsumerSagaEvents<T>>(e, queueO.queueName, sagaConsumeCallback);
+    void consume<SagaConsumeSagaEvents<T>>(e, queueO.queueName, sagaConsumeCallback);
     return e;
 };
 /**
@@ -115,14 +119,14 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
  * @see connectToSagaCommandEmitter
  * @see startGlobalSagaStepListener
  */
-export const commenceSagaListener = async (): Promise<Emitter<ConsumerCommenceSaga>> => {
+export const commenceSagaListener = async (): Promise<Emitter<CommenceSagaEvents>> => {
     const q = {
         queueName: queue.CommenceSaga,
         exchange: exchange.CommenceSaga
     };
-    const e = mitt<ConsumerCommenceSaga>();
+    const e = mitt<CommenceSagaEvents>();
     await createConsumers([q]);
-    void consume<ConsumerCommenceSaga>(e, q.queueName, commenceSagaConsumeCallback);
+    void consume<CommenceSagaEvents>(e, q.queueName, commenceSagaConsumeCallback);
     return e;
 };
 /**
@@ -148,8 +152,8 @@ export const commenceSagaListener = async (): Promise<Emitter<ConsumerCommenceSa
 export const startSaga = async <T extends AvailableMicroservices>(
     url: string
 ): Promise<{
-    globalSagaStepListener: Emitter<ConsumerSagaEvents<T>>;
-    commenceSagaListener: Emitter<ConsumerCommenceSaga>;
+    globalSagaStepListener: Emitter<SagaConsumeSagaEvents<T>>;
+    commenceSagaListener: Emitter<CommenceSagaEvents>;
 }> => {
     await prepare(url);
     const g = await startGlobalSagaStepListener<T>();
@@ -198,11 +202,70 @@ export const startSaga = async <T extends AvailableMicroservices>(
 export const connectToSagaCommandEmitter = async <T extends AvailableMicroservices>(
     url: string,
     microservice: T
-): Promise<Emitter<ConsumerEvents<T>>> => {
+): Promise<Emitter<MicroserviceConsumeSagaEvents<T>>> => {
     await prepare(url);
     const q = getQueueConsumer(microservice);
-    const e = mitt<ConsumerEvents<T>>();
+    const e = mitt<MicroserviceConsumeSagaEvents<T>>();
     await createConsumers([q]);
-    void consume<ConsumerEvents<T>>(e, q.queueName, microserviceConsumeCallback);
+    void consume<MicroserviceConsumeSagaEvents<T>>(e, q.queueName, sagaStepCallback);
     return e;
 };
+
+export const connectToEvents = async <T extends AvailableMicroservices, U extends MicroserviceEvent>(
+    url: string,
+    microservice: T,
+    events: U[]
+) => {
+    await prepare(url);
+    const queueName = `${microservice}_match_commands` as const;
+    const e = mitt<MicroserviceConsumeEvents<U>>();
+    await createHeaderConsumers(queueName, events);
+    void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
+    return e;
+};
+// todo, hacer que los eventso sean unicos
+const consumerEvents = ['ticket.start', 'ticket.generate'] satisfies MicroserviceEvent[];
+
+const exe = async () => {
+    const e = await connectToEvents('amqp://rabbit:1234@localhost:5672', 'legend-integrations', consumerEvents);
+    // e.on('orders.pay', async ({ channel, payload }) => {
+    //     //
+    //     console.log('orders.pay', payload);
+    //     channel.ackMessage();
+    // });
+    let i = 0;
+    e.on('ticket.start', async ({ channel, payload }) => {
+        //
+        await channel.nackWithDelayAndRetries(5_000, 20);
+        // channel.ackMessage();
+        console.log('ticket.start', payload, i++);
+    });
+    e.on('ticket.generate', async ({ channel, payload }) => {
+        //
+        console.log('ticket.generate', payload);
+        channel.ackMessage();
+    });
+    console.log('hou');
+};
+const exeSaga = async () => {
+    const e = await connectToSagaCommandEmitter('amqp://rabbit:1234@localhost:5672', 'legend-integrations');
+    // e.on('orders.pay', async ({ channel, payload }) => {
+    //     //
+    //     console.log('orders.pay', payload);
+    //     channel.ackMessage();
+    // });
+    let i = 0;
+    e.on('emit_nft', async ({ channel, payload, sagaId }) => {
+        //
+        await channel.nackWithFibonacciStrategy(5);
+        // channel.ackMessage();
+        console.log('emit_nft', payload, sagaId, i++);
+    });
+
+    console.log('hou');
+};
+
+// exe();
+
+exeSaga();
+// const myEvents: EventsValues[] = ['ticket.generate'];

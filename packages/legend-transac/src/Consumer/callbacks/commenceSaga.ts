@@ -1,4 +1,4 @@
-import { ConsumerCommenceSaga, CommenceSaga } from '../../@types';
+import { CommenceSagaEvents, CommenceSaga } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
@@ -7,13 +7,13 @@ import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
  *
  * @param {ConsumeMessage | null} msg - The consumed message.
  * @param {Channel} channel - The channel used for consuming messages.
- * @param {Emitter<ConsumerCommenceSaga>} e - The emitter to emit events.
+ * @param {Emitter<CommenceSagaEvents>} e - The emitter to emit events.
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
 export const commenceSagaConsumeCallback = (
     msg: ConsumeMessage | null,
     channel: Channel,
-    e: Emitter<ConsumerCommenceSaga>,
+    e: Emitter<CommenceSagaEvents>,
     queueName: string
 ) => {
     if (!msg) {

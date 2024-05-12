@@ -1,23 +1,23 @@
 import { AvailableMicroservices } from './microservices';
 import { CommandMap } from './commands';
 import { SagaTitle } from './saga';
-import { CommandHandler, CommenceSagaHandler, SagaHandler } from './step';
+import { MicroserviceHandler, CommenceSagaHandler, SagaHandler } from './step';
 
 /**
- * Represents the events emitted by a consumer for a specific microservice.
+ * Represents the events emitted by the saga to the microservices.
  */
-export type ConsumerEvents<T extends AvailableMicroservices> = {
-    [key in CommandMap[T]]: CommandHandler<T>;
+export type MicroserviceConsumeSagaEvents<T extends AvailableMicroservices> = {
+    [key in CommandMap[T]]: MicroserviceHandler<T>;
 };
 /**
- * Represents the saga title emitted by a consumer to commence a saga.
+ * Represents the saga title emitted to commence a saga.
  */
-export type ConsumerCommenceSaga = {
+export type CommenceSagaEvents = {
     [key in SagaTitle]: CommenceSagaHandler;
 };
 /**
- * Represents the saga events/events/step/command emitted by a consumer from a specific microservice to the saga.
+ * Represents the saga step emitted from a specific microservice to the saga.
  */
-export type ConsumerSagaEvents<T extends AvailableMicroservices> = {
+export type SagaConsumeSagaEvents<T extends AvailableMicroservices> = {
     [key in CommandMap[T]]: SagaHandler<T>;
 };

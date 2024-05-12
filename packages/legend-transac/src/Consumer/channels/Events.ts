@@ -1,18 +1,18 @@
-import { CommenceSaga } from '../../@types';
-import { Channel, ConsumeMessage } from 'amqplib';
-import crypto from 'crypto';
 import { MAX_OCCURRENCE } from '../../constants';
 import ConsumeChannel from './Consume';
+import crypto from 'crypto';
+import { Channel, ConsumeMessage } from 'amqplib';
 
 /**
- * Class representing a consumer channel for processing sagas in a microservice environment.
+ * Represents a **_consume_** channel for handling saga events/commands.
+ * Extends the abstract ConsumeChannel class.
  *
  */
-export class SagaCommenceConsumeChannel extends ConsumeChannel {
+export class EventsConsumeChannel extends ConsumeChannel {
     /**
-     * The saga associated with the consumed message.
+     * The payload associated with the consumed message.
      */
-    protected readonly saga: CommenceSaga<Record<string, any>>;
+    private readonly payload: string;
 
     /**
      * Constructs a new instance of the SagaCommenceConsumeChannel class.
@@ -20,27 +20,22 @@ export class SagaCommenceConsumeChannel extends ConsumeChannel {
      * @param {Channel} channel - The channel to interact with the message broker.
      * @param {ConsumeMessage} msg - The consumed message to be processed.
      * @param {string} queueName - The name of the queue from which the message was consumed.
-     * @param {CommenceSaga} saga - The saga associated with the consumed message.
+     * @param {string} payload - The payload associated with the consumed message.
      */
-    public constructor(
-        channel: Channel,
-        msg: ConsumeMessage,
-        queueName: string,
-        saga: CommenceSaga<Record<string, any>>
-    ) {
+    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, payload: string) {
         super(channel, msg, queueName);
-        this.saga = saga;
+        this.payload = payload;
     }
 
     /**
-     * Method to acknowledge the message.
+     * Acknowledges the consumed saga event/command.
      */
     ackMessage(): void {
         this.channel.ack(this.msg, false);
     }
 
     async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
-        const hashId = this.getSagaHashId(`SagaCommenceConsumeChannel-${salt}`);
+        const hashId = this.getHashId(`EventsConsumeChannel-${salt}`);
         return this.nackWithFibonacciStrategyHelper(maxOccurrence, hashId);
     }
 
@@ -51,10 +46,9 @@ export class SagaCommenceConsumeChannel extends ConsumeChannel {
      * @param {string} salt - The salt to use for hashing the saga.
      * @returns {string} The hash id of the saga.
      */
-    private getSagaHashId = (salt: string): string => {
-        const { title, payload } = this.saga;
+    private getHashId = (salt: string): string => {
         const hash = crypto.createHash('sha256');
-        hash.update(`${title}-${JSON.stringify(payload)}-${salt}`);
+        hash.update(`${this.payload}-${salt}`);
         return hash.digest('hex').slice(0, 10);
     };
 }

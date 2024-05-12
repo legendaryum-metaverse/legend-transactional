@@ -64,9 +64,24 @@ export const nackWithDelay = async (
         return maxRetries;
     }
 
-    channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
-        expiration: delay,
-        headers: msg.properties.headers
-    });
+    console.log('msg', msg);
+    console.log('msg, fields', msg.fields);
+    console.log('msg, prop', msg.properties);
+    console.log('msg, head', msg.properties.headers);
+
+    if (msg.fields.exchange === exchange.Matching) {
+        channel.publish(exchange.MatchingRequeue, ``, msg.content, {
+            expiration: delay,
+            headers: msg.properties.headers,
+            persistent: true
+        });
+    } else {
+        channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
+            expiration: delay,
+            headers: msg.properties.headers,
+            persistent: true
+        });
+    }
+
     return count;
 };

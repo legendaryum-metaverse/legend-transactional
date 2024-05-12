@@ -1,16 +1,34 @@
-import { queue, status, AvailableMicroservices } from '../../@types';
+import { queue, status, AvailableMicroservices, SagaStep } from '../../@types';
 import { sendToQueue } from '../../Broker';
-import { nackWithDelay } from '../nack';
 import ConsumeChannel from './Consume';
-import { fibonacci } from '../../utils';
 import { MAX_OCCURRENCE } from '../../constants';
+import { Channel, ConsumeMessage } from 'amqplib';
+import crypto from 'crypto';
 /**
  * Represents a **_consume_** channel for a specific microservice.
  * Extends the abstract ConsumeChannel class.
  *
  * @typeparam T - The type of available microservices.
  */
-export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extends ConsumeChannel<T> {
+export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extends ConsumeChannel {
+    /**
+     * The saga step associated with the consumed message.
+     */
+    protected readonly step: SagaStep<T>;
+
+    /**
+     * Constructs a new instance of the ConsumeChannel class.
+     *
+     * @param {Channel} channel - The channel to interact with the message broker.
+     * @param {ConsumeMessage} msg - The consumed message to be processed.
+     * @param {string} queueName - The name of the queue from which the message was consumed.
+     * @param {SagaStep} step - The saga step associated with the consumed message.
+     */
+    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, step: SagaStep<T>) {
+        super(channel, msg, queueName);
+        this.step = step;
+    }
+
     ackMessage(payloadForNextStep: Record<string, unknown> = {}): void {
         this.step.status = status.Success;
         const previousPayload = this.step.previousPayload;
@@ -33,29 +51,22 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
                 console.error(err);
             });
     }
-    nackMessage(): void {
-        this.step.status = status.Failure;
 
-        sendToQueue(queue.ReplyToSaga, this.step)
-            .then(() => {
-                this.channel.nack(this.msg, false, false);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    }
-
-    async nackWithDelayAndRetries(delay?: number, maxRetries?: number) {
-        return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
-    }
     async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
-        const occurrence = this.updateSagaStepOccurrence(`MicroserviceConsumeChannel-${salt}`, maxOccurrence);
-        const delay = fibonacci(occurrence) * 1000; // ms
-        const count = await this.nackWithDelayAndRetries(delay, Infinity);
-        return {
-            count,
-            delay,
-            occurrence
-        };
+        const hashId = this.getStepHashId(`MicroserviceConsumeChannel-${salt}`);
+        return this.nackWithFibonacciStrategyHelper(maxOccurrence, hashId);
     }
+    /**
+     * Method to get the hash id of a saga step.
+     * The hash id is used to identify a saga step in the saga step occurrence map.
+     *
+     * @param {string} salt - The salt to use for hashing the saga step.
+     * @returns {string} The hash id of the saga step.
+     */
+    protected getStepHashId = (salt: string): string => {
+        const { sagaId, command, payload } = this.step;
+        const hash = crypto.createHash('sha256');
+        hash.update(`${sagaId}-${command}-${JSON.stringify(payload)}-${salt}`);
+        return hash.digest('hex').slice(0, 10);
+    };
 }

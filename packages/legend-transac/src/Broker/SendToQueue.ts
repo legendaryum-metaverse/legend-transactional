@@ -1,6 +1,7 @@
-import { getRabbitMQConn } from '../Connections';
+import { getRabbitMQConn, prepare } from '../Connections';
 import { Channel } from 'amqplib';
-import { CommenceSaga, queue, SagaTitle } from '../@types';
+import { CommenceSaga, exchange, MicroserviceEvent, queue, SagaTitle } from '../@types';
+import { getEventObject } from '../utils';
 
 let sendChannel: Channel | null = null;
 /**
@@ -61,3 +62,17 @@ export const closeSendChannel = async (): Promise<void> => {
         sendChannel = null;
     }
 };
+
+export const publishEvent = async (msg: Record<string, unknown>, event: MicroserviceEvent) => {
+    const channel = await getSendChannel();
+    channel.publish(exchange.Matching, ``, Buffer.from(JSON.stringify(msg)), {
+        headers: getEventObject(event)
+    });
+};
+
+const exe = async () => {
+    await prepare('amqp://rabbit:1234@localhost:5672');
+    const msg = { name: 'test' };
+    await publishEvent(msg, 'orders.pay');
+};
+// exe();

@@ -1,8 +1,11 @@
-import { AvailableMicroservices, SagaStep } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
-import crypto from 'crypto';
+import { nackWithDelay } from '../nack';
+import { MAX_OCCURRENCE } from '../../constants';
+import { fibonacci } from '../../utils';
 
-type StepHashId = string;
+type HashId = string;
+// TODO: toda la estrategia de ocurrence es en memoria. Cuando el nacking sea relevante se refactoriza con redis para
+// escalar en varios pods.
 type Occurrence = number;
 
 /**
@@ -10,7 +13,7 @@ type Occurrence = number;
  *
  * @typeparam T - The type of available microservices.
  */
-abstract class ConsumeChannel<T extends AvailableMicroservices> {
+abstract class ConsumeChannel {
     /**
      * The channel to interact with the message broker.
      */
@@ -24,13 +27,9 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      */
     protected readonly queueName: string;
     /**
-     * The saga step associated with the consumed message.
-     */
-    protected readonly step: SagaStep<T>;
-    /**
      * The map of saga step occurrences.
      */
-    static readonly sagaStepOccurrence = new Map<StepHashId, Occurrence>();
+    static readonly occurrence = new Map<HashId, Occurrence>();
 
     /**
      * Constructs a new instance of the ConsumeChannel class.
@@ -38,13 +37,11 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * @param {Channel} channel - The channel to interact with the message broker.
      * @param {ConsumeMessage} msg - The consumed message to be processed.
      * @param {string} queueName - The name of the queue from which the message was consumed.
-     * @param {SagaStep} step - The saga step associated with the consumed message.
      */
-    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, step: SagaStep<T>) {
+    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string) {
         this.channel = channel;
         this.msg = msg;
         this.queueName = queueName;
-        this.step = step;
     }
 
     /**
@@ -53,12 +50,6 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * @param {Record<string, unknown>} [payloadForNextStep] - Payload for the next step.
      */
     public abstract ackMessage(payloadForNextStep?: Record<string, unknown>): void;
-
-    /**
-     * Method to negatively acknowledge the message.
-     * @deprecated Use {@link nackWithDelayAndRetries} instead.
-     */
-    protected abstract nackMessage(): void;
 
     /**
      * Method to negatively acknowledge the message with a delay and retries.
@@ -70,7 +61,9 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      * @see NACKING_DELAY_MS
      * @see MAX_NACK_RETRIES
      */
-    public abstract nackWithDelayAndRetries(delay?: number, maxRetries?: number): Promise<number>;
+    public nackWithDelayAndRetries = async (delay?: number, maxRetries?: number): Promise<number> => {
+        return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
+    };
 
     /**
      * This method negatively acknowledges a message using a Fibonacci delay strategy.
@@ -94,39 +87,35 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
         occurrence: number;
     }>;
 
+    protected nackWithFibonacciStrategyHelper = async (maxOccurrence = MAX_OCCURRENCE, hashId: string) => {
+        const occurrence = this.updateOccurrence(hashId, maxOccurrence);
+        const delay = fibonacci(occurrence) * 1000; // ms
+        const count = await this.nackWithDelayAndRetries(delay, Infinity);
+        return {
+            count,
+            delay,
+            occurrence
+        };
+    };
+
     /**
      * Method to update the saga step occurrence map.
      *
-     * @param {string} salt - The salt to use for hashing the saga step.
      * @param {number} maxOccurrence - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
+     * @param {string} hashId - The hash id of the saga step.
      * @returns {number} The updated occurrence in a saga step.
      *
      * @see MAX_OCCURRENCE
      */
-    protected updateSagaStepOccurrence = (salt: string, maxOccurrence: number): number => {
-        const hashId = this.getStepHashId(salt);
-        let occurrence = ConsumeChannel.sagaStepOccurrence.get(hashId) || 0;
+    protected updateOccurrence = (hashId: string, maxOccurrence: number): number => {
+        let occurrence = ConsumeChannel.occurrence.get(hashId) || 0;
         if (occurrence >= maxOccurrence) {
             // the occurrence is reset to 0 to avoid large delay in the next nack
             occurrence = 0;
         }
 
-        ConsumeChannel.sagaStepOccurrence.set(hashId, occurrence + 1);
+        ConsumeChannel.occurrence.set(hashId, occurrence + 1);
         return occurrence + 1;
-    };
-
-    /**
-     * Method to get the hash id of a saga step.
-     * The hash id is used to identify a saga step in the saga step occurrence map.
-     *
-     * @param {string} salt - The salt to use for hashing the saga step.
-     * @returns {string} The hash id of the saga step.
-     */
-    private getStepHashId = (salt: string): string => {
-        const { sagaId, command, payload } = this.step;
-        const hash = crypto.createHash('sha256');
-        hash.update(`${sagaId}-${command}-${JSON.stringify(payload)}-${salt}`);
-        return hash.digest('hex').slice(0, 10);
     };
 }
 

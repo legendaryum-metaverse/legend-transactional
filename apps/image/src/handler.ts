@@ -1,4 +1,4 @@
-import { CommandHandler, CommandMap } from 'legend-transactional';
+import { MicroserviceHandler, CommandMap } from 'legend-transactional';
 
 const waitWithMessage = async (msg: string, time: number) => {
     await new Promise(resolve => setTimeout(resolve, time));
@@ -10,7 +10,7 @@ const needToRequeueWithDelay = () => {
 };
 export const handler = async (
     command: CommandMap['test-image'],
-    { channel, sagaId, payload }: CommandHandler<'test-image'>
+    { channel, sagaId, payload }: MicroserviceHandler<'test-image'>
 ) => {
     if (needToRequeueWithDelay()) {
         const count = await channel.nackWithDelayAndRetries(1000, 30);

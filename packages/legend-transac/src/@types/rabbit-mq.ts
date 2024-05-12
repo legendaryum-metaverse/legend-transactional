@@ -27,7 +27,15 @@ export const exchange = {
     /**
      * Exchange used for starting a saga.
      */
-    CommenceSaga: 'commence_saga_exchange'
+    CommenceSaga: 'commence_saga_exchange',
+    /**
+     * Exchange used for starting a saga.
+     */
+    Matching: 'matching_exchange',
+    /**
+     * Exchange dedicated to requeueing messages that require further processing.
+     */
+    MatchingRequeue: 'matching_requeue_exchange'
 } as const;
 /**
  * Represents the names of specific message queues in the RabbitMQ context.
