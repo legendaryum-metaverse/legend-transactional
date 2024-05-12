@@ -46,6 +46,6 @@ export const eventCallback = <U extends MicroserviceEvent>(
     }
     const responseChannel = new EventsConsumeChannel(channel, msg, queueName, stringPayload);
 
-    console.log(allValues)
+    console.log(allValues);
     e.emit(allValues[0], { payload, channel: responseChannel });
 };

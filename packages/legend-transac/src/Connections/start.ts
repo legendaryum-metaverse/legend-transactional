@@ -227,45 +227,47 @@ export const connectToEvents = async <T extends AvailableMicroservices, U extend
 const consumerEvents = ['ticket.start', 'ticket.generate'] satisfies MicroserviceEvent[];
 
 const exe = async () => {
-    const e = await connectToEvents('amqp://rabbit:1234@localhost:5672', 'legend-integrations', consumerEvents);
+    const microservice: AvailableMicroservices = 'legend-integrations';
+    const e = await connectToEvents('amqp://rabbit:1234@localhost:5672', microservice, consumerEvents);
     // e.on('orders.pay', async ({ channel, payload }) => {
     //     //
     //     console.log('orders.pay', payload);
     //     channel.ackMessage();
     // });
-    let i = 0;
     e.on('ticket.start', async ({ channel, payload }) => {
         //
-        await channel.nackWithDelayAndRetries(5_000, 20);
-        // channel.ackMessage();
-        console.log('ticket.start', payload, i++);
+        // const a = await channel.nackWithDelayAndRetries(1_000, 10);
+        // console.log('COUNT', a);
+        channel.ackMessage();
+        console.log('ticket.start', payload, microservice);
     });
     e.on('ticket.generate', async ({ channel, payload }) => {
         //
-        console.log('ticket.generate', payload);
+        console.log('ticket.generate', payload, microservice);
         channel.ackMessage();
     });
     console.log('hou');
 };
-const exeSaga = async () => {
-    const e = await connectToSagaCommandEmitter('amqp://rabbit:1234@localhost:5672', 'legend-integrations');
-    // e.on('orders.pay', async ({ channel, payload }) => {
-    //     //
-    //     console.log('orders.pay', payload);
-    //     channel.ackMessage();
-    // });
-    let i = 0;
-    e.on('emit_nft', async ({ channel, payload, sagaId }) => {
-        //
-        await channel.nackWithFibonacciStrategy(5);
-        // channel.ackMessage();
-        console.log('emit_nft', payload, sagaId, i++);
-    });
+// const exeSaga = async () => {
+//     const e = await connectToSagaCommandEmitter('amqp://rabbit:1234@localhost:5672', 'legend-integrations');
+//     // e.on('orders.pay', async ({ channel, payload }) => {
+//     //     //
+//     //     console.log('orders.pay', payload);
+//     //     channel.ackMessage();
+//     // });
+//     const i = 0;
+//     e.on('emit_nft', async ({ channel, payload, sagaId }) => {
+//         channel.ackMessage();
+//
+//         // const a = await channel.nackWithFibonacciStrategy(8);
+//         // console.log(a);
+//         // console.log('emit_nft', payload, sagaId, i++);
+//     });
+//
+//     console.log('hou');
+// };
 
-    console.log('hou');
-};
+exe();
 
-// exe();
-
-exeSaga();
+// exeSaga();
 // const myEvents: EventsValues[] = ['ticket.generate'];

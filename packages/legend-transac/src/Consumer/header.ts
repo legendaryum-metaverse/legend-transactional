@@ -25,16 +25,43 @@ export const createHeaderConsumers = async (queueName: string, events: Microserv
     for (const ev of Object.values(microserviceEvent)) {
         const args = getEventObject(ev);
 
-        await channel.assertExchange(ev, 'headers', { durable: true, arguments: args });
-        await channel.bindExchange(ev, exchange.Matching, '', args);
+        // GRAL: todos los exchanges a Matching
+        await channel.assertExchange(ev, 'headers', { durable: true /*, arguments: args */ });
+        await channel.bindExchange(ev, exchange.Matching, '', {
+            ...args,
+            m: 'normal',
+            'x-match': 'all'
+        });
 
-        await channel.assertExchange(`${ev}_requeue`, 'headers', { durable: true, arguments: args });
+        // el requeue no es para todos, es solo para el que puede hacer requeue
+        await channel.assertExchange(`${ev}_requeue`, 'headers', { durable: true /*, arguments: args*/ });
         await channel.bindExchange(`${ev}_requeue`, exchange.MatchingRequeue, '', args);
 
+        // TODO: los headers pueden ser un json
         if (events.includes(ev)) {
+            // exchanges para el nacking
+            await channel.assertExchange(`${ev}_${queueName}`, 'headers', {
+                durable: true
+                // arguments: { ...args, micros: queueName, 'x-match': 'all' }
+            });
+            await channel.bindExchange(`${ev}_${queueName}`, exchange.Matching, '', {
+                ...args,
+                micros: queueName,
+                'x-match': 'all'
+            });
+
+            await channel.bindQueue(queueName, `${ev}_${queueName}`, '', {
+                ...args,
+                micros: queueName,
+                'x-match': 'all'
+            });
+
             await channel.bindQueue(queueName, ev, '', args);
             await channel.bindQueue(requeueQueue, `${ev}_requeue`, '', args);
         } else {
+            // exchanges para el nacking
+            await channel.deleteExchange(`${ev}_${queueName}`, { ifUnused: false });
+
             await channel.unbindQueue(queueName, ev, '', args);
             await channel.unbindQueue(requeueQueue, `${ev}_requeue`, '', args);
         }

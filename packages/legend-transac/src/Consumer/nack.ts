@@ -36,8 +36,10 @@ export const nackWithDelay = async (
     channel.nack(msg, false, false); // nack without requeueing immediately
 
     let count = 1;
-    if (msg.properties.headers && msg.properties.headers['x-death']) {
-        count = msg.properties.headers['x-death'][0].count + 1;
+    // https://github.com/rabbitmq/rabbitmq-server/issues/10709
+    // https://github.com/spring-cloud/spring-cloud-stream/issues/2939
+    if (msg.properties.headers && msg.properties.headers['x-retry-count']) {
+        count = (msg.properties.headers['x-retry-count'] as number) + 1;
     }
     // console.log('nacking', msg.properties.headers['x-death'], { count });
 
@@ -64,21 +66,24 @@ export const nackWithDelay = async (
         return maxRetries;
     }
 
-    console.log('msg', msg);
-    console.log('msg, fields', msg.fields);
-    console.log('msg, prop', msg.properties);
+    // console.log('msg', msg);
+    // console.log('msg, fields', msg.fields);
+    // console.log('msg, prop', msg.properties);
     console.log('msg, head', msg.properties.headers);
 
     if (msg.fields.exchange === exchange.Matching) {
         channel.publish(exchange.MatchingRequeue, ``, msg.content, {
             expiration: delay,
-            headers: msg.properties.headers,
+            headers: {
+                ...msg.properties.headers,
+                'x-retry-count': count
+            },
             persistent: true
         });
     } else {
         channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
             expiration: delay,
-            headers: msg.properties.headers,
+            headers: { ...msg.properties.headers, 'x-retry-count': count },
             persistent: true
         });
     }
