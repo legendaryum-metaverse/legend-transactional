@@ -57,7 +57,11 @@ export const createHeaderConsumers = async (queueName: string, events: Microserv
             });
 
             await channel.bindQueue(queueName, ev, '', args);
-            await channel.bindQueue(requeueQueue, `${ev}_requeue`, '', args);
+            await channel.bindQueue(requeueQueue, `${ev}_requeue`, '', {
+                ...args,
+                micros: queueName,
+                'x-match': 'all'
+            });
         } else {
             // exchanges para el nacking
             await channel.deleteExchange(`${ev}_${queueName}`, { ifUnused: false });

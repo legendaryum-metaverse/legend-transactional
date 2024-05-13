@@ -36,21 +36,14 @@ export const nackWithDelay = async (
     channel.nack(msg, false, false); // nack without requeueing immediately
 
     let count = 1;
+    // La estrategia de "count" se aplica con custom headers
     // https://github.com/rabbitmq/rabbitmq-server/issues/10709
     // https://github.com/spring-cloud/spring-cloud-stream/issues/2939
     if (msg.properties.headers && msg.properties.headers['x-retry-count']) {
         count = (msg.properties.headers['x-retry-count'] as number) + 1;
     }
-    // console.log('nacking', msg.properties.headers['x-death'], { count });
 
-    // TODO: x-death es un arreglo, si la lógica cambia en el desarrollo, el nacking count se implementa
-    // TODO: usando un header custom, no x-death, importante, pasar los headers al publish, de otra manera
-    // TODO: la cuenta en x-death no se incrementa
-    // const headers = msg.properties.headers; // Get the existing headers or create an empty object if not present
-    // const count = headers['x-retry-count'] ?? 0;
-    // console.log('count', count);
-    // headers['x-retry-count'] = count + 1;
-
+    // Checkeo para verificar si cambia el x-death en futuros rabbits
     if (msg.properties.headers && msg.properties.headers['x-death'] && msg.properties.headers['x-death'].length > 1) {
         const logData = {
             'x-death': msg.properties.headers['x-death'],
@@ -63,24 +56,29 @@ export const nackWithDelay = async (
 
     if (count > maxRetries) {
         console.error(`MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`);
+        // nada más que hacer, termina el proceso
         return maxRetries;
     }
 
-    // console.log('msg', msg);
-    // console.log('msg, fields', msg.fields);
-    // console.log('msg, prop', msg.properties);
-    console.log('msg, head', msg.properties.headers);
-
     if (msg.fields.exchange === exchange.Matching) {
+        if (msg.properties?.headers?.m) {
+            // importantísimo, el header que se borra es aquel que tiene todos los micros escuchando cierto evento, sino el nacking le llega a todos.
+            delete msg.properties.headers.m;
+        }
+        // Viene de una nacking de eventos
         channel.publish(exchange.MatchingRequeue, ``, msg.content, {
             expiration: delay,
             headers: {
                 ...msg.properties.headers,
+                // el nacking es dirigido a un microservicio en particular, el que nackeó.
+                micros: queueName,
+                // persisto la cuenta de nacks
                 'x-retry-count': count
             },
             persistent: true
         });
     } else {
+        // destinado al Saga
         channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
             expiration: delay,
             headers: { ...msg.properties.headers, 'x-retry-count': count },
