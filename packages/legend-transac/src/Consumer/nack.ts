@@ -61,9 +61,9 @@ export const nackWithDelay = async (
     }
 
     if (msg.fields.exchange === exchange.Matching) {
-        if (msg.properties?.headers?.m) {
+        if (msg.properties?.headers?.['all-micro']) {
             // importantísimo, el header que se borra es aquel que tiene todos los micros escuchando cierto evento, sino el nacking le llega a todos.
-            delete msg.properties.headers.m;
+            delete msg.properties.headers['all-micro'];
         }
         // Viene de una nacking de eventos
         channel.publish(exchange.MatchingRequeue, ``, msg.content, {
@@ -71,7 +71,7 @@ export const nackWithDelay = async (
             headers: {
                 ...msg.properties.headers,
                 // el nacking es dirigido a un microservicio en particular, el que nackeó.
-                micros: queueName,
+                micro: queueName,
                 // persisto la cuenta de nacks
                 'x-retry-count': count
             },
@@ -88,3 +88,13 @@ export const nackWithDelay = async (
 
     return count;
 };
+/*
+Se puede dar muchos nackings, para el mismo event, nada garantiza el orden de llegada, se podría implementar una solución con versionado en la bd en ambas tablas.
+TODO: Se puede enviar eventos en el publish, siempre con headers
+{
+  "ORDERS.PAY": "orders.pay",
+  // "TICKET.START": "ticket.start", -> agregar uno más causa que se eliga el primero que se detecto, lo mejor sería emitir a todos!
+  "all-micro": "yes",
+}
+
+* */

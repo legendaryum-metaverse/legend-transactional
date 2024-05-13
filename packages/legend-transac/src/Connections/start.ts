@@ -224,10 +224,10 @@ export const connectToEvents = async <T extends AvailableMicroservices, U extend
     return e;
 };
 // todo, hacer que los eventso sean unicos
-const consumerEvents = ['ticket.start'] satisfies MicroserviceEvent[];
+const consumerEvents = ['ticket.generate', 'ticket.start', 'orders.pay'] satisfies MicroserviceEvent[];
 
 const exe = async () => {
-    const microservice: AvailableMicroservices = 'pagosv2';
+    const microservice: AvailableMicroservices = 'legend-showcase';
     const e = await connectToEvents('amqp://rabbit:1234@localhost:5672', microservice, consumerEvents);
     // e.on('orders.pay', async ({ channel, payload }) => {
     //     //
@@ -243,7 +243,17 @@ const exe = async () => {
     });
     e.on('ticket.generate', async ({ channel, payload }) => {
         //
+        // const a = await channel.nackWithFibonacciStrategy(5);
+        // console.log('COUNT', a);
         console.log('ticket.generate', payload, microservice);
+        channel.ackMessage();
+    });
+    e.on('orders.pay', async ({ channel, payload }) => {
+        //
+
+        // const a = await channel.nackWithFibonacciStrategy(5);
+        // console.log('COUNT', a);
+        console.log('orders.pay', payload, microservice);
         channel.ackMessage();
     });
     console.log('hou');

@@ -1,7 +1,7 @@
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { EventsConsumeChannel } from '../channels/Events';
-import { EventPayload, MicroserviceConsumeEvents, MicroserviceEvent } from '../../@types';
+import { EventPayload, MicroserviceConsumeEvents, microserviceEvent, MicroserviceEvent } from '../../@types';
 /**
  * Callback function for consuming microservice events/commands.
  *
@@ -22,19 +22,8 @@ export const eventCallback = <U extends MicroserviceEvent>(
         console.error('mgs not AVAILABLE');
         return;
     }
-    const headers = msg.properties.headers;
-    if (!headers || Object.values(headers).length === 0) {
-        console.error('headers not AVAILABLE, is a headers exchange');
-        return;
-    }
-    const allValues = Object.values(headers) as U[];
-    if (allValues.length > 1) {
-        console.warn('More than one header value');
-        // aca es donde consumo, me deberia permitir recibir mensajes con mas de un header
-        // pero sería raro un mismo payload para varios listeners,
-        // cada evento se supone que es disitino, lo controlo en el payload de la funcion
-        // que publique el mensaje
-    }
+
+    // message parsing
     const stringPayload = msg.content.toString();
     let payload;
     try {
@@ -44,8 +33,37 @@ export const eventCallback = <U extends MicroserviceEvent>(
         channel.nack(msg, false, false);
         return;
     }
+
+    // finding the event key
+    const headers = msg.properties.headers;
+    if (!headers || Object.values(headers).length === 0) {
+        console.error('headers not AVAILABLE, is a headers exchange');
+        channel.nack(msg, false, false);
+        return;
+    }
+    const allValues = Object.values(headers) as unknown[];
+    const event: U[] = [];
+    for (const value of allValues) {
+        if (typeof value === 'string' && Object.values(microserviceEvent).includes(value as MicroserviceEvent)) {
+            event.push(value as U);
+        }
+    }
+    if (event.length === 0) {
+        console.error('Invalid header value', headers);
+        channel.nack(msg, false, false);
+        return;
+    }
+    if (event.length > 1) {
+        console.error(
+            'More then one valid header, using the first one detected, that is because the payload is typed with a particular event',
+            { headersReceived: headers, eventsDetected: event }
+        );
+    }
+
     const responseChannel = new EventsConsumeChannel(channel, msg, queueName, stringPayload);
 
-    console.log(allValues);
-    e.emit(allValues[0], { payload, channel: responseChannel });
+    // si event.length > 1, a esta altura todos los eventos son válidos y se pueden emitir. Recordar llego un solo mensaje con extra headers.
+    // Sin embargo, el payload es tipado para cada evento.
+    // Mismo payload para dos handlers distintos, a menos que la relación con el evento en el proceso sea importante se podría refactorizar
+    e.emit(event[0], { payload, channel: responseChannel });
 };

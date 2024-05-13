@@ -25,60 +25,62 @@ export const createHeaderConsumers = async (queueName: string, events: Microserv
     for (const ev of Object.values(microserviceEvent)) {
         const args = getEventObject(ev);
 
-        // GRAL: todos los exchanges a Matching
-        await channel.assertExchange(ev, 'headers', { durable: true /*, arguments: args */ });
+        // GENARAL: exchange de un evento en particular con bind al exchange Matching-> acá se envía los eventos y luego
+        // el exchange-Matching los rutea a exchange-ev de acuerdo a los argumentos
+        await channel.assertExchange(ev, 'headers', { durable: true });
         await channel.bindExchange(ev, exchange.Matching, '', {
             ...args,
-            m: 'normal',
-            'x-match': 'all'
+            // key para emitir eventos a todos lo micros, todos los micros tienen el bind a este exchange "ev"
+            'all-micro': 'yes',
+            'x-match': 'all' // se tienen que cumplir todos los argumentos
         });
 
-        // el requeue no es para todos, es solo para el que puede hacer requeue
-        await channel.assertExchange(`${ev}_requeue`, 'headers', { durable: true /*, arguments: args*/ });
+        // GENARAL: exchange del requeue de un evento en particular con bind al exchange MatchingRequeue-> acá se envía los nackings de eventos y luego se rutea a `${ev}_requeue`
+        await channel.assertExchange(`${ev}_requeue`, 'headers', { durable: true });
+        // MatchingRequeue no necesita arguments adicionales, cuando MatchingRequeue, rutee a `${ev}_requeue`, `${ev}_requeue` tiene el bind a requeueQueue
+        // con los argumentos necesarios para el nacking particular de cierto micro en lugar de nackear a todos los micros debido a un nacking en particular ocurrido
+        // en cierto micro.
         await channel.bindExchange(`${ev}_requeue`, exchange.MatchingRequeue, '', args);
 
-        // TODO: los headers pueden ser un json
+        // asignando/actualizando recursos de acuerdo a los eventos particulares de un microservicio
         if (events.includes(ev)) {
-            // exchanges para el nacking
+            // todos los micros tienen el bind a este exchange "ev"
+            await channel.bindQueue(queueName, ev, '', args);
+            // el requeue es a un micro en particular, el que hizo el nacking
+            await channel.bindQueue(requeueQueue, `${ev}_requeue`, '', {
+                ...args,
+                micro: queueName,
+                'x-match': 'all'
+            });
+
+            // cunado se realiza el nacking/publish a MatchingRequeue y luego que este rutea a `${ev}_requeue` tomando en cuenta los
+            // args necesarios, volverá al exchange Matching, en el nacking se borra el header  'all-micro': 'yes', para que el nacking
+            // sea dirigido a un micro en particular. "micros": "queueName" -> el que hizo el nacking
             await channel.assertExchange(`${ev}_${queueName}`, 'headers', {
                 durable: true
-                // arguments: { ...args, micros: queueName, 'x-match': 'all' }
             });
             await channel.bindExchange(`${ev}_${queueName}`, exchange.Matching, '', {
                 ...args,
-                micros: queueName,
+                micro: queueName,
                 'x-match': 'all'
             });
 
             await channel.bindQueue(queueName, `${ev}_${queueName}`, '', {
                 ...args,
-                micros: queueName,
-                'x-match': 'all'
-            });
-
-            await channel.bindQueue(queueName, ev, '', args);
-            await channel.bindQueue(requeueQueue, `${ev}_requeue`, '', {
-                ...args,
-                micros: queueName,
+                micro: queueName,
                 'x-match': 'all'
             });
         } else {
-            // exchanges para el nacking
-            await channel.deleteExchange(`${ev}_${queueName}`, { ifUnused: false });
-
             await channel.unbindQueue(queueName, ev, '', args);
-            await channel.unbindQueue(requeueQueue, `${ev}_requeue`, '', args);
+            await channel.unbindQueue(requeueQueue, `${ev}_requeue`, '', {
+                ...args,
+                micro: queueName,
+                'x-match': 'all'
+            });
+            await channel.deleteExchange(`${ev}_${queueName}`, { ifUnused: false });
         }
     }
 
     // Set the prefetch count to process only one message at a time to maintain order and control concurrency.
     await channel.prefetch(1); // process only one message at a time
-    // await channel.consume(
-    //     queueName,
-    //     message => {
-    //         console.log('AA:', message);
-    //         console.log(message.content.toString());
-    //     },
-    //     { noAck: true }
-    // );
 };
