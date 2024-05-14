@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.3.1
+
+### Patch Changes
+
+- 64a1bd5: Comandos para subir una imagen base64 de auth a storage y a social
+
 ## 0.3.0
 
 ### Minor Changes
