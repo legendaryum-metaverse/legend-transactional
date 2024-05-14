@@ -2,7 +2,7 @@ export const sagaTitle = {
     /**
      * Saga used to add coins when a user is created for the first time.
      */
-    SocialUserCreationReward: 'new_user:creation_reward'
+    UserCreationReward: 'new_user:creation_reward'
 } as const;
 /**
  * Available saga titles.
