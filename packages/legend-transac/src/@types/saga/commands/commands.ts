@@ -2,7 +2,7 @@ import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
 import { AvailableMicroservices, availableMicroservices } from '../microservices';
 import { SocialCommands } from './social';
-import { PaymentCommands } from './pagosv2';
+import { PaymentCommands } from './payments';
 import { NotificationCommands } from './notifications';
 import { IntegrationCommands } from './integrations';
 import { AnalyticsCommands } from './analytics';
@@ -50,7 +50,7 @@ export interface CommandMap {
      */
     [availableMicroservices.Notifications]: NotificationCommands;
     /**
-     * Represents the mapping of "pagosv2" microservice commands.
+     * Represents the mapping of "payments" microservice commands.
      */
     [availableMicroservices.Payments]: PaymentCommands;
     /**
