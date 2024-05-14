@@ -1,4 +1,4 @@
-import { getRabbitMQConn } from '../Connections';
+import { getRabbitMQConn, saveUri } from '../Connections';
 import { Channel } from 'amqplib';
 import { CommenceSaga, queue, SagaTitle } from '../@types';
 
@@ -37,12 +37,21 @@ export const sendToQueue = async <T extends Record<string, any>>(queueName: stri
 };
 /**
  * Commence a saga by sending a message payload to the **_CommenceSaga_** queue.
+ * Use **uri** if this function is called from a microservice without a Transactional implementation.
  *
  * @typeparam T - The type of the message payload.
  * @param {string} sagaTitle - The name of the saga to commence.
  * @param {Record<string, any>} payload - The message payload to send.
+ * @param {string} [uri] - The RabbitMQ URI to save.
  */
-export const commenceSaga = async <T extends Record<string, any>>(sagaTitle: SagaTitle, payload: T): Promise<void> => {
+export const commenceSaga = async <T extends Record<string, any>>(
+    sagaTitle: SagaTitle,
+    payload: T,
+    uri?: string
+): Promise<void> => {
+    if (uri) {
+        saveUri(uri);
+    }
     const saga: CommenceSaga<T> = {
         title: sagaTitle,
         payload
