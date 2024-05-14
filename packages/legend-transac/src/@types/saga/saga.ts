@@ -6,7 +6,7 @@ export const sagaTitle = {
     /**
      * Saga used to update the social user's image.
      */
-    UpdateUserImage: 'update_user:image',
+    UpdateUserImage: 'update_user:image'
 } as const;
 /**
  * Available saga titles.
