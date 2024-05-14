@@ -5,7 +5,7 @@ export const storageCommands = {
     /**
      * Command to store a file from base64.
      */
-    UpdateFile: 'update_file',
+    UpdateFile: 'update_file'
 } as const;
 /**
  * Available commands for the "legend-storage" microservice.
