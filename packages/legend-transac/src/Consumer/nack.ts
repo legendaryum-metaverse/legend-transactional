@@ -3,6 +3,11 @@ import { MAX_NACK_RETRIES, NACKING_DELAY_MS } from '../constants';
 import { getConsumeChannel } from '../Connections';
 import { exchange } from '../@types';
 
+interface Occurrence {
+    hashId: string;
+    count: number;
+}
+
 /**
  * Apply delayed nack mechanism to a message, optionally retrying a limited number of times.
  *
@@ -30,7 +35,8 @@ export const nackWithDelay = async (
     msg: ConsumeMessage,
     queueName: string,
     delay: number = NACKING_DELAY_MS,
-    maxRetries: number = MAX_NACK_RETRIES
+    maxRetries: number = MAX_NACK_RETRIES,
+    hashId: string
 ): Promise<number> => {
     const channel = await getConsumeChannel();
     channel.nack(msg, false, false); // nack without requeueing immediately
@@ -43,8 +49,17 @@ export const nackWithDelay = async (
         count = (msg.properties.headers['x-retry-count'] as number) + 1;
     }
 
+    let occurrence: Partial<Occurrence>;
+    if (msg.properties.headers && msg.properties.headers['x-occurrence']) {
+        const o = msg.properties.headers['x-occurrence'] as string;
+        occurrence = JSON.parse(o);
+        if (occurrence.hashId === hashId) {
+            count = occurrence.count + 1;
+        }
+    }
+
     // Checkeo para verificar si cambia el x-death en futuros rabbits
-    if (msg.properties.headers && msg.properties.headers['x-death'] && msg.properties.headers['x-death'].length > 1) {
+    if (msg.properties?.headers?.['x-death'] && msg.properties.headers['x-death'].length > 1) {
         const logData = {
             'x-death': msg.properties.headers['x-death'],
             queueName,

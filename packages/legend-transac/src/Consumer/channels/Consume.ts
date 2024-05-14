@@ -1,12 +1,17 @@
 import { Channel, ConsumeMessage } from 'amqplib';
 import { nackWithDelay } from '../nack';
-import { MAX_OCCURRENCE } from '../../constants';
+import { MAX_NACK_RETRIES, MAX_OCCURRENCE, NACKING_DELAY_MS } from '../../constants';
 import { fibonacci } from '../../utils';
+import { getConsumeChannel } from '../../Connections';
+import { exchange } from '../../@types';
 
 type HashId = string;
 // TODO: toda la estrategia de ocurrence es en memoria. Cuando el nacking sea relevante se refactoriza con redis para
 // escalar en varios pods.
-type Occurrence = number;
+interface Occurrence {
+    hashId: string;
+    count: number;
+}
 
 /**
  * Abstract class representing a consumer channel for processing messages in a microservices environment.
@@ -27,9 +32,13 @@ abstract class ConsumeChannel {
      */
     protected readonly queueName: string;
     /**
+     * The name of the queue from which the message was consumed.
+     */
+    private hashId?: string;
+    /**
      * The map of saga step occurrences.
      */
-    static readonly occurrence = new Map<HashId, Occurrence>();
+    static readonly occurrence = new Map<HashId, number>();
 
     /**
      * Constructs a new instance of the ConsumeChannel class.
@@ -62,7 +71,7 @@ abstract class ConsumeChannel {
      * @see MAX_NACK_RETRIES
      */
     public nackWithDelayAndRetries = async (delay?: number, maxRetries?: number): Promise<number> => {
-        return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
+        return await this.nackWithDelay(delay, maxRetries);
     };
 
     /**
@@ -88,6 +97,7 @@ abstract class ConsumeChannel {
     }>;
 
     protected nackWithFibonacciStrategyHelper = async (maxOccurrence = MAX_OCCURRENCE, hashId: string) => {
+        this.hashId = hashId;
         const occurrence = this.updateOccurrence(hashId, maxOccurrence);
         const delay = fibonacci(occurrence) * 1000; // ms
         const count = await this.nackWithDelayAndRetries(delay, Infinity);
@@ -116,6 +126,80 @@ abstract class ConsumeChannel {
 
         ConsumeChannel.occurrence.set(hashId, occurrence + 1);
         return occurrence + 1;
+    };
+
+    private nackWithDelay = async (
+        delay: number = NACKING_DELAY_MS,
+        maxRetries: number = MAX_NACK_RETRIES
+    ): Promise<number> => {
+        const { msg, queueName, channel, hashId } = this;
+        channel.nack(msg, false, false); // nack without requeueing immediately
+
+        let count = 1;
+        // La estrategia de "count" se aplica con custom headers
+        // https://github.com/rabbitmq/rabbitmq-server/issues/10709
+        // https://github.com/spring-cloud/spring-cloud-stream/issues/2939
+        if (msg.properties.headers && msg.properties.headers['x-retry-count']) {
+            count = (msg.properties.headers['x-retry-count'] as number) + 1;
+        }
+
+        let occurrence: Occurrence;
+        if (hashId && msg.properties.headers && msg.properties.headers['x-occurrence']) {
+            const o = msg.properties.headers['x-occurrence'] as string;
+            occurrence = JSON.parse(o);
+            if (occurrence.hashId === hashId) {
+                // si es que no lo encuentro actualizo el hasId
+                occurrence.count = (occurrence.count || 0) + 1;
+            }
+        } else{
+        //     TODD: si no lo encuntreo es la primera vez!
+        }
+        // saliendo de este if ocurrence esta definido
+
+        // Checkeo para verificar si cambia el x-death en futuros rabbits
+        if (msg.properties?.headers?.['x-death'] && msg.properties.headers['x-death'].length > 1) {
+            const logData = {
+                'x-death': msg.properties.headers['x-death'],
+                queueName,
+                msg: msg.content.toString(),
+                headers: msg.properties.headers
+            };
+            console.warn('x-death length > 1 -> TIME TO REFACTOR', logData);
+        }
+
+        if (count > maxRetries) {
+            console.error(`MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`);
+            // nada más que hacer, termina el proceso
+            return maxRetries;
+        }
+
+        if (msg.fields.exchange === exchange.Matching) {
+            if (msg.properties?.headers?.['all-micro']) {
+                // importantísimo, el header que se borra es aquel que tiene todos los micros escuchando cierto evento, sino el nacking le llega a todos.
+                delete msg.properties.headers['all-micro'];
+            }
+            // Viene de una nacking de eventos
+            channel.publish(exchange.MatchingRequeue, ``, msg.content, {
+                expiration: delay,
+                headers: {
+                    ...msg.properties.headers,
+                    // el nacking es dirigido a un microservicio en particular, el que nackeó.
+                    micro: queueName,
+                    // persisto la cuenta de nacks
+                    'x-retry-count': count
+                },
+                persistent: true
+            });
+        } else {
+            // destinado al Saga
+            channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
+                expiration: delay,
+                headers: { ...msg.properties.headers, 'x-retry-count': count },
+                persistent: true
+            });
+        }
+
+        return count;
     };
 }
 
