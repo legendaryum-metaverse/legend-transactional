@@ -21,7 +21,7 @@ export const socialCommands = {
      */
     AddRoomsToNewUser: 'new_user:add_rooms',
     /**
-     * Command to add friends to a new user.
+     * Command to update the social user's image.
      */
     UpdateUserImage: 'update_user:image'
 } as const;

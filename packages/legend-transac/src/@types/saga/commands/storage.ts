@@ -8,6 +8,6 @@ export const storageCommands = {
     UpdateFile: 'update_file',
 } as const;
 /**
- * Available commands for the "legend-showcase" microservice.
+ * Available commands for the "legend-storage" microservice.
  */
 export type StorageCommands = (typeof storageCommands)[keyof typeof storageCommands];
