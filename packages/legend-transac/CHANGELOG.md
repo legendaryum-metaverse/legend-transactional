@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.3.0
+
+### Minor Changes
+
+- 411338f: It allows **commenceSaga** function connect with a specific uri.
+
 ## 0.2.0
 
 ### Minor Changes
