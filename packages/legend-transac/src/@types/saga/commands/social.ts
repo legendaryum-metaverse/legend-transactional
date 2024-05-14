@@ -19,7 +19,11 @@ export const socialCommands = {
     /**
      * Command to add rooms to a new user.
      */
-    AddRoomsToNewUser: 'new_user:add_rooms'
+    AddRoomsToNewUser: 'new_user:add_rooms',
+    /**
+     * Command to add friends to a new user.
+     */
+    UpdateUserImage: 'update_user:image'
 } as const;
 /**
  * Available commands for the "social" microservice.

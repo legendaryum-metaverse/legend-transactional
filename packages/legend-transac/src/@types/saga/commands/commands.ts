@@ -11,6 +11,7 @@ import { AvatarClothesCommands } from './avatarClothes';
 import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
+import { StorageCommands } from './storage';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -65,6 +66,10 @@ export interface CommandMap {
      * Represents the mapping of "social" microservice commands.
      */
     [availableMicroservices.Social]: SocialCommands;
+    /**
+     * Represents the mapping of "legend-storage" microservice commands.
+     */
+    [availableMicroservices.Storage]: StorageCommands;
 }
 /**
  * Represents a command specific to a microservice.

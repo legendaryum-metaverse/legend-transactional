@@ -52,7 +52,11 @@ export const availableMicroservices = {
     /**
      * Represents the "social" microservice.
      */
-    Social: 'social'
+    Social: 'social',
+    /**
+     * Represents the "legend-storage" microservice.
+     */
+    Storage: 'legend-storage'
 } as const;
 /**
  * Type of available microservices in the system.

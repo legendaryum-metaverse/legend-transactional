@@ -11,3 +11,4 @@ export * from './pagosv2';
 export * from './roomCreator';
 export * from './showcase';
 export * from './social';
+export * from './storage';
