@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 0.2.0
+
+### Minor Changes
+
+- ccdd75e: Deprecated events removed, new event added in saga, change from 'pagosv2' to 'payments'
+
 ## 0.1.1
 
 ### Patch Changes
