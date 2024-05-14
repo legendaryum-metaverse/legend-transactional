@@ -19,11 +19,7 @@ export const socialCommands = {
     /**
      * Command to add rooms to a new user.
      */
-    AddRoomsToNewUser: 'new_user:add_rooms',
-    /**
-     * Command to add coins when a user is created for first time.
-     */
-    UserCreacionReward: 'new_user:creation_reward'
+    AddRoomsToNewUser: 'new_user:add_rooms'
 } as const;
 /**
  * Available commands for the "social" microservice.

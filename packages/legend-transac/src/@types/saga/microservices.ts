@@ -38,7 +38,7 @@ export const availableMicroservices = {
      */
     Notifications: 'notificaciones',
     /**
-     * Represents the "pagosv2" microservice.
+     * Represents the "payments" microservice.
      */
     Payments: 'payments',
     /**
