@@ -28,7 +28,7 @@ export const commenceSagaConsumeCallback = (
         channel.nack(msg, false, false);
         return;
     }
-    const responseChannel = new SagaCommenceConsumeChannel(channel, msg, queueName, saga);
+    const responseChannel = new SagaCommenceConsumeChannel(channel, msg, queueName);
 
     e.emit(saga.title, { saga, channel: responseChannel });
 };

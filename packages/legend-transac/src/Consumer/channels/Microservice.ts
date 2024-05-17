@@ -1,9 +1,7 @@
 import { queue, status, AvailableMicroservices, SagaStep } from '../../@types';
 import { sendToQueue } from '../../Broker';
 import ConsumeChannel from './Consume';
-import { MAX_OCCURRENCE } from '../../constants';
 import { Channel, ConsumeMessage } from 'amqplib';
-import crypto from 'crypto';
 /**
  * Represents a **_consume_** channel for a specific microservice.
  * Extends the abstract ConsumeChannel class.
@@ -51,22 +49,4 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
                 console.error(err);
             });
     }
-
-    async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
-        const hashId = this.getStepHashId(`MicroserviceConsumeChannel-${salt}`);
-        return this.nackWithFibonacciStrategyHelper(maxOccurrence, hashId);
-    }
-    /**
-     * Method to get the hash id of a saga step.
-     * The hash id is used to identify a saga step in the saga step occurrence map.
-     *
-     * @param {string} salt - The salt to use for hashing the saga step.
-     * @returns {string} The hash id of the saga step.
-     */
-    protected getStepHashId = (salt: string): string => {
-        const { sagaId, command, payload } = this.step;
-        const hash = crypto.createHash('sha256');
-        hash.update(`${sagaId}-${command}-${JSON.stringify(payload)}-${salt}`);
-        return hash.digest('hex').slice(0, 10);
-    };
 }

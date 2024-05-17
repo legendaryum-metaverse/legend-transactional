@@ -1,17 +1,19 @@
 import { Channel, ConsumeMessage } from 'amqplib';
-import { nackWithDelay } from '../nack';
 import { MAX_NACK_RETRIES, MAX_OCCURRENCE, NACKING_DELAY_MS } from '../../constants';
 import { fibonacci } from '../../utils';
-import { getConsumeChannel } from '../../Connections';
 import { exchange } from '../../@types';
 
-type HashId = string;
-// TODO: toda la estrategia de ocurrence es en memoria. Cuando el nacking sea relevante se refactoriza con redis para
-// escalar en varios pods.
-interface Occurrence {
-    hashId: string;
+interface NackRetry {
     count: number;
+    delay: number;
+    occurrence: number;
 }
+
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+
+type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+
+export type Nack = XOR<{ delay: number; maxRetries: number }, { maxOccurrence: number }>;
 
 /**
  * Abstract class representing a consumer channel for processing messages in a microservices environment.
@@ -31,15 +33,6 @@ abstract class ConsumeChannel {
      * The name of the queue from which the message was consumed.
      */
     protected readonly queueName: string;
-    /**
-     * The name of the queue from which the message was consumed.
-     */
-    private hashId?: string;
-    /**
-     * The map of saga step occurrences.
-     */
-    static readonly occurrence = new Map<HashId, number>();
-
     /**
      * Constructs a new instance of the ConsumeChannel class.
      *
@@ -70,8 +63,11 @@ abstract class ConsumeChannel {
      * @see NACKING_DELAY_MS
      * @see MAX_NACK_RETRIES
      */
-    public nackWithDelayAndRetries = async (delay?: number, maxRetries?: number): Promise<number> => {
-        return await this.nackWithDelay(delay, maxRetries);
+    public nackWithDelayAndRetries = (
+        delay: number = NACKING_DELAY_MS,
+        maxRetries: number = MAX_NACK_RETRIES
+    ): NackRetry => {
+        return this.nack({ delay, maxRetries });
     };
 
     /**
@@ -87,52 +83,26 @@ abstract class ConsumeChannel {
      *
      * @see MAX_OCCURRENCE
      */
-    public abstract nackWithFibonacciStrategy(
-        maxOccurrence?: number,
-        salt?: string
-    ): Promise<{
+    public nackWithFibonacciStrategy = (
+        maxOccurrence: number = MAX_OCCURRENCE
+    ): {
         count: number;
         delay: number;
         occurrence: number;
-    }>;
-
-    protected nackWithFibonacciStrategyHelper = async (maxOccurrence = MAX_OCCURRENCE, hashId: string) => {
-        this.hashId = hashId;
-        const occurrence = this.updateOccurrence(hashId, maxOccurrence);
-        const delay = fibonacci(occurrence) * 1000; // ms
-        const count = await this.nackWithDelayAndRetries(delay, Infinity);
-        return {
-            count,
-            delay,
-            occurrence
-        };
+    } => {
+        return this.nack({ maxOccurrence });
     };
 
-    /**
-     * Method to update the saga step occurrence map.
-     *
-     * @param {number} maxOccurrence - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
-     * @param {string} hashId - The hash id of the saga step.
-     * @returns {number} The updated occurrence in a saga step.
-     *
-     * @see MAX_OCCURRENCE
-     */
-    protected updateOccurrence = (hashId: string, maxOccurrence: number): number => {
-        let occurrence = ConsumeChannel.occurrence.get(hashId) || 0;
-        if (occurrence >= maxOccurrence) {
-            // the occurrence is reset to 0 to avoid large delay in the next nack
-            occurrence = 0;
-        }
-
-        ConsumeChannel.occurrence.set(hashId, occurrence + 1);
-        return occurrence + 1;
-    };
-
-    private nackWithDelay = async (
-        delay: number = NACKING_DELAY_MS,
-        maxRetries: number = MAX_NACK_RETRIES
-    ): Promise<number> => {
-        const { msg, queueName, channel, hashId } = this;
+    private nack = ({
+        maxRetries,
+        maxOccurrence,
+        delay
+    }: Nack): {
+        count: number;
+        delay: number;
+        occurrence: number;
+    } => {
+        const { msg, queueName, channel } = this;
         channel.nack(msg, false, false); // nack without requeueing immediately
 
         let count = 1;
@@ -143,18 +113,31 @@ abstract class ConsumeChannel {
             count = (msg.properties.headers['x-retry-count'] as number) + 1;
         }
 
-        let occurrence: Occurrence;
-        if (hashId && msg.properties.headers && msg.properties.headers['x-occurrence']) {
-            const o = msg.properties.headers['x-occurrence'] as string;
-            occurrence = JSON.parse(o);
-            if (occurrence.hashId === hashId) {
-                // si es que no lo encuentro actualizo el hasId
-                occurrence.count = (occurrence.count || 0) + 1;
+        let occurrence = 0;
+        // TODO, pensar bien la ocurrencia!!!!
+        if (msg.properties.headers && msg.properties.headers['x-occurrence']) {
+            occurrence = Number(msg.properties.headers['x-occurrence']);
+            if (occurrence >= (maxOccurrence ?? Infinity)) {
+                // the occurrence is reset to 0 to avoid large delay in the next nack
+                occurrence = 0;
             }
-        } else{
-        //     TODD: si no lo encuntreo es la primera vez!
         }
-        // saliendo de este if ocurrence esta definido
+
+        let nackDelay;
+
+        if (maxRetries !== undefined) {
+            nackDelay = delay;
+            if (count > maxRetries) {
+                console.error(
+                    `MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`
+                );
+                // nada más que hacer, termina el proceso
+                return { count: maxRetries, delay: nackDelay, occurrence };
+            }
+        } else {
+            // si maxRetries no está definido entonces delay no está definido, por lo tanto es fibo
+            nackDelay = fibonacci(occurrence + 1) * 1000;
+        }
 
         // Checkeo para verificar si cambia el x-death en futuros rabbits
         if (msg.properties?.headers?.['x-death'] && msg.properties.headers['x-death'].length > 1) {
@@ -167,12 +150,14 @@ abstract class ConsumeChannel {
             console.warn('x-death length > 1 -> TIME TO REFACTOR', logData);
         }
 
-        if (count > maxRetries) {
-            console.error(`MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`);
-            // nada más que hacer, termina el proceso
-            return maxRetries;
-        }
+        const xHeaders = {
+            // persisto la cuenta de nacks
+            'x-retry-count': count,
+            // incremento la ocurrencia
+            'x-occurrence': occurrence + 1
+        };
 
+        // destinado a eventos -> matching headers
         if (msg.fields.exchange === exchange.Matching) {
             if (msg.properties?.headers?.['all-micro']) {
                 // importantísimo, el header que se borra es aquel que tiene todos los micros escuchando cierto evento, sino el nacking le llega a todos.
@@ -180,26 +165,25 @@ abstract class ConsumeChannel {
             }
             // Viene de una nacking de eventos
             channel.publish(exchange.MatchingRequeue, ``, msg.content, {
-                expiration: delay,
+                expiration: nackDelay,
                 headers: {
                     ...msg.properties.headers,
                     // el nacking es dirigido a un microservicio en particular, el que nackeó.
                     micro: queueName,
-                    // persisto la cuenta de nacks
-                    'x-retry-count': count
+                    ...xHeaders
                 },
                 persistent: true
             });
         } else {
             // destinado al Saga
             channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
-                expiration: delay,
-                headers: { ...msg.properties.headers, 'x-retry-count': count },
+                expiration: nackDelay,
+                headers: { ...msg.properties.headers, ...xHeaders },
                 persistent: true
             });
         }
 
-        return count;
+        return { count, delay: nackDelay, occurrence };
     };
 }
 

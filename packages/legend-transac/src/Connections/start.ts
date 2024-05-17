@@ -227,7 +227,7 @@ export const connectToEvents = async <T extends AvailableMicroservices, U extend
 const consumerEvents = ['ticket.generate', 'ticket.start', 'orders.pay'] satisfies MicroserviceEvent[];
 
 const exe = async () => {
-    const microservice: AvailableMicroservices = 'legend-showcase';
+    const microservice: AvailableMicroservices = 'legend-analytics';
     const e = await connectToEvents('amqp://rabbit:1234@localhost:5672', microservice, consumerEvents);
     // e.on('orders.pay', async ({ channel, payload }) => {
     //     //
@@ -236,17 +236,17 @@ const exe = async () => {
     // });
     e.on('ticket.start', async ({ channel, payload }) => {
         //
-        // const a = await channel.nackWithFibonacciStrategy(5);
+        // const a = channel.nackWithFibonacciStrategy(5);
         // console.log('COUNT', a);
         channel.ackMessage();
         console.log('ticket.start', payload, microservice);
     });
     e.on('ticket.generate', async ({ channel, payload }) => {
         //
-        // const a = await channel.nackWithFibonacciStrategy(5);
-        // console.log('COUNT', a);
-        console.log('ticket.generate', payload, microservice);
-        channel.ackMessage();
+        const a = channel.nackWithFibonacciStrategy(3);
+        console.log('COUNT', a, payload.a);
+        // console.log('ticket.generate', payload, microservice);
+        // channel.ackMessage();
     });
     e.on('orders.pay', async ({ channel, payload }) => {
         //

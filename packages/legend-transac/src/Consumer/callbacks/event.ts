@@ -60,7 +60,7 @@ export const eventCallback = <U extends MicroserviceEvent>(
         );
     }
 
-    const responseChannel = new EventsConsumeChannel(channel, msg, queueName, stringPayload);
+    const responseChannel = new EventsConsumeChannel(channel, msg, queueName);
 
     // si event.length > 1, a esta altura todos los eventos son válidos y se pueden emitir. Recordar llego un solo mensaje con extra headers.
     // Sin embargo, el payload es tipado para cada evento.

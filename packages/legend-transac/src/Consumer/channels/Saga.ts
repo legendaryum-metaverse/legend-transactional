@@ -1,4 +1,3 @@
-import { MAX_OCCURRENCE } from '../../constants';
 import { AvailableMicroservices } from '../../@types';
 import { MicroserviceConsumeChannel } from './Microservice';
 
@@ -13,10 +12,5 @@ export class SagaConsumeChannel<T extends AvailableMicroservices> extends Micros
      */
     ackMessage(): void {
         this.channel.ack(this.msg, false);
-    }
-
-    async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
-        const hashId = this.getStepHashId(`SagaConsumeChannel-${salt}`);
-        return this.nackWithFibonacciStrategyHelper(maxOccurrence, hashId);
     }
 }
