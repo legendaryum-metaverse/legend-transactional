@@ -87,7 +87,29 @@ abstract class ConsumeChannel {
     public nackWithFibonacciStrategy = (maxOccurrence: number = MAX_OCCURRENCE): NackRetry => {
         return this.nack({ maxOccurrence });
     };
-
+    /**
+     * Apply delayed nack mechanism to a message, optionally retrying a limited number of times.
+     *
+     * @param {ConsumeMessage} msg - The message to be nacked.
+     * @param {string} queueName - The name of the queue from which the message was consumed.
+     * @param {number} [delay=NACKING_DELAY_MS] - The delay in milliseconds before requeuing the message.
+     * @param {number} [maxRetries=MAX_NACK_RETRIES] - The maximum number of nack retries allowed.
+     * @returns {Promise<number>} The count of nack retries performed.
+     * @throws {Error} If there are issues with the consume channel, publishing the message, or exceeding max retries.
+     *
+     * @example
+     * const msg = ... // ConsumeMessage from RabbitMQ
+     * const queueName = 'my_queue';
+     * const delay = 5000; // 5 seconds
+     * const maxRetries = 3;
+     * const nackCount = await nackWithDelay(msg, queueName, delay, maxRetries);
+     * console.log(`Message nacked with ${nackCount} retries`);
+     *
+     * @see MAX_NACK_RETRIES
+     * @see NACKING_DELAY_MS
+     * @see SagaConsumeChannel
+     * @see MicroserviceConsumeChannel
+     */
     private nack = ({ maxRetries, maxOccurrence, delay }: Nack): NackRetry => {
         const { msg, queueName, channel } = this;
         channel.nack(msg, false, false); // nack without requeueing immediately

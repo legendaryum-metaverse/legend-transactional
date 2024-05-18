@@ -7,7 +7,7 @@ import {
     CommenceSagaEvents,
     MicroserviceEvent,
     MicroserviceConsumeEvents,
-    EventPayload
+    SagaTitle
 } from '../@types';
 import { getRabbitMQConn, saveUri } from './rabbitConn';
 import { getConsumeChannel } from './consumeChannel';
@@ -120,14 +120,14 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
  * @see connectToSagaCommandEmitter
  * @see startGlobalSagaStepListener
  */
-export const commenceSagaListener = async (): Promise<Emitter<CommenceSagaEvents>> => {
+export const commenceSagaListener = async <U extends SagaTitle>(): Promise<Emitter<CommenceSagaEvents<U>>> => {
     const q = {
         queueName: queue.CommenceSaga,
         exchange: exchange.CommenceSaga
     };
-    const e = mitt<CommenceSagaEvents>();
+    const e = mitt<CommenceSagaEvents<U>>();
     await createConsumers([q]);
-    void consume<CommenceSagaEvents>(e, q.queueName, commenceSagaConsumeCallback);
+    void consume<CommenceSagaEvents<U>>(e, q.queueName, commenceSagaConsumeCallback);
     return e;
 };
 /**
@@ -150,15 +150,15 @@ export const commenceSagaListener = async (): Promise<Emitter<CommenceSagaEvents
  * @see startGlobalSagaStepListener
  * @see commenceSagaListener
  */
-export const startSaga = async <T extends AvailableMicroservices>(
+export const startSaga = async <T extends AvailableMicroservices, U extends SagaTitle>(
     url: string
 ): Promise<{
     globalSagaStepListener: Emitter<SagaConsumeSagaEvents<T>>;
-    commenceSagaListener: Emitter<CommenceSagaEvents>;
+    commenceSagaListener: Emitter<CommenceSagaEvents<U>>;
 }> => {
     await prepare(url);
     const g = await startGlobalSagaStepListener<T>();
-    const c = await commenceSagaListener();
+    const c = await commenceSagaListener<U>();
     return {
         globalSagaStepListener: g,
         commenceSagaListener: c
@@ -224,61 +224,3 @@ export const connectToEvents = async <T extends AvailableMicroservices, U extend
     void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
     return e;
 };
-// todo, hacer que los eventso sean unicos
-const consumerEvents = ['ticket.generate', 'ticket.start', 'orders.pay'] satisfies MicroserviceEvent[];
-
-const exe = async () => {
-    const microservice: AvailableMicroservices = 'legend-analytics';
-    const e = await connectToEvents('amqp://rabbit:1234@localhost:5672', microservice, consumerEvents);
-    // e.on('orders.pay', async ({ channel, payload }) => {
-    //     //
-    //     console.log('orders.pay', payload);
-    //     channel.ackMessage();
-    // });
-    e.on('ticket.start', async ({ channel, payload }) => {
-        //
-        const a = channel.nackWithDelayAndRetries(2000, 30);
-        console.log('COUNT', a, payload.a);
-        // channel.ackMessage();
-        // console.log('ticket.start', payload, microservice);
-    });
-    e.on('ticket.generate', async ({ channel, payload }) => {
-        //
-        const a = channel.nackWithFibonacciStrategy(3);
-        console.log('COUNT', a, payload.a);
-        // console.log('ticket.generate', payload, microservice);
-        // channel.ackMessage();
-    });
-    e.on('orders.pay', async ({ channel, payload }) => {
-        //
-
-        const a = channel.nackWithFibonacciStrategy(5);
-        console.log('COUNT', a);
-        // console.log('orders.pay', payload, microservice);
-        // channel.ackMessage();
-    });
-    console.log('hou');
-};
-// const exeSaga = async () => {
-//     const e = await connectToSagaCommandEmitter('amqp://rabbit:1234@localhost:5672', 'legend-integrations');
-//     // e.on('orders.pay', async ({ channel, payload }) => {
-//     //     //
-//     //     console.log('orders.pay', payload);
-//     //     channel.ackMessage();
-//     // });
-//     const i = 0;
-//     e.on('emit_nft', async ({ channel, payload, sagaId }) => {
-//         channel.ackMessage();
-//
-//         // const a = await channel.nackWithFibonacciStrategy(8);
-//         // console.log(a);
-//         // console.log('emit_nft', payload, sagaId, i++);
-//     });
-//
-//     console.log('hou');
-// };
-
-exe();
-
-// exeSaga();
-// const myEvents: EventsValues[] = ['ticket.generate'];

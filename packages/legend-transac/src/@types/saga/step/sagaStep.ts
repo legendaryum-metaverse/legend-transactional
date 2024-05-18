@@ -13,11 +13,11 @@ export interface SagaStepDefaults {
     /**
      * The payload associated with the saga step.
      */
-    payload: Record<string, any>;
+    payload: Record<string, unknown>;
     /**
      * The previous payload of the saga step.
      */
-    previousPayload: Record<string, any>;
+    previousPayload: Record<string, unknown>;
     /**
      * Indicates if the step is the current active step.
      */
@@ -47,11 +47,11 @@ export interface SagaStep<T extends AvailableMicroservices> extends SagaStepDefa
     /**
      * The payload associated with the saga step.
      */
-    payload: Record<string, any>;
+    payload: Record<string, unknown>;
     /**
      * The previous payload of the saga step.
      */
-    previousPayload: Record<string, any>;
+    previousPayload: Record<string, unknown>;
     /**
      * Indicates if the step is the current active step.
      */

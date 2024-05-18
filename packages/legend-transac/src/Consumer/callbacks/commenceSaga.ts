@@ -1,4 +1,4 @@
-import { CommenceSagaEvents, CommenceSaga } from '../../@types';
+import { CommenceSagaEvents, CommenceSaga, SagaTitle } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
@@ -10,19 +10,19 @@ import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
  * @param {Emitter<CommenceSagaEvents>} e - The emitter to emit events.
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
-export const commenceSagaConsumeCallback = (
+export const commenceSagaConsumeCallback = <U extends SagaTitle>(
     msg: ConsumeMessage | null,
     channel: Channel,
-    e: Emitter<CommenceSagaEvents>,
+    e: Emitter<CommenceSagaEvents<U>>,
     queueName: string
 ) => {
     if (!msg) {
         console.error('NO MSG AVAILABLE');
         return;
     }
-    let saga: CommenceSaga<Record<string, any>>;
+    let saga;
     try {
-        saga = JSON.parse(msg.content.toString()) as CommenceSaga<Record<string, any>>;
+        saga = JSON.parse(msg.content.toString()) as CommenceSaga<U>;
     } catch (error) {
         console.error('ERROR PARSING MSG', error);
         channel.nack(msg, false, false);

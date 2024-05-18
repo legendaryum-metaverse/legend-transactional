@@ -1,2 +1,3 @@
+export * from './sendChannel';
 export * from './SendToQueue';
-export * from './BrokerWithRoutingKey';
+export * from './PublishToExchange';
