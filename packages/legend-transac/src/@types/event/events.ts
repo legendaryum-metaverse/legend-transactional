@@ -1,22 +1,34 @@
+/**
+ * Represents the available event's payload in the system.
+ */
 export interface EventPayload {
-    'orders.pay': {
-        pay: string;
+    /**
+     * Test purpose
+     *
+     * Event broadcast by the "Image" test microservice.
+     * @internal
+     */
+    'test.image': {
+        image: string;
     };
-    'ticket.generate': {
-        gen: string;
-    };
-    'ticket.start': {
-        start: string;
+    /**
+     * Test purpose
+     *
+     * Event broadcast by the "Mint" test microservice.
+     * @internal
+     */
+    'test.mint': {
+        mint: string;
     };
 }
-
+/**
+ * Represents the available events in the system.
+ */
 export const microserviceEvent = {
-    'ORDERS.PAY': 'orders.pay',
-    // idea en los headers puedo implementar
-    //  'ORDERS.PAY': 'orders.pay',
-    // 'ORDERS': 'orders', --> siginifa que va a escuchar todos los eventos de orders, y siempre que se publica un evente se publica tambien el header con el micro auto, es decir se publica dos veces??? mejor no parece mala idea.o capaz, si, siempre y cuando si escuholos todos los eventso, no puede escuhcar adicionalmete los individuales, pues recibira el mensaje 2 veces.
-    'TICKET.GENERATE': 'ticket.generate',
-    'TICKET.START': 'ticket.start'
+    'TEST.IMAGE': 'test.image',
+    'TEST.MINT': 'test.mint'
 } as const;
-
+/**
+ * Type of available microservices event in the system.
+ */
 export type MicroserviceEvent = (typeof microserviceEvent)[keyof typeof microserviceEvent];
