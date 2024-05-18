@@ -6,7 +6,8 @@ import {
     AvailableMicroservices,
     CommenceSagaEvents,
     MicroserviceEvent,
-    MicroserviceConsumeEvents
+    MicroserviceConsumeEvents,
+    EventPayload
 } from '../@types';
 import { getRabbitMQConn, saveUri } from './rabbitConn';
 import { getConsumeChannel } from './consumeChannel';
@@ -236,10 +237,10 @@ const exe = async () => {
     // });
     e.on('ticket.start', async ({ channel, payload }) => {
         //
-        // const a = channel.nackWithFibonacciStrategy(5);
-        // console.log('COUNT', a);
-        channel.ackMessage();
-        console.log('ticket.start', payload, microservice);
+        const a = channel.nackWithDelayAndRetries(2000, 30);
+        console.log('COUNT', a, payload.a);
+        // channel.ackMessage();
+        // console.log('ticket.start', payload, microservice);
     });
     e.on('ticket.generate', async ({ channel, payload }) => {
         //
@@ -251,10 +252,10 @@ const exe = async () => {
     e.on('orders.pay', async ({ channel, payload }) => {
         //
 
-        // const a = await channel.nackWithFibonacciStrategy(5);
-        // console.log('COUNT', a);
-        console.log('orders.pay', payload, microservice);
-        channel.ackMessage();
+        const a = channel.nackWithFibonacciStrategy(5);
+        console.log('COUNT', a);
+        // console.log('orders.pay', payload, microservice);
+        // channel.ackMessage();
     });
     console.log('hou');
 };

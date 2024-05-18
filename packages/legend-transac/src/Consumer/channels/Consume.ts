@@ -66,8 +66,9 @@ abstract class ConsumeChannel {
     public nackWithDelayAndRetries = (
         delay: number = NACKING_DELAY_MS,
         maxRetries: number = MAX_NACK_RETRIES
-    ): NackRetry => {
-        return this.nack({ delay, maxRetries });
+    ): Omit<NackRetry, 'occurrence'> => {
+        const { delay: delayNackRetry, count } = this.nack({ delay, maxRetries });
+        return { count, delay: delayNackRetry };
     };
 
     /**
@@ -83,38 +84,25 @@ abstract class ConsumeChannel {
      *
      * @see MAX_OCCURRENCE
      */
-    public nackWithFibonacciStrategy = (
-        maxOccurrence: number = MAX_OCCURRENCE
-    ): {
-        count: number;
-        delay: number;
-        occurrence: number;
-    } => {
+    public nackWithFibonacciStrategy = (maxOccurrence: number = MAX_OCCURRENCE): NackRetry => {
         return this.nack({ maxOccurrence });
     };
 
-    private nack = ({
-        maxRetries,
-        maxOccurrence,
-        delay
-    }: Nack): {
-        count: number;
-        delay: number;
-        occurrence: number;
-    } => {
+    private nack = ({ maxRetries, maxOccurrence, delay }: Nack): NackRetry => {
         const { msg, queueName, channel } = this;
         channel.nack(msg, false, false); // nack without requeueing immediately
 
-        let count = 1;
         // La estrategia de "count" se aplica con custom headers
         // https://github.com/rabbitmq/rabbitmq-server/issues/10709
         // https://github.com/spring-cloud/spring-cloud-stream/issues/2939
+        let count = 0;
         if (msg.properties.headers && msg.properties.headers['x-retry-count']) {
-            count = (msg.properties.headers['x-retry-count'] as number) + 1;
+            count = msg.properties.headers['x-retry-count'] as number;
         }
+        count++;
 
+        // Ocurrencia de la estrategia de fibonacci
         let occurrence = 0;
-        // TODO, pensar bien la ocurrencia!!!!
         if (msg.properties.headers && msg.properties.headers['x-occurrence']) {
             occurrence = Number(msg.properties.headers['x-occurrence']);
             if (occurrence >= (maxOccurrence ?? Infinity)) {
@@ -122,6 +110,7 @@ abstract class ConsumeChannel {
                 occurrence = 0;
             }
         }
+        occurrence++;
 
         let nackDelay;
 
@@ -135,8 +124,8 @@ abstract class ConsumeChannel {
                 return { count: maxRetries, delay: nackDelay, occurrence };
             }
         } else {
-            // si maxRetries no está definido entonces delay no está definido, por lo tanto es fibo
-            nackDelay = fibonacci(occurrence + 1) * 1000;
+            // si maxRetries no está definido entonces delay no está definido, por lo tanto es fibonacci delay
+            nackDelay = fibonacci(occurrence) * 1000;
         }
 
         // Checkeo para verificar si cambia el x-death en futuros rabbits
@@ -154,8 +143,8 @@ abstract class ConsumeChannel {
             // persisto la cuenta de nacks
             'x-retry-count': count,
             // incremento la ocurrencia
-            'x-occurrence': occurrence + 1
-        };
+            'x-occurrence': occurrence
+        } as const;
 
         // destinado a eventos -> matching headers
         if (msg.fields.exchange === exchange.Matching) {
