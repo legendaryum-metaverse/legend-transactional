@@ -3,6 +3,47 @@ import { getConsumeChannel } from '../Connections';
 import { microserviceEvent, type MicroserviceEvent } from '../@types';
 import { getEventObject } from '../utils';
 
+/**
+ * Configures RabbitMQ exchanges, queues, and bindings for consuming specific microservice events with requeue capabilities.
+ *
+ * This function is crucial for setting up the infrastructure to receive events from the RabbitMQ message broker. It establishes a flexible system for:
+ *
+ * 1. Routing events to specific microservices based on headers.
+ * 2. Requeueing failed events for later processing.
+ *
+ * The function performs the following steps:
+ *
+ * **General Setup:**
+ *   - Obtains a consume channel from RabbitMQ.
+ *   - Asserts the `Matching` exchange where events will be initially published.
+ *   - Asserts the `MatchingRequeue` exchange for handling requeued messages.
+ *   - Asserts the main queue where events will be consumed (`queueName`). Is a specific queue for a microservice.
+ *   - Asserts the requeue queue for storing messages that need to be reprocessed.
+ *   - Sets up the requeue queue to send messages back to the `Matching` exchange if they remain unprocessed (dead-letter exchange mechanism).
+ *
+ * **Per-Event Configuration:**
+ *   - Iterates through all possible `MicroserviceEvent` types.
+ *   - Asserts event-specific exchanges (e.g., 'ORDER_CREATED', 'PAYMENT_FAILED').
+ *   - Binds these event exchanges to the `Matching` exchange, allowing events to be routed based on headers.
+ *   - Asserts requeue exchanges for each event type (e.g., 'ORDER_CREATED_requeue').
+ *   - Binds requeue exchanges to the `MatchingRequeue` exchange, creating pathways for requeueing specific events.
+ *
+ * **Microservice-Specific Bindings:**
+ *   - If the `events` array includes a specific event type:
+ *     - The main queue (`queueName`) is bound to the event exchange, allowing the microservice to receive that event type.
+ *     - The requeue queue is bound to the event's requeue exchange, setting up a mechanism for requeueing failed events back to the microservice.
+ *     - An additional exchange is created for the microservice and the event, ensuring the requeued message is sent only to the microservice that originally failed to process it.
+ *
+ *   - If the `events` array doesn't include the event type:
+ *     - Any existing bindings for that event type are removed.
+ *     - The associated exchanges are deleted if they are no longer in use.
+ *
+ * **Concurrency Control:**
+ *   - Sets the prefetch count to `1`, ensuring the microservice processes only one message at a time to maintain order and avoid race conditions.
+ *
+ * @param queueName - The name of the queue where the microservice will consume events. Is a specific queue for a microservice.
+ * @param events - An array of `MicroserviceEvent` types that the microservice is interested in consuming.
+ */
 export const createHeaderConsumers = async (queueName: string, events: MicroserviceEvent[]) => {
     const channel = await getConsumeChannel();
 

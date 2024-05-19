@@ -3,30 +3,23 @@ import { MAX_NACK_RETRIES, MAX_OCCURRENCE, NACKING_DELAY_MS } from '../../consta
 import { fibonacci } from '../../utils';
 import { exchange } from '../../@types';
 
-interface NackRetry {
-    count: number;
-    delay: number;
-    occurrence: number;
-}
-
+// Type for exclusive options (either delay/maxRetries or maxOccurrence)
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-
 type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-
 export type Nack = XOR<{ delay: number; maxRetries: number }, { maxOccurrence: number }>;
 
 /**
- * Abstract class representing a consumer channel for processing messages in a microservices environment.
+ * Abstract base class for handling the consumption of messages from RabbitMQ channels.
  *
- * @typeparam T - The type of available microservices.
+ * This class provides common functionality for acknowledging (ACK) and negatively acknowledging (NACK) messages, with the ability to introduce delays and retry mechanisms. It's designed to be extended by specific consumer channel implementations.
  */
 abstract class ConsumeChannel {
     /**
-     * The channel to interact with the message broker.
+     * The AMQP Channel object used for communication with RabbitMQ.
      */
     protected readonly channel: Channel;
     /**
-     * The consumed message to be processed.
+     * The message received from RabbitMQ that this channel is currently processing.
      */
     protected readonly msg: ConsumeMessage;
     /**
@@ -34,11 +27,11 @@ abstract class ConsumeChannel {
      */
     protected readonly queueName: string;
     /**
-     * Constructs a new instance of the ConsumeChannel class.
+     * Creates a new `ConsumeChannel` instance.
      *
-     * @param {Channel} channel - The channel to interact with the message broker.
-     * @param {ConsumeMessage} msg - The consumed message to be processed.
-     * @param {string} queueName - The name of the queue from which the message was consumed.
+     * @param channel - The AMQP Channel for interacting with RabbitMQ.
+     * @param msg - The consumed message.
+     * @param queueName - The name of the source queue.
      */
     public constructor(channel: Channel, msg: ConsumeMessage, queueName: string) {
         this.channel = channel;
@@ -47,70 +40,68 @@ abstract class ConsumeChannel {
     }
 
     /**
-     * Method to acknowledge the message, optionally providing payload for the next step.
+     * Acknowledges (ACKs) the message, indicating successful processing.
      *
-     * @param {Record<string, unknown>} [payloadForNextStep] - Payload for the next step.
+     * @param payloadForNextStep - Optional payload to include for the next step in a multi-step process (e.g., saga).
      */
     public abstract ackMessage(payloadForNextStep?: Record<string, unknown>): void;
-
     /**
-     * Method to negatively acknowledge the message with a delay and retries.
+     * Negatively acknowledges (NACKs) the message with a specified delay and maximum retry count.
      *
-     * @param {number} [delay] - The delay before requeueing the message.
-     * @param {number} [maxRetries] - The maximum number of nack retries.
-     * @returns {Promise<number>} A promise resolving to the count of retries.
-     * @see nackWithDelay
+     * This method is useful when you want to requeue the message for later processing, especially if the current attempt failed due to a temporary issue.
+     *
+     * @param delay - The delay (in milliseconds) before requeueing the message. Defaults to `NACKING_DELAY_MS`.
+     * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `MAX_NACK_RETRIES`.
+     * @returns An object containing:
+     *   - `count`: The current retry count.
+     *   - `delay`: The actual delay applied to the nack.
+     *
      * @see NACKING_DELAY_MS
      * @see MAX_NACK_RETRIES
      */
     public nackWithDelayAndRetries = (
         delay: number = NACKING_DELAY_MS,
         maxRetries: number = MAX_NACK_RETRIES
-    ): Omit<NackRetry, 'occurrence'> => {
+    ): { count: number; delay: number } => {
         const { delay: delayNackRetry, count } = this.nack({ delay, maxRetries });
         return { count, delay: delayNackRetry };
     };
 
     /**
-     * This method negatively acknowledges a message using a Fibonacci delay strategy.
-     * Due to memory persistence, another container will nack with a different delay in milliseconds.
+     * Negatively acknowledges (NACKs) the message using a Fibonacci backoff strategy.
      *
-     * To prevent large delays, the maxOccurrence is used to reset the occurrence to 0
-     * making the next delay reset to the first value of a fibonacci sequence: 1s.
-     * @param {number} [maxOccurrence] - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
-     * @param {string} [salt] - The salt to use for hashing the saga step.
+     * The delay before requeuing increases with each retry according to the Fibonacci sequence, helping to avoid overwhelming the system in case of repeated failures.
      *
-     * @returns {Promise<Object>} A promise resolving to the count of retries according to RabbitMQ, the delay in ms, and the occurrence of the nacking in the current container.
-     *
+     * @param maxOccurrence - The maximum number of times the Fibonacci delay is allowed to increase before being reset. Defaults to `MAX_OCCURRENCE`.
+     * @returns An object containing:
+     *   - `count`: The current retry count.
+     *   - `delay`: The calculated Fibonacci delay (in milliseconds) applied to the nack.
+     *   - `occurrence`: The current occurrence count for the Fibonacci sequence.
      * @see MAX_OCCURRENCE
      */
-    public nackWithFibonacciStrategy = (maxOccurrence: number = MAX_OCCURRENCE): NackRetry => {
+    public nackWithFibonacciStrategy = (
+        maxOccurrence: number = MAX_OCCURRENCE
+    ): { count: number; delay: number; occurrence: number } => {
         return this.nack({ maxOccurrence });
     };
     /**
-     * Apply delayed nack mechanism to a message, optionally retrying a limited number of times.
+     * Private helper function to handle the actual NACK logic.
      *
-     * @param {ConsumeMessage} msg - The message to be nacked.
-     * @param {string} queueName - The name of the queue from which the message was consumed.
-     * @param {number} [delay=NACKING_DELAY_MS] - The delay in milliseconds before requeuing the message.
-     * @param {number} [maxRetries=MAX_NACK_RETRIES] - The maximum number of nack retries allowed.
-     * @returns {Promise<number>} The count of nack retries performed.
-     * @throws {Error} If there are issues with the consume channel, publishing the message, or exceeding max retries.
+     * This method performs the NACK operation, manages retry counts and delays, and republishes the message for requeuing with appropriate headers and routing.
      *
-     * @example
-     * const msg = ... // ConsumeMessage from RabbitMQ
-     * const queueName = 'my_queue';
-     * const delay = 5000; // 5 seconds
-     * const maxRetries = 3;
-     * const nackCount = await nackWithDelay(msg, queueName, delay, maxRetries);
-     * console.log(`Message nacked with ${nackCount} retries`);
-     *
-     * @see MAX_NACK_RETRIES
-     * @see NACKING_DELAY_MS
-     * @see SagaConsumeChannel
-     * @see MicroserviceConsumeChannel
+     * @param nackOptions - An object specifying either:
+     *   - `delay` and `maxRetries`: For linear backoff with a fixed delay and retry limit.
+     *   - `maxOccurrence`: For Fibonacci backoff with a maximum occurrence count.
      */
-    private nack = ({ maxRetries, maxOccurrence, delay }: Nack): NackRetry => {
+    private nack = ({
+        maxRetries,
+        maxOccurrence,
+        delay
+    }: Nack): {
+        count: number;
+        delay: number;
+        occurrence: number;
+    } => {
         const { msg, queueName, channel } = this;
         channel.nack(msg, false, false); // nack without requeueing immediately
 

@@ -3,13 +3,20 @@ import { Emitter } from 'mitt';
 import { EventsConsumeChannel } from '../channels/Events';
 import { EventPayload, MicroserviceConsumeEvents, microserviceEvent, MicroserviceEvent } from '../../@types';
 /**
- * Callback function for consuming microservice events/commands.
+ * Callback function for consuming and handling microservice events.
  *
- * @typeparam T - The type of available microservices.
+ * This function is responsible for:
+ *   1. Parsing the incoming event message from the RabbitMQ queue.
+ *   2. Identifying the specific event type from message headers.
+ *   3. Emitting the event along with its payload to the provided emitter.
  *
- * @param {ConsumeMessage | null} msg - The consumed message.
- * @param {Channel} channel - The channel used for consuming messages.
- * @param {Emitter<MicroserviceConsumeSagaEvents<T>>} e - The emitter to emit events.
+ * If there are errors during message parsing or if invalid headers are found, the message is negatively acknowledged (NACKed) without requeueing.
+ *
+ * @template U - The specific type of microservice event being handled. Must be one of the types defined in the `MicroserviceEvent` enum.
+ *
+ * @param {ConsumeMessage | null} msg - The consumed message from RabbitMQ. Can be `null` if no message was available.
+ * @param {Channel} channel - The RabbitMQ channel used for consuming messages. This is used to acknowledge or reject messages.
+ * @param {Emitter<MicroserviceConsumeEvents<U>>} e - An event emitter that will broadcast the parsed event and its payload.
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
 export const eventCallback = <U extends MicroserviceEvent>(
