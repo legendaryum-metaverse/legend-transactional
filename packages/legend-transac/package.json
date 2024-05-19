@@ -67,6 +67,9 @@
     "treeshake": true,
     "minify": false,
     "outDir": "dist",
-    "external": ["amqplib", "mitt"]
+    "external": [
+      "amqplib",
+      "mitt"
+    ]
   }
 }
