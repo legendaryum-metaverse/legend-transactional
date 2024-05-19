@@ -1,5 +1,5 @@
 ---
-"legend-transactional": patch
+'legend-transactional': patch
 ---
 
 Fix: deploy
