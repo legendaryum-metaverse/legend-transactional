@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.0.1
+
+### Patch Changes
+
+-   5863da4: Fix: deploy
+
 ## 1.0.0
 
 ### Major Changes
