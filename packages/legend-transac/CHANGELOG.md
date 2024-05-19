@@ -1,5 +1,23 @@
 # legend-transactional
 
+## 0.3.1
+
+### Patch Changes
+
+- 64a1bd5: Comandos para subir una imagen base64 de auth a storage y a social
+
+## 0.3.0
+
+### Minor Changes
+
+- 411338f: It allows **commenceSaga** function connect with a specific uri.
+
+## 0.2.0
+
+### Minor Changes
+
+- ccdd75e: Deprecated events removed, new event added in saga, change from 'pagosv2' to 'payments'
+
 ## 0.1.1
 
 ### Patch Changes

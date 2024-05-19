@@ -1,5 +1,26 @@
 # micro-mint
 
+## 0.0.40
+
+### Patch Changes
+
+- Updated dependencies [64a1bd5]
+  - legend-transactional@0.3.1
+
+## 0.0.39
+
+### Patch Changes
+
+- Updated dependencies [411338f]
+  - legend-transactional@0.3.0
+
+## 0.0.38
+
+### Patch Changes
+
+- Updated dependencies [ccdd75e]
+  - legend-transactional@0.2.0
+
 ## 0.0.37
 
 ### Patch Changes

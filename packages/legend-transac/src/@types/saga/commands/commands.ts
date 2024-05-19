@@ -2,7 +2,7 @@ import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
 import { AvailableMicroservices, availableMicroservices } from '../microservices';
 import { SocialCommands } from './social';
-import { PaymentCommands } from './pagosv2';
+import { PaymentCommands } from './payments';
 import { NotificationCommands } from './notifications';
 import { IntegrationCommands } from './integrations';
 import { AnalyticsCommands } from './analytics';
@@ -11,6 +11,7 @@ import { AvatarClothesCommands } from './avatarClothes';
 import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
+import { StorageCommands } from './storage';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -50,7 +51,7 @@ export interface CommandMap {
      */
     [availableMicroservices.Notifications]: NotificationCommands;
     /**
-     * Represents the mapping of "pagosv2" microservice commands.
+     * Represents the mapping of "payments" microservice commands.
      */
     [availableMicroservices.Payments]: PaymentCommands;
     /**
@@ -65,6 +66,10 @@ export interface CommandMap {
      * Represents the mapping of "social" microservice commands.
      */
     [availableMicroservices.Social]: SocialCommands;
+    /**
+     * Represents the mapping of "legend-storage" microservice commands.
+     */
+    [availableMicroservices.Storage]: StorageCommands;
 }
 /**
  * Represents a command specific to a microservice.

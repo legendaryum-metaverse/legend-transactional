@@ -27,12 +27,13 @@
     "turbo": "^1.13.3",
     "typescript": "latest"
   },
+  "pnpm": {},
   "engines": {
-    "node": ">=16.12.0",
-    "pnpm": ">=8.6.2"
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
   },
   "name": "my-turborepo-pnpm",
   "dependencies": {
-    "@types/node": "^20.12.7"
+    "@types/node": "^20.12.12"
   }
 }

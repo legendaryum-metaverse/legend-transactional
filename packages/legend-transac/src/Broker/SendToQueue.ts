@@ -1,6 +1,5 @@
 import { CommenceSaga, queue, SagaCommencePayload, SagaTitle } from '../@types';
 import { getSendChannel } from './sendChannel';
-
 /**
  * Sends a message payload to a specified queue.
  *
