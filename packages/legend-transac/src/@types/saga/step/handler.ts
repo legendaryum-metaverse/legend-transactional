@@ -1,10 +1,8 @@
 import { AvailableMicroservices } from '../microservices';
-import ConsumeChannel from '../../../Consumer/channels/Consume';
-import { SagaCommenceConsumeChannel } from '../../../Consumer/channels/CommenceSaga';
 import { SagaStep } from './sagaStep';
-import { CommenceSaga } from '../saga';
+import { MicroserviceConsumeChannel, SagaConsumeChannel } from '../../../Consumer';
 
-export interface CommandHandler<T extends AvailableMicroservices> {
+export interface MicroserviceHandler<T extends AvailableMicroservices> {
     /**
      * The ID of the saga associated with the event.
      */
@@ -12,11 +10,11 @@ export interface CommandHandler<T extends AvailableMicroservices> {
     /**
      * The payload associated with the event.
      */
-    payload: Record<string, any>;
+    payload: Record<string, unknown>;
     /**
      * The channel used for consuming the event.
      */
-    channel: ConsumeChannel<T>;
+    channel: MicroserviceConsumeChannel<T>;
 }
 
 export interface SagaHandler<T extends AvailableMicroservices> {
@@ -27,16 +25,5 @@ export interface SagaHandler<T extends AvailableMicroservices> {
     /**
      * The channel used for consuming the event.
      */
-    channel: ConsumeChannel<T>;
-}
-
-export interface CommenceSagaHandler<T = any> {
-    /**
-     * The saga associated with the event.
-     */
-    saga: CommenceSaga<T>;
-    /**
-     * The channel used for consuming the event.
-     */
-    channel: SagaCommenceConsumeChannel;
+    channel: SagaConsumeChannel<T>;
 }

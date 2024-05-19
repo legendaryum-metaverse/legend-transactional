@@ -1,15 +1,32 @@
 {
   "name": "legend-transactional",
   "version": "0.3.1",
+  "description": "A simple transactional, event-driven communication framework for microservices using RabbitMQ",
+  "author": "Jorge Clavijo <jym272@gmail.com> (https://github.com/jym272)",
+  "license": "MIT",
+  "keywords": [
+    "rabbitmq",
+    "microservices",
+    "message-broker",
+    "event-driven",
+    "saga",
+    "transactional",
+    "amqp",
+    "event-bus",
+    "nodejs",
+    "headers-exchange"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/legendaryum-metaverse/legend-transactional/tree/main/packages/legend-transac"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "private": false,
-  "publishConfig": {
-    "access": "public"
-  },
   "files": [
-    "dist",
-    "README.md"
+    "dist"
   ],
   "scripts": {
     "build:dev": "tsc",

@@ -1,6 +1,6 @@
 import { AvailableMicroservices, CommandMap, SagaHandler } from 'legend-transactional';
 
-export const handler = async (
+export const handler = (
     command: CommandMap[AvailableMicroservices],
     { channel, step }: SagaHandler<AvailableMicroservices>
 ) => {
@@ -9,7 +9,7 @@ export const handler = async (
         // await SagaManager.continue(step);
     } catch (e) {
         console.error(e);
-        await channel.nackWithDelayAndRetries(2000, 20);
+        channel.nackWithDelayAndRetries(2000, 20);
         return;
     }
     channel.ackMessage();

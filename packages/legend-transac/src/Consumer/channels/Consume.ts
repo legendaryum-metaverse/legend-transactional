@@ -1,22 +1,25 @@
-import { AvailableMicroservices, SagaStep } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
-import crypto from 'crypto';
+import { MAX_NACK_RETRIES, MAX_OCCURRENCE, NACKING_DELAY_MS } from '../../constants';
+import { fibonacci } from '../../utils';
+import { exchange } from '../../@types';
 
-type StepHashId = string;
-type Occurrence = number;
+// Type for exclusive options (either delay/maxRetries or maxOccurrence)
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+export type Nack = XOR<{ delay: number; maxRetries: number }, { maxOccurrence: number }>;
 
 /**
- * Abstract class representing a consumer channel for processing messages in a microservices environment.
+ * Abstract base class for handling the consumption of messages from RabbitMQ channels.
  *
- * @typeparam T - The type of available microservices.
+ * This class provides common functionality for acknowledging (ACK) and negatively acknowledging (NACK) messages, with the ability to introduce delays and retry mechanisms. It's designed to be extended by specific consumer channel implementations.
  */
-abstract class ConsumeChannel<T extends AvailableMicroservices> {
+abstract class ConsumeChannel {
     /**
-     * The channel to interact with the message broker.
+     * The AMQP Channel object used for communication with RabbitMQ.
      */
     protected readonly channel: Channel;
     /**
-     * The consumed message to be processed.
+     * The message received from RabbitMQ that this channel is currently processing.
      */
     protected readonly msg: ConsumeMessage;
     /**
@@ -24,109 +27,165 @@ abstract class ConsumeChannel<T extends AvailableMicroservices> {
      */
     protected readonly queueName: string;
     /**
-     * The saga step associated with the consumed message.
-     */
-    protected readonly step: SagaStep<T>;
-    /**
-     * The map of saga step occurrences.
-     */
-    static readonly sagaStepOccurrence = new Map<StepHashId, Occurrence>();
-
-    /**
-     * Constructs a new instance of the ConsumeChannel class.
+     * Creates a new `ConsumeChannel` instance.
      *
-     * @param {Channel} channel - The channel to interact with the message broker.
-     * @param {ConsumeMessage} msg - The consumed message to be processed.
-     * @param {string} queueName - The name of the queue from which the message was consumed.
-     * @param {SagaStep} step - The saga step associated with the consumed message.
+     * @param channel - The AMQP Channel for interacting with RabbitMQ.
+     * @param msg - The consumed message.
+     * @param queueName - The name of the source queue.
      */
-    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, step: SagaStep<T>) {
+    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string) {
         this.channel = channel;
         this.msg = msg;
         this.queueName = queueName;
-        this.step = step;
     }
 
     /**
-     * Method to acknowledge the message, optionally providing payload for the next step.
+     * Acknowledges (ACKs) the message, indicating successful processing.
      *
-     * @param {Record<string, unknown>} [payloadForNextStep] - Payload for the next step.
+     * @param payloadForNextStep - Optional payload to include for the next step in a multi-step process (e.g., saga).
      */
     public abstract ackMessage(payloadForNextStep?: Record<string, unknown>): void;
-
     /**
-     * Method to negatively acknowledge the message.
-     * @deprecated Use {@link nackWithDelayAndRetries} instead.
-     */
-    protected abstract nackMessage(): void;
-
-    /**
-     * Method to negatively acknowledge the message with a delay and retries.
+     * Negatively acknowledges (NACKs) the message with a specified delay and maximum retry count.
      *
-     * @param {number} [delay] - The delay before requeueing the message.
-     * @param {number} [maxRetries] - The maximum number of nack retries.
-     * @returns {Promise<number>} A promise resolving to the count of retries.
-     * @see nackWithDelay
+     * This method is useful when you want to requeue the message for later processing, especially if the current attempt failed due to a temporary issue.
+     *
+     * @param delay - The delay (in milliseconds) before requeueing the message. Defaults to `NACKING_DELAY_MS`.
+     * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `MAX_NACK_RETRIES`.
+     * @returns An object containing:
+     *   - `count`: The current retry count.
+     *   - `delay`: The actual delay applied to the nack.
+     *
      * @see NACKING_DELAY_MS
      * @see MAX_NACK_RETRIES
      */
-    public abstract nackWithDelayAndRetries(delay?: number, maxRetries?: number): Promise<number>;
-
-    /**
-     * This method negatively acknowledges a message using a Fibonacci delay strategy.
-     * Due to memory persistence, another container will nack with a different delay in milliseconds.
-     *
-     * To prevent large delays, the maxOccurrence is used to reset the occurrence to 0
-     * making the next delay reset to the first value of a fibonacci sequence: 1s.
-     * @param {number} [maxOccurrence] - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
-     * @param {string} [salt] - The salt to use for hashing the saga step.
-     *
-     * @returns {Promise<Object>} A promise resolving to the count of retries according to RabbitMQ, the delay in ms, and the occurrence of the nacking in the current container.
-     *
-     * @see MAX_OCCURRENCE
-     */
-    public abstract nackWithFibonacciStrategy(
-        maxOccurrence?: number,
-        salt?: string
-    ): Promise<{
-        count: number;
-        delay: number;
-        occurrence: number;
-    }>;
-
-    /**
-     * Method to update the saga step occurrence map.
-     *
-     * @param {string} salt - The salt to use for hashing the saga step.
-     * @param {number} maxOccurrence - The maximum occurrence in a fail saga step of the nack delay with fibonacci strategy.
-     * @returns {number} The updated occurrence in a saga step.
-     *
-     * @see MAX_OCCURRENCE
-     */
-    protected updateSagaStepOccurrence = (salt: string, maxOccurrence: number): number => {
-        const hashId = this.getStepHashId(salt);
-        let occurrence = ConsumeChannel.sagaStepOccurrence.get(hashId) || 0;
-        if (occurrence >= maxOccurrence) {
-            // the occurrence is reset to 0 to avoid large delay in the next nack
-            occurrence = 0;
-        }
-
-        ConsumeChannel.sagaStepOccurrence.set(hashId, occurrence + 1);
-        return occurrence + 1;
+    public nackWithDelayAndRetries = (
+        delay: number = NACKING_DELAY_MS,
+        maxRetries: number = MAX_NACK_RETRIES
+    ): { count: number; delay: number } => {
+        const { delay: delayNackRetry, count } = this.nack({ delay, maxRetries });
+        return { count, delay: delayNackRetry };
     };
 
     /**
-     * Method to get the hash id of a saga step.
-     * The hash id is used to identify a saga step in the saga step occurrence map.
+     * Negatively acknowledges (NACKs) the message using a Fibonacci backoff strategy.
      *
-     * @param {string} salt - The salt to use for hashing the saga step.
-     * @returns {string} The hash id of the saga step.
+     * The delay before requeuing increases with each retry according to the Fibonacci sequence, helping to avoid overwhelming the system in case of repeated failures.
+     *
+     * @param maxOccurrence - The maximum number of times the Fibonacci delay is allowed to increase before being reset. Defaults to `MAX_OCCURRENCE`.
+     * @returns An object containing:
+     *   - `count`: The current retry count.
+     *   - `delay`: The calculated Fibonacci delay (in milliseconds) applied to the nack.
+     *   - `occurrence`: The current occurrence count for the Fibonacci sequence.
+     * @see MAX_OCCURRENCE
      */
-    private getStepHashId = (salt: string): string => {
-        const { sagaId, command, payload } = this.step;
-        const hash = crypto.createHash('sha256');
-        hash.update(`${sagaId}-${command}-${JSON.stringify(payload)}-${salt}`);
-        return hash.digest('hex').slice(0, 10);
+    public nackWithFibonacciStrategy = (
+        maxOccurrence: number = MAX_OCCURRENCE
+    ): { count: number; delay: number; occurrence: number } => {
+        return this.nack({ maxOccurrence });
+    };
+    /**
+     * Private helper function to handle the actual NACK logic.
+     *
+     * This method performs the NACK operation, manages retry counts and delays, and republishes the message for requeuing with appropriate headers and routing.
+     *
+     * @param nackOptions - An object specifying either:
+     *   - `delay` and `maxRetries`: For linear backoff with a fixed delay and retry limit.
+     *   - `maxOccurrence`: For Fibonacci backoff with a maximum occurrence count.
+     */
+    private nack = ({
+        maxRetries,
+        maxOccurrence,
+        delay
+    }: Nack): {
+        count: number;
+        delay: number;
+        occurrence: number;
+    } => {
+        const { msg, queueName, channel } = this;
+        channel.nack(msg, false, false); // nack without requeueing immediately
+
+        // La estrategia de "count" se aplica con custom headers
+        // https://github.com/rabbitmq/rabbitmq-server/issues/10709
+        // https://github.com/spring-cloud/spring-cloud-stream/issues/2939
+        let count = 0;
+        if (msg.properties.headers && msg.properties.headers['x-retry-count']) {
+            count = msg.properties.headers['x-retry-count'] as number;
+        }
+        count++;
+
+        // Ocurrencia de la estrategia de fibonacci
+        let occurrence = 0;
+        if (msg.properties.headers && msg.properties.headers['x-occurrence']) {
+            occurrence = Number(msg.properties.headers['x-occurrence']);
+            if (occurrence >= (maxOccurrence ?? Infinity)) {
+                // the occurrence is reset to 0 to avoid large delay in the next nack
+                occurrence = 0;
+            }
+        }
+        occurrence++;
+
+        let nackDelay;
+
+        if (maxRetries !== undefined) {
+            nackDelay = delay;
+            if (count > maxRetries) {
+                console.error(
+                    `MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`
+                );
+                // nada más que hacer, termina el proceso
+                return { count: maxRetries, delay: nackDelay, occurrence };
+            }
+        } else {
+            // si maxRetries no está definido entonces delay no está definido, por lo tanto es fibonacci delay
+            nackDelay = fibonacci(occurrence) * 1000;
+        }
+
+        // Checkeo para verificar si cambia el x-death en futuros rabbits
+        if (msg.properties?.headers?.['x-death'] && msg.properties.headers['x-death'].length > 1) {
+            const logData = {
+                'x-death': msg.properties.headers['x-death'],
+                queueName,
+                msg: msg.content.toString(),
+                headers: msg.properties.headers
+            };
+            console.warn('x-death length > 1 -> TIME TO REFACTOR', logData);
+        }
+
+        const xHeaders = {
+            // persisto la cuenta de nacks
+            'x-retry-count': count,
+            // incremento la ocurrencia
+            'x-occurrence': occurrence
+        } as const;
+
+        // destinado a eventos -> matching headers
+        if (msg.fields.exchange === exchange.Matching) {
+            if (msg.properties?.headers?.['all-micro']) {
+                // importantísimo, el header que se borra es aquel que tiene todos los micros escuchando cierto evento, sino el nacking le llega a todos.
+                delete msg.properties.headers['all-micro'];
+            }
+            // Viene de una nacking de eventos
+            channel.publish(exchange.MatchingRequeue, ``, msg.content, {
+                expiration: nackDelay,
+                headers: {
+                    ...msg.properties.headers,
+                    // el nacking es dirigido a un microservicio en particular, el que nackeó.
+                    micro: queueName,
+                    ...xHeaders
+                },
+                persistent: true
+            });
+        } else {
+            // destinado al Saga
+            channel.publish(exchange.Requeue, `${queueName}_routing_key`, msg.content, {
+                expiration: nackDelay,
+                headers: { ...msg.properties.headers, ...xHeaders },
+                persistent: true
+            });
+        }
+
+        return { count, delay: nackDelay, occurrence };
     };
 }
 

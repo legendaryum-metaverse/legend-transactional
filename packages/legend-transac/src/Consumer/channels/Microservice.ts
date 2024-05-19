@@ -1,16 +1,32 @@
-import { queue, status, AvailableMicroservices } from '../../@types';
+import { queue, status, AvailableMicroservices, SagaStep } from '../../@types';
 import { sendToQueue } from '../../Broker';
-import { nackWithDelay } from '../nack';
 import ConsumeChannel from './Consume';
-import { fibonacci } from '../../utils';
-import { MAX_OCCURRENCE } from '../../constants';
+import { Channel, ConsumeMessage } from 'amqplib';
 /**
  * Represents a **_consume_** channel for a specific microservice.
  * Extends the abstract ConsumeChannel class.
  *
  * @typeparam T - The type of available microservices.
  */
-export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extends ConsumeChannel<T> {
+export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extends ConsumeChannel {
+    /**
+     * The saga step associated with the consumed message.
+     */
+    protected readonly step: SagaStep<T>;
+
+    /**
+     * Constructs a new instance of the ConsumeChannel class.
+     *
+     * @param {Channel} channel - The channel to interact with the message broker.
+     * @param {ConsumeMessage} msg - The consumed message to be processed.
+     * @param {string} queueName - The name of the queue from which the message was consumed.
+     * @param {SagaStep} step - The saga step associated with the consumed message.
+     */
+    public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, step: SagaStep<T>) {
+        super(channel, msg, queueName);
+        this.step = step;
+    }
+
     ackMessage(payloadForNextStep: Record<string, unknown> = {}): void {
         this.step.status = status.Success;
         const previousPayload = this.step.previousPayload;
@@ -32,30 +48,5 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
             .catch(err => {
                 console.error(err);
             });
-    }
-    nackMessage(): void {
-        this.step.status = status.Failure;
-
-        sendToQueue(queue.ReplyToSaga, this.step)
-            .then(() => {
-                this.channel.nack(this.msg, false, false);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    }
-
-    async nackWithDelayAndRetries(delay?: number, maxRetries?: number) {
-        return await nackWithDelay(this.msg, this.queueName, delay, maxRetries);
-    }
-    async nackWithFibonacciStrategy(maxOccurrence = MAX_OCCURRENCE, salt = '') {
-        const occurrence = this.updateSagaStepOccurrence(`MicroserviceConsumeChannel-${salt}`, maxOccurrence);
-        const delay = fibonacci(occurrence) * 1000; // ms
-        const count = await this.nackWithDelayAndRetries(delay, Infinity);
-        return {
-            count,
-            delay,
-            occurrence
-        };
     }
 }

@@ -1,28 +1,16 @@
-import { getRabbitMQConn, saveUri } from '../Connections';
-import { Channel } from 'amqplib';
-import { CommenceSaga, queue, SagaTitle } from '../@types';
-
-let sendChannel: Channel | null = null;
+import { CommenceSaga, queue, SagaCommencePayload, SagaTitle } from '../@types';
+import { getSendChannel } from './sendChannel';
 /**
- * Get the **_send_** channel for sending messages to a queue.
+ * Sends a message payload to a specified queue.
  *
- * @returns {Promise<Channel>} A promise that resolves to the **_send_** channel.
- * @throws {Error} If there is an issue with creating the **_send_** channel or getting the RabbitMQ connection.
- */
-const getSendChannel = async (): Promise<Channel> => {
-    if (sendChannel === null) {
-        sendChannel = await (await getRabbitMQConn()).createChannel();
-    }
-    return sendChannel;
-};
-/**
- * Send a message payload to a specified queue.
- *
+ * @template T - The type of the message payload. This allows for type-safe handling of different payloads across queues.
  * @param {string} queueName - The name of the queue to send the message to.
- * @param {Record<string, any>} payload - The message payload to send.
- * @throws {Error} If there is an issue with sending the message or creating the **_send_** channel.
+ * @param {T} payload - The message payload to send.
+ * @async
+ * @returns {Promise<void>} A promise that resolves when the message has been successfully sent.
  */
 export const sendToQueue = async <T extends Record<string, any>>(queueName: string, payload: T): Promise<void> => {
+    // any -> debido a que tiparlo para todos los payloads posibles es over-engineering
     const channel = await getSendChannel();
     await channel.assertQueue(queueName, { durable: true });
 
@@ -36,37 +24,25 @@ export const sendToQueue = async <T extends Record<string, any>>(queueName: stri
     });
 };
 /**
- * Commence a saga by sending a message payload to the **_CommenceSaga_** queue.
- * Use **uri** if this function is called from a microservice without a Transactional implementation.
+ * Commences a saga by sending a message payload to the `CommenceSaga` queue.
  *
- * @typeparam T - The type of the message payload.
- * @param {string} sagaTitle - The name of the saga to commence.
- * @param {Record<string, any>} payload - The message payload to send.
- * @param {string} [uri] - The RabbitMQ URI to save.
+ * Sagas are long-running processes composed of multiple steps, typically coordinated across services. This function initiates a new saga instance.
+ *
+ * @template U - The specific type of the saga being commenced. This must be one of the predefined types in the `SagaTitle` enum.
+ * @param {U} sagaTitle - The title of the saga to commence. This acts as an identifier for the specific saga workflow.
+ * @param {SagaCommencePayload[U]} payload - The payload data required to start the saga. The structure of this payload is specific to the saga type `U`.
+ * @async
+ * @returns {Promise<void>} A promise that resolves when the saga commencement message has been successfully sent to the queue.
+ *
+ * @see SagaTitle
  */
-export const commenceSaga = async <T extends Record<string, any>>(
-    sagaTitle: SagaTitle,
-    payload: T,
-    uri?: string
+export const commenceSaga = async <U extends SagaTitle>(
+    sagaTitle: U,
+    payload: SagaCommencePayload[U]
 ): Promise<void> => {
-    if (uri) {
-        saveUri(uri);
-    }
-    const saga: CommenceSaga<T> = {
+    const saga: CommenceSaga<U> = {
         title: sagaTitle,
         payload
     };
     await sendToQueue(queue.CommenceSaga, saga);
-};
-/**
- * Close the **_send_** channel if it is open.
- *
- * @returns {Promise<void>} A promise that resolves when the **_send_** channel is successfully closed.
- * @throws {Error} If there is an issue with closing the **_send_** channel.
- */
-export const closeSendChannel = async (): Promise<void> => {
-    if (sendChannel !== null) {
-        await sendChannel.close();
-        sendChannel = null;
-    }
 };

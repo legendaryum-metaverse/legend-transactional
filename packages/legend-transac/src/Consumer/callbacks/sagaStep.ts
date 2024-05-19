@@ -1,4 +1,4 @@
-import { ConsumerEvents, SagaStep, AvailableMicroservices } from '../../@types';
+import { MicroserviceConsumeSagaEvents, SagaStep, AvailableMicroservices } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { MicroserviceConsumeChannel } from '../channels';
@@ -9,13 +9,13 @@ import { MicroserviceConsumeChannel } from '../channels';
  *
  * @param {ConsumeMessage | null} msg - The consumed message.
  * @param {Channel} channel - The channel used for consuming messages.
- * @param {Emitter<ConsumerEvents<T>>} e - The emitter to emit events.
+ * @param {Emitter<MicroserviceConsumeSagaEvents<T>>} e - The emitter to emit events.
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
-export const microserviceConsumeCallback = <T extends AvailableMicroservices>(
+export const sagaStepCallback = <T extends AvailableMicroservices>(
     msg: ConsumeMessage | null,
     channel: Channel,
-    e: Emitter<ConsumerEvents<T>>,
+    e: Emitter<MicroserviceConsumeSagaEvents<T>>,
     queueName: string
 ) => {
     if (!msg) {

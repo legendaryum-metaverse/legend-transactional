@@ -1,12 +1,11 @@
-import { AvailableMicroservices } from '../../@types';
-import { MicroserviceConsumeChannel } from './Microservice';
+import ConsumeChannel from './Consume';
 
 /**
  * Represents a **_consume_** channel for handling saga events/commands.
  * Extends the abstract ConsumeChannel class.
  *
  */
-export class SagaConsumeChannel<T extends AvailableMicroservices> extends MicroserviceConsumeChannel<T> {
+export class EventsConsumeChannel extends ConsumeChannel {
     /**
      * Acknowledges the consumed saga event/command.
      */

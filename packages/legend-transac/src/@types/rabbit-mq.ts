@@ -6,6 +6,9 @@ export const queue = {
      * Queue used for sending replies in response to saga events.
      */
     ReplyToSaga: 'reply_to_saga',
+    /**
+     * Queue used for commencing a saga.
+     */
     CommenceSaga: 'commence_saga'
 } as const;
 /**
@@ -13,11 +16,11 @@ export const queue = {
  */
 export const exchange = {
     /**
-     * Exchange dedicated to requeueing messages that require further processing.
+     * Exchange dedicated to requeueing messages that require further processing in a saga process
      */
     Requeue: 'requeue_exchange',
     /**
-     * Exchange for sending command messages to various consumers.
+     * Exchange for sending command messages to various consumers in a saga process
      */
     Commands: 'commands_exchange',
     /**
@@ -27,7 +30,15 @@ export const exchange = {
     /**
      * Exchange used for starting a saga.
      */
-    CommenceSaga: 'commence_saga_exchange'
+    CommenceSaga: 'commence_saga_exchange',
+    /**
+     * Exchange used for starting a saga.
+     */
+    Matching: 'matching_exchange',
+    /**
+     * Exchange dedicated to requeueing messages that require further processing.
+     */
+    MatchingRequeue: 'matching_requeue_exchange'
 } as const;
 /**
  * Represents the names of specific message queues in the RabbitMQ context.
