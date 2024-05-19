@@ -9,7 +9,7 @@
 <hr />
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/legendaryum-metaverse/legend-transactional/release.yml?branch=main)](https://github.com/legendaryum-metaverse/legend-transactional/tree/main/packages/legend-transac)
-[![GitHub](https://img.shields.io/github/license/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/tree/main/packages/LICENSE)
+[![GitHub](https://img.shields.io/github/license/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/blob/main/LICENSE)
 [![npm](https://img.shields.io/npm/v/legend-transactional)](https://www.npmjs.com/package/legend-transactional)
 [![npm](https://img.shields.io/npm/dm/legend-transactional)](https://www.npmjs.com/package/legend-transactional)
 [![Bundle Size](https://img.shields.io/bundlephobia/min/legend-transactional)](https://bundlephobia.com/result?p=legend-transactional)
