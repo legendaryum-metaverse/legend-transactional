@@ -1,6 +1,6 @@
 import { AvailableMicroservices } from '../microservices';
-import { SagaStep } from './sagaStep';
-import { MicroserviceConsumeChannel, SagaConsumeChannel } from '../../../Consumer';
+import { CommandMap } from './commands';
+import { MicroserviceConsumeChannel } from '../../Consumer';
 
 export interface MicroserviceHandler<T extends AvailableMicroservices> {
     /**
@@ -17,13 +17,9 @@ export interface MicroserviceHandler<T extends AvailableMicroservices> {
     channel: MicroserviceConsumeChannel<T>;
 }
 
-export interface SagaHandler<T extends AvailableMicroservices> {
-    /**
-     * The saga step associated with the event.
-     */
-    step: SagaStep<T>;
-    /**
-     * The channel used for consuming the event.
-     */
-    channel: SagaConsumeChannel<T>;
-}
+/**
+ * Represents the events emitted by the saga to the microservices.
+ */
+export type MicroserviceConsumeSagaEvents<T extends AvailableMicroservices> = {
+    [key in CommandMap[T]]: MicroserviceHandler<T>;
+};

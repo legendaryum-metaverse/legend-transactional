@@ -1,5 +1,4 @@
 import {
-    MicroserviceConsumeSagaEvents,
     SagaConsumeSagaEvents,
     exchange,
     queue,
@@ -22,6 +21,7 @@ import {
 } from '../Consumer';
 import { getQueueConsumer } from '../utils';
 import mitt, { Emitter } from 'mitt';
+import { MicroserviceConsumeSagaEvents } from '../@types/saga/microservice';
 /**
  * Prepare the library for consuming messages by saving the RabbitMQ URI, establishing a connection,
  * and getting the **_consume_** channel.

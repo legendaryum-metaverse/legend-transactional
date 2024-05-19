@@ -26,6 +26,7 @@
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "files": [
     "dist"
   ],
@@ -53,9 +54,9 @@
   },
   "tsup": {
     "entry": [
-      "src/**/*.ts"
+      "src/index.ts"
     ],
-    "splitting": true,
+    "splitting": false,
     "sourcemap": false,
     "clean": true,
     "format": [
@@ -64,7 +65,8 @@
     ],
     "dts": true,
     "treeshake": true,
-    "minify": true,
-    "outDir": "dist"
+    "minify": false,
+    "outDir": "dist",
+    "external": ["amqplib", "mitt"]
   }
 }

@@ -1,7 +1,7 @@
 import { SagaConsumeSagaEvents, SagaStep, AvailableMicroservices } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
-import { SagaConsumeChannel } from '../channels/Saga';
+import { SagaConsumeChannel } from '../channels';
 /**
  * Callback function for consuming saga events/commands.
  *
