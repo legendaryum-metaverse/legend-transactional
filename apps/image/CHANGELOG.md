@@ -1,5 +1,12 @@
 # micro-image
 
+## 0.0.45
+
+### Patch Changes
+
+-   Updated dependencies [df2049d]
+    -   legend-transactional@1.0.2
+
 ## 0.0.44
 
 ### Patch Changes

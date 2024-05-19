@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.0.2
+
+### Patch Changes
+
+-   df2049d: saga update_user:image, social.new_user event
+
 ## 1.0.1
 
 ### Patch Changes
