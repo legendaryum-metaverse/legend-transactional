@@ -1,6 +1,5 @@
 import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
-import { AvailableMicroservices, availableMicroservices } from '../microservices';
 import { SocialCommands } from './social';
 import { PaymentCommands } from './payments';
 import { NotificationCommands } from './notifications';
@@ -12,6 +11,7 @@ import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
 import { StorageCommands } from './storage';
+import { AvailableMicroservices, availableMicroservices } from '../../microservices';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */

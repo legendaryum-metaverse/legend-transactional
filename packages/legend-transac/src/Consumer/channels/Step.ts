@@ -50,3 +50,17 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
             });
     }
 }
+
+/**
+ * Represents a **_consume_** channel for handling saga events/commands.
+ * Extends the MicroserviceConsumeChannel class.
+ *
+ */
+export class SagaConsumeChannel<T extends AvailableMicroservices> extends MicroserviceConsumeChannel<T> {
+    /**
+     * Acknowledges the consumed saga event/command.
+     */
+    ackMessage(): void {
+        this.channel.ack(this.msg, false);
+    }
+}
