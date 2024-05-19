@@ -1,5 +1,12 @@
 # saga
 
+## 0.0.43
+
+### Patch Changes
+
+-   Updated dependencies [df2049d]
+    -   legend-transactional@1.0.2
+
 ## 0.0.42
 
 ### Patch Changes
