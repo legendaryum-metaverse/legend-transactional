@@ -211,16 +211,120 @@ export const connectToSagaCommandEmitter = async <T extends AvailableMicroservic
     void consume<MicroserviceConsumeSagaEvents<T>>(e, q.queueName, sagaStepCallback);
     return e;
 };
-
+/**
+ * Connects to specific events emitted by a particular microservice.
+ *
+ * This allows you to listen for and handle specific events of interest, filtering out other events the microservice might emit.
+ *
+ * @template T - The specific microservice to connect to (e.g., 'image', 'payment'). Must be one of the types defined in the `AvailableMicroservices` enum.
+ * @template U - The type of event to listen for. Must be one of the types defined in the `MicroserviceEvent` enum.
+ *
+ * @param {string} url - The URL of the RabbitMQ server to establish a connection.
+ * @param {T} microservice - The microservice from which to receive events.
+ * @param {U[]} events - An array of event types (`MicroserviceEvent`) to subscribe to.
+ * @returns {Promise<Emitter<MicroserviceConsumeEvents<U>>>} - A promise that resolves to an emitter, providing a way to listen to the specified events.
+ * @async
+ *
+ * @example
+ * const url = 'amqp://localhost';
+ *
+ * // Connect to the 'image' microservice and listen for 'ImageCreated' and 'ImageDeleted' events
+ * const emitter = await connectToEvents(url, AvailableMicroservices.Image, [MicroserviceEvent.ImageCreated, MicroserviceEvent.ImageDeleted]);
+ *
+ * // Handle 'ImageCreated' events
+ * emitter.on(MicroserviceEvent.ImageCreated, ({ channel, payload }) => {
+ *   // Process the image creation payload
+ * });
+ *
+ * // Handle 'ImageDeleted' events
+ * emitter.on(MicroserviceEvent.ImageDeleted, ({ channel, payload }) => {
+ *   // Process the image deletion payload
+ * });
+ *
+ * // When not needed anymore, you can close the RabbitMQ connection
+ * await stopRabbitMQ();
+ *
+ * @see stopRabbitMQ
+ * @see prepare
+ * @see connectToSagaCommandEmitter
+ * @see AvailableMicroservices
+ * @see MicroserviceEvent
+ */
 export const connectToEvents = async <T extends AvailableMicroservices, U extends MicroserviceEvent>(
     url: string,
     microservice: T,
     events: U[]
-) => {
+): Promise<Emitter<MicroserviceConsumeEvents<U>>> => {
     await prepare(url);
     const queueName = `${microservice}_match_commands` as const;
     const e = mitt<MicroserviceConsumeEvents<U>>();
     await createHeaderConsumers(queueName, events);
     void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
     return e;
+};
+
+/**
+ * Starts a transactional message handler for a microservice, enabling both event listening and saga command processing.
+ *
+ * This function is designed to simplify the setup of microservices that need to both:
+ *   1. Listen for and react to specific events.
+ *   2. Participate in sagas by processing commands from other microservices.
+ *
+ * By using a single function, you streamline the connection to RabbitMQ, queue setup, and event/command subscriptions.
+ *
+ * @template T - The specific microservice to connect to (e.g., 'image', 'payment'). Must be one of the types defined in the `AvailableMicroservices` enum.
+ * @template U - The types of events to listen for. Must be an array of types defined in the `MicroserviceEvent` enum.
+ *
+ * @param {string} url - The URL of the RabbitMQ server to establish a connection.
+ * @param {T} microservice - The microservice from which to receive events and commands.
+ * @param {U[]} events - An array of event types (`MicroserviceEvent`) to subscribe to.
+ *
+ * @returns {Promise<{ eventEmitter: Emitter<MicroserviceConsumeEvents<U>>, commandEmitter: Emitter<MicroserviceConsumeSagaEvents<T>> }>} - A promise that resolves to an object containing two emitters:
+ *   - `eventEmitter`:  For handling the specified events from the microservice.
+ *   - `commandEmitter`: For handling saga commands directed at the microservice.
+ * @async
+ *
+ * @example
+ * const url = 'amqp://localhost';
+ *
+ * // Connect to the 'payment' microservice, listen for 'PaymentSuccess' and 'PaymentFailure' events, and handle saga commands
+ * const { eventEmitter, commandEmitter } = await startTransactional(url, AvailableMicroservices.Payment, [
+ *   MicroserviceEvent.PaymentSuccess,
+ *   MicroserviceEvent.PaymentFailure
+ * ]);
+ *
+ * // Handle 'PaymentSuccess' events
+ * eventEmitter.on(MicroserviceEvent.PaymentSuccess, (payload) => {
+ *   // Process the successful payment
+ * });
+ *
+ * // Handle saga commands for the 'payment' microservice (e.g., 'ProcessPayment')
+ * commandEmitter.on(PaymentCommands.ProcessPayment, (payload) => {
+ *   // Process the payment command as part of a saga
+ * });
+ *
+ * // When not needed anymore, you can close the RabbitMQ connection
+ * await stopRabbitMQ();
+ *
+ * @see stopRabbitMQ
+ * @see connectToEvents
+ * @see connectToSagaCommandEmitter
+ */
+export const startTransactional = async <T extends AvailableMicroservices, U extends MicroserviceEvent>(
+    url: string,
+    microservice: T,
+    events: U[]
+): Promise<{
+    eventEmitter: Emitter<MicroserviceConsumeEvents<U>>;
+    commandEmitter: Emitter<MicroserviceConsumeSagaEvents<T>>;
+}> => {
+    await prepare(url);
+
+    const eventEmitter = await connectToEvents(url, microservice, events);
+    const commandEmitter = await connectToSagaCommandEmitter(url, microservice);
+
+    return {
+        eventEmitter,
+        commandEmitter
+    };
 };

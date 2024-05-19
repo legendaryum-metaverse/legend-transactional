@@ -29,6 +29,6 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint'
 } as const;
 /**
- * Type of available microservices event in the system.
+ * Available microservices events in the system.
  */
 export type MicroserviceEvent = (typeof microserviceEvent)[keyof typeof microserviceEvent];
