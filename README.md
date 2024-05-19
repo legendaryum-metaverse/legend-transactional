@@ -1,17 +1,9 @@
-<div style="text-align: center;">
-  <br/>
-  <br/>
-<img src=".github/assets/legend.jpg" alt="legendaryum" style="width: 10%;"/>
-</div>
-
-# `legend-transactional`
-
-Library used for the internal implementation of the saga pattern in the [`legendaryum`](https://legendaryum.com/) project.
+# `legend-transactional monorepo`
 
 ---
 
-<div style="text-align: center;">
-  <br/>
-  <br/>
-<img src=".github/assets/saga.png" alt="legendaryum" style="width: 100%;"/>
-</div>
+Library used for the internal implementation of the saga pattern and event driven architecture in
+the [`legendaryum`](https://www.legendaryum.com/) project.
+
+Full documentation package: [legend-transactional](./packages/legend-transac/README.md)
+
