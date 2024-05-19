@@ -1,5 +1,12 @@
 # legend-transactional
 
+## 1.0.3
+
+### Patch Changes
+
+-   2d93996: - Fix the error of an export in a circular dependency context
+    -   Improved build with **tsup**
+
 ## 1.0.2
 
 ### Patch Changes
