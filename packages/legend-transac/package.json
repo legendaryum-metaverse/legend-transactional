@@ -20,8 +20,9 @@
     "type": "git",
     "url": "https://github.com/legendaryum-metaverse/legend-transactional/tree/main/packages/legend-transac"
   },
+  "private": false,
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "access": "public"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
