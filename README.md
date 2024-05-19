@@ -6,4 +6,3 @@ Library used for the internal implementation of the saga pattern and event drive
 the [`legendaryum`](https://www.legendaryum.com/) project.
 
 Full documentation package: [legend-transactional](./packages/legend-transac/README.md)
-
