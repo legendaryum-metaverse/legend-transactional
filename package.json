@@ -1,6 +1,8 @@
 {
   "name": "legend-transactional-monorepo",
-  "private": true,
+  "description": "A simple transactional, event-driven communication framework for microservices using RabbitMQ https://www.npmjs.com/package/legend-transactional",
+  "author": "Jorge Clavijo <jym272@gmail.com> (https://github.com/jym272)",
+  "license": "MIT",
   "scripts": {
     "build": "turbo run build",
     "clean": "bash ./scripts/clean-project.sh",

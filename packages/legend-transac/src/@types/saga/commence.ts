@@ -2,15 +2,9 @@ import { SagaCommenceConsumeChannel } from '../../Consumer';
 
 export const sagaTitle = {
     /**
-     * Saga used to recharge the balance of a user.
-     * @deprecated
+     * Saga used to update the social user's image.
      */
-    RechargeBalance: 'recharge_balance',
-    /**
-     * Saga used to buy products.
-     * @deprecated
-     */
-    BuyProducts: 'buy_products'
+    UpdateUserImage: 'update_user:image'
 } as const;
 /**
  * Available saga titles.
@@ -18,11 +12,10 @@ export const sagaTitle = {
 export type SagaTitle = (typeof sagaTitle)[keyof typeof sagaTitle];
 
 export interface SagaCommencePayload {
-    recharge_balance: {
-        balance: string;
-    };
-    buy_products: {
-        products: string;
+    ['update_user:image']: {
+        userId: string;
+        folderName: string;
+        bucketName: string;
     };
 }
 
