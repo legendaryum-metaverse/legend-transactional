@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.0.4
+
+### Patch Changes
+
+-   56d381a: new events for purchase resources flow
+
 ## 1.0.3
 
 ### Patch Changes
