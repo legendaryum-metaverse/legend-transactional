@@ -12,6 +12,7 @@ import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
 import { StorageCommands } from './storage';
 import { AvailableMicroservices, availableMicroservices } from '../../microservices';
+import { RoomSnapshotCommands } from './room-snapshot';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -70,6 +71,10 @@ export interface CommandMap {
      * Represents the mapping of "legend-storage" microservice commands.
      */
     [availableMicroservices.Storage]: StorageCommands;
+    /**
+     * Represents the mapping of "room-snapshot" microservice commands.
+     */
+    [availableMicroservices.RoomSnapshot]: RoomSnapshotCommands;
 }
 /**
  * Represents a command specific to a microservice.
