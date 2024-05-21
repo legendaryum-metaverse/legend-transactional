@@ -1,5 +1,5 @@
 ---
-'legend-transactional': minor
+'legend-transactional': patch
 ---
 
 update saga title
