@@ -18,7 +18,7 @@
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/pulse)
 [![GitHub last commit](https://img.shields.io/github/last-commit/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/commits/main)
 
-**legend-transactional** is a Node.js/TypeScript library designed to streamline communication
+[**legend-transactional**](https://www.npmjs.com/package/legend-transactional) is a Node.js/TypeScript library designed to streamline communication
 between microservices using RabbitMQ. It enables easy implementation of event-driven architectures and saga patterns, while ensuring reliable message delivery.
 
 ## Features
