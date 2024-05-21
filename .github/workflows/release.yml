@@ -111,7 +111,20 @@ jobs:
                       "url": "https://github.com/${{ github.repository }}/releases/tag/${{ env.LEGEND_PACKAGE }}%40${{ env.LEGEND_VERSION }}"
                     }
                   ]
-                }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "npm library"
+                      },
+                      "url": "https://www.npmjs.com/package/legend-transactional"
+                    }
+                  ]
+                }            
               ]
             }
         env:
