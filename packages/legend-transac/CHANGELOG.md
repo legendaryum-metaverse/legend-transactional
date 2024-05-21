@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.0.5
+
+### Patch Changes
+
+-   6b6846d: update saga title: this title will be part of the asset purchase flow, both for deducting coins from a user and for giving them their asset once the transaction is completed. this flow will be used by the 'transactional' microservice and will pass through the 'payments' and 'room-snapshot' microservices
+
 ## 1.0.4
 
 ### Patch Changes
