@@ -8,7 +8,7 @@ export const sagaTitle = {
     /**
      * Saga used in the flow to purchase resources and deduct coins from the user.
      */
-    PurchaseResourceAndDeductCoins: 'purchase_resource:deduct_coins'
+    PurchaseResourceFlow: 'purchase_resource_flow'
 } as const;
 /**
  * Available saga titles.
@@ -21,7 +21,7 @@ export interface SagaCommencePayload {
         folderName: string;
         bucketName: string;
     };
-    ['purchase_resource:deduct_coins']: {
+    ['purchase_resource_flow']: {
         userId: string;
         resourceId: string;
         price: number;
