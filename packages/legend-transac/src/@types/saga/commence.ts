@@ -4,7 +4,11 @@ export const sagaTitle = {
     /**
      * Saga used to update the social user's image.
      */
-    UpdateUserImage: 'update_user:image'
+    UpdateUserImage: 'update_user:image',
+    /**
+     * Saga used in the flow to purchase resources and deduct coins from the user.
+     */
+    PurchaseResourceFlow: 'purchase_resource_flow'
 } as const;
 /**
  * Available saga titles.
@@ -16,6 +20,12 @@ export interface SagaCommencePayload {
         userId: string;
         folderName: string;
         bucketName: string;
+    };
+    ['purchase_resource_flow']: {
+        userId: string;
+        resourceId: string;
+        price: number;
+        quantity: number;
     };
 }
 
