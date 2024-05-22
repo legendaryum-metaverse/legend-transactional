@@ -11,8 +11,8 @@ import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
 import { StorageCommands } from './storage';
-import { AvailableMicroservices, availableMicroservices } from '../../microservices';
 import { RoomSnapshotCommands } from './room-snapshot';
+import { AvailableMicroservices, availableMicroservices } from '../../microservices';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
