@@ -41,7 +41,7 @@ export const microserviceEvent = {
     'TEST.IMAGE': 'test.image',
     'TEST.MINT': 'test.mint',
     'SOCIAL.NEW_USER': 'social.new_user',
-    'PAYMENTS.NOTIFY_CLIENT' : 'payments.notify_client'
+    'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client'
 } as const;
 /**
  * Available microservices events in the system.
