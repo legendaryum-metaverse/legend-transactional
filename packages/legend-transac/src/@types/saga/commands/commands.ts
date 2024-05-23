@@ -13,6 +13,7 @@ import { ShowcaseCommands } from './showcase';
 import { StorageCommands } from './storage';
 import { RoomSnapshotCommands } from './room-snapshot';
 import { AvailableMicroservices, availableMicroservices } from '../../microservices';
+import { RoomInventoryCommands } from './room-inventory';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -75,6 +76,10 @@ export interface CommandMap {
      * Represents the mapping of "room-snapshot" microservice commands.
      */
     [availableMicroservices.RoomSnapshot]: RoomSnapshotCommands;
+    /**
+     * Represents the mapping of "room-inventory" microservice commands.
+     */
+    [availableMicroservices.RoomInventory]: RoomInventoryCommands;
 }
 /**
  * Represents a command specific to a microservice.
