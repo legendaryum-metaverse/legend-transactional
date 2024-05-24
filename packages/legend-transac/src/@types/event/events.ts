@@ -21,13 +21,13 @@ export interface EventPayload {
         mint: string;
     };
     /**
-     * Event broadcast by the "New User" social microservice.
+     * New user in social table in social microservice
      */
     'social.new_user': {
         userId: string;
     };
     /**
-     * Event broadcast by the "Notify Client" payments microservice.
+     * Websocket event to notify the client about a payment related event.
      */
     'payments.notify_client': {
         room: `payments-${string}`;
