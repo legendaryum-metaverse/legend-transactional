@@ -1,5 +1,12 @@
 # legend-transactional
 
+## 1.0.7
+
+### Patch Changes
+
+-   5394777: Added new event payments.notify_client to communicate with the client via web socket in payments server.
+    This event will be repeated if the client is not connected to websocket
+
 ## 1.0.6
 
 ### Patch Changes
