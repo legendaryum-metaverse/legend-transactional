@@ -21,10 +21,17 @@ export interface EventPayload {
         mint: string;
     };
     /**
-     * Event broadcast by the "New User" social microservice.
+     * New user in social table in social microservice
      */
     'social.new_user': {
         userId: string;
+    };
+    /**
+     * Websocket event to notify the client about a payment related event.
+     */
+    'payments.notify_client': {
+        room: `payments-${string}`;
+        message: Record<string, unknown>;
     };
 }
 /**
@@ -33,7 +40,8 @@ export interface EventPayload {
 export const microserviceEvent = {
     'TEST.IMAGE': 'test.image',
     'TEST.MINT': 'test.mint',
-    'SOCIAL.NEW_USER': 'social.new_user'
+    'SOCIAL.NEW_USER': 'social.new_user',
+    'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client'
 } as const;
 /**
  * Available microservices events in the system.
