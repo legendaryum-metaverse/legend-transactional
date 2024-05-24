@@ -1,5 +1,6 @@
 ---
-'legend-transactional': minor
+'legend-transactional': patch
 ---
 
-New event in payment notify client
+Added new event payments.notify_client to communicate with the client via web socket in payments server.
+This event will be repeated if the client is not connected to websocket

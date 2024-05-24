@@ -30,7 +30,7 @@ export interface EventPayload {
      * Event broadcast by the "Notify Client" payments microservice.
      */
     'payments.notify_client': {
-        room: string;
+        room: `payments-${string}`
         message: Record<string, unknown>;
     };
 }
