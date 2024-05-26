@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.1.0
+
+### Minor Changes
+
+-   f4342d5: rename nackWithDelayAndRetries for nackWithDelay, Max Retries is optional, otherwise the nacking is forever.
+
 ## 1.0.7
 
 ### Patch Changes
