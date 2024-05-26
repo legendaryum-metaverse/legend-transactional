@@ -10,7 +10,7 @@ const waitWithMessage = async (msg: string, time: number) => {
 export const handler = async ({ channel, sagaId, payload }: MicroserviceHandler<'test-mint'>) => {
     if (needToRequeueWithDelay()) {
         console.log(`NACK - Requeue 'mint_image' with delay`);
-        channel.nackWithDelayAndRetries(1000, 30);
+        channel.nackWithDelay(1000, 30);
     } else {
         console.log('mint_image', { payload, sagaId });
         await waitWithMessage('La imagen se ha minteado', 100);

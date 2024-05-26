@@ -9,7 +9,7 @@ export const handler = (
         // await SagaManager.continue(step);
     } catch (e) {
         console.error(e);
-        channel.nackWithDelayAndRetries(2000, 20);
+        channel.nackWithDelay(2000, 20);
         return;
     }
     channel.ackMessage();

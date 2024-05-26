@@ -1,12 +1,12 @@
 import { Channel, ConsumeMessage } from 'amqplib';
-import { MAX_NACK_RETRIES, MAX_OCCURRENCE, NACKING_DELAY_MS } from '../../constants';
+import { MAX_OCCURRENCE, NACKING_DELAY_MS } from '../../constants';
 import { fibonacci } from '../../utils';
 import { exchange } from '../../@types';
 
 // Type for exclusive options (either delay/maxRetries or maxOccurrence)
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
 type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-export type Nack = XOR<{ delay: number; maxRetries: number }, { maxOccurrence: number }>;
+export type Nack = XOR<{ delay: number; maxRetries?: number }, { maxOccurrence: number; maxRetries?: number }>;
 
 /**
  * Abstract base class for handling the consumption of messages from RabbitMQ channels.
@@ -51,17 +51,16 @@ abstract class ConsumeChannel {
      * This method is useful when you want to requeue the message for later processing, especially if the current attempt failed due to a temporary issue.
      *
      * @param delay - The delay (in milliseconds) before requeueing the message. Defaults to `NACKING_DELAY_MS`.
-     * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `MAX_NACK_RETRIES`.
+     * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `undefined`, never giving up.
      * @returns An object containing:
      *   - `count`: The current retry count.
      *   - `delay`: The actual delay applied to the nack.
      *
      * @see NACKING_DELAY_MS
-     * @see MAX_NACK_RETRIES
      */
-    public nackWithDelayAndRetries = (
+    public nackWithDelay = (
         delay: number = NACKING_DELAY_MS,
-        maxRetries: number = MAX_NACK_RETRIES
+        maxRetries?: number
     ): { count: number; delay: number } => {
         const { delay: delayNackRetry, count } = this.nack({ delay, maxRetries });
         return { count, delay: delayNackRetry };
@@ -73,6 +72,7 @@ abstract class ConsumeChannel {
      * The delay before requeuing increases with each retry according to the Fibonacci sequence, helping to avoid overwhelming the system in case of repeated failures.
      *
      * @param maxOccurrence - The maximum number of times the Fibonacci delay is allowed to increase before being reset. Defaults to `MAX_OCCURRENCE`.
+     * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `undefined`, never giving up.
      * @returns An object containing:
      *   - `count`: The current retry count.
      *   - `delay`: The calculated Fibonacci delay (in milliseconds) applied to the nack.
@@ -80,9 +80,10 @@ abstract class ConsumeChannel {
      * @see MAX_OCCURRENCE
      */
     public nackWithFibonacciStrategy = (
-        maxOccurrence: number = MAX_OCCURRENCE
+        maxOccurrence: number = MAX_OCCURRENCE,
+        maxRetries?: number
     ): { count: number; delay: number; occurrence: number } => {
-        return this.nack({ maxOccurrence });
+        return this.nack({ maxOccurrence, maxRetries });
     };
     /**
      * Private helper function to handle the actual NACK logic.
@@ -105,19 +106,18 @@ abstract class ConsumeChannel {
         const { msg, queueName, channel } = this;
         channel.nack(msg, false, false); // nack without requeueing immediately
 
-        // La estrategia de "count" se aplica con custom headers
         // https://github.com/rabbitmq/rabbitmq-server/issues/10709
         // https://github.com/spring-cloud/spring-cloud-stream/issues/2939
         let count = 0;
         if (msg.properties.headers && msg.properties.headers['x-retry-count']) {
-            count = msg.properties.headers['x-retry-count'] as number;
+            count = Number(msg.properties.headers['x-retry-count']);
         }
         count++;
 
-        // Ocurrencia de la estrategia de fibonacci
         let occurrence = 0;
         if (msg.properties.headers && msg.properties.headers['x-occurrence']) {
             occurrence = Number(msg.properties.headers['x-occurrence']);
+            // if 'maxOccurrence' is defined, the strategy is fibonacci
             if (occurrence >= (maxOccurrence ?? Infinity)) {
                 // the occurrence is reset to 0 to avoid large delay in the next nack
                 occurrence = 0;
@@ -125,20 +125,13 @@ abstract class ConsumeChannel {
         }
         occurrence++;
 
-        let nackDelay;
+        // if 'delay' is defined, it is delay strategy, otherwise fibonacci
+        const nackDelay = delay ?? fibonacci(occurrence) * 1000;
 
-        if (maxRetries !== undefined) {
-            nackDelay = delay;
-            if (count > maxRetries) {
-                console.error(
-                    `MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`
-                );
-                // nada más que hacer, termina el proceso
-                return { count: maxRetries, delay: nackDelay, occurrence };
-            }
-        } else {
-            // si maxRetries no está definido entonces delay no está definido, por lo tanto es fibonacci delay
-            nackDelay = fibonacci(occurrence) * 1000;
+        if (maxRetries && count > maxRetries) {
+            console.error(`MAX NACK RETRIES REACHED: ${maxRetries} - NACKING ${queueName} - ${msg.content.toString()}`);
+            // nada más que hacer, termina el proceso
+            return { count: count, delay: nackDelay, occurrence };
         }
 
         // Checkeo para verificar si cambia el x-death en futuros rabbits
@@ -153,9 +146,8 @@ abstract class ConsumeChannel {
         }
 
         const xHeaders = {
-            // persisto la cuenta de nacks
             'x-retry-count': count,
-            // incremento la ocurrencia
+            // 'count' and 'occurrence' are the same if the strategy is delay
             'x-occurrence': occurrence
         } as const;
 
