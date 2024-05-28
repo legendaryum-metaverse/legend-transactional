@@ -27,8 +27,7 @@ export const socialCommands = {
     /**
      * Command to notify the client with websocket.
      */
-    NotifyClient: 'notify_client',
-
+    NotifyClient: 'notify_client'
 } as const;
 /**
  * Available commands for the "social" microservice.
