@@ -23,7 +23,11 @@ export const socialCommands = {
     /**
      * Command to update the social user's image.
      */
-    UpdateUserImage: 'update_user:image'
+    UpdateUserImage: 'update_user:image',
+    /**
+     * Command to notify the client with websocket.
+     */
+    NotifyClient: 'notify_client'
 } as const;
 /**
  * Available commands for the "social" microservice.
