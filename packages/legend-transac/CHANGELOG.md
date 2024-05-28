@@ -1,5 +1,12 @@
 # legend-transactional
 
+## 1.1.1
+
+### Patch Changes
+
+-   4b6c9ee: Added new social command notify_client to communicate with the client via websocket in social server.
+    This event will be repeated if the client is not connected to websocket
+
 ## 1.1.0
 
 ### Minor Changes
