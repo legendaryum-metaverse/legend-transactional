@@ -60,7 +60,11 @@ export const availableMicroservices = {
     /**
      * Represents the "room-snapshot" microservice.
      */
-    RoomSnapshot: 'room-snapshot'
+    RoomSnapshot: 'room-snapshot',
+    /**
+     * Represents the "room-inventory" microservice.
+     */
+    RoomInventory: 'room-inventory'
 } as const;
 /**
  * Type of available microservices in the system.
