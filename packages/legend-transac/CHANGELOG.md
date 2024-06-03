@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.1.2
+
+### Patch Changes
+
+-   068f59d: a new saga step has been added in payments and a new microservice, room-inventory, has been added in AvailableMicroservices
+
 ## 1.1.1
 
 ### Patch Changes
