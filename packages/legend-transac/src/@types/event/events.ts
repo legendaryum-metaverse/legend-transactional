@@ -33,6 +33,20 @@ export interface EventPayload {
         room: `payments-${string}`;
         message: Record<string, unknown>;
     };
+    /**
+     * Event to block chat between two users.
+     */
+    'blockChat': {
+        userId: string;
+        userToBlockId: string;
+    };
+    /**
+     * Event to unblock chat between two users.
+     */
+    'unblockChat': {
+        userId: string;
+        userToUnblockId: string;
+    };
 }
 /**
  * Represents the available events in the system.
