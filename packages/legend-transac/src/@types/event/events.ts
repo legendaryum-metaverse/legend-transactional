@@ -20,12 +20,7 @@ export interface EventPayload {
     'test.mint': {
         mint: string;
     };
-    /**
-     * New user in social table in social microservice
-     */
-    'social.new_user': {
-        userId: string;
-    };
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Websocket event to notify the client about a payment related event.
      */
@@ -36,14 +31,20 @@ export interface EventPayload {
     /**
      * Event to block chat between two users.
      */
-    blockChat: {
+    'social.block_chat': {
         userId: string;
         userToBlockId: string;
     };
     /**
+     * New user in social table in social microservice
+     */
+    'social.new_user': {
+        userId: string;
+    };
+    /**
      * Event to unblock chat between two users.
      */
-    unblockChat: {
+    'social.unblock_chat': {
         userId: string;
         userToUnblockId: string;
     };
@@ -54,8 +55,11 @@ export interface EventPayload {
 export const microserviceEvent = {
     'TEST.IMAGE': 'test.image',
     'TEST.MINT': 'test.mint',
+    ///////////////////////////
+    'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
+    'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
-    'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client'
+    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat'
 } as const;
 /**
  * Available microservices events in the system.
