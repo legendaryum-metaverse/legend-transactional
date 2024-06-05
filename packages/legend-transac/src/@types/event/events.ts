@@ -36,14 +36,14 @@ export interface EventPayload {
     /**
      * Event to block chat between two users.
      */
-    'blockChat': {
+    blockChat: {
         userId: string;
         userToBlockId: string;
     };
     /**
      * Event to unblock chat between two users.
      */
-    'unblockChat': {
+    unblockChat: {
         userId: string;
         userToUnblockId: string;
     };
@@ -56,8 +56,8 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     'SOCIAL.NEW_USER': 'social.new_user',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
-    'BLOCK_CHAT': 'blockChat',
-    'UNBLOCK_CHAT': 'unblockChat'
+    BLOCK_CHAT: 'blockChat',
+    UNBLOCK_CHAT: 'unblockChat'
 } as const;
 /**
  * Available microservices events in the system.
