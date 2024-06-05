@@ -64,11 +64,7 @@ export const availableMicroservices = {
     /**
      * Represents the "room-inventory" microservice.
      */
-    RoomInventory: 'room-inventory',
-    /**
-     * Represents the "rapid-messaging" microservice.
-     */
-    RapidMessaging: 'rapid-messaging'
+    RoomInventory: 'room-inventory'
 } as const;
 /**
  * Type of available microservices in the system.
