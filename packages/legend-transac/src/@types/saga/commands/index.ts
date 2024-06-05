@@ -14,3 +14,4 @@ export * from './social';
 export * from './storage';
 export * from './room-snapshot';
 export * from './room-inventory';
+export * from './rapid-messaging';
