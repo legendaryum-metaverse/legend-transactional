@@ -36,14 +36,14 @@ export interface EventPayload {
     /**
      * Event to block chat between two users.
      */
-    'blockChat': {
+    blockChat: {
         userId: string;
         userToBlockId: string;
     };
     /**
      * Event to unblock chat between two users.
      */
-    'unblockChat': {
+    unblockChat: {
         userId: string;
         userToUnblockId: string;
     };
