@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.1.3
+
+### Patch Changes
+
+-   d8c862c: Added new events blockChat and unblockChat to handle chats in rapid-messaging
+
 ## 1.1.2
 
 ### Patch Changes
