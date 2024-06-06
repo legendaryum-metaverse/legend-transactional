@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.1.6
+
+### Patch Changes
+
+-   81e1202: change the type of unityId has been changed from string to number
+
 ## 1.1.5
 
 ### Patch Changes
