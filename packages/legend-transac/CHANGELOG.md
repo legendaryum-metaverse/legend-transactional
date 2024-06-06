@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.1.5
+
+### Patch Changes
+
+-   23a63a1: new field in purchase_resource_flow payload. this will serve to store the unityId in room-snapshot, a microservice responsible for managing the resources owned by a user
+
 ## 1.1.4
 
 ### Patch Changes
