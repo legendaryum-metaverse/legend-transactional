@@ -26,7 +26,7 @@ export interface SagaCommencePayload {
         resourceId: string;
         price: number;
         quantity: number;
-        unityId: string;
+        unityId: number;
     };
 }
 
