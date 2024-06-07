@@ -67,7 +67,8 @@ export const microserviceEvent = {
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
-    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat'
+    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
+    'PAYMENTS.CANCEL_PRE_PURCHASE_RESERVATION': 'payments.cancel_pre_purchase_reservation'
 } as const;
 /**
  * Available microservices events in the system.
