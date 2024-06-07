@@ -48,6 +48,14 @@ export interface EventPayload {
         userId: string;
         userToUnblockId: string;
     };
+    /**
+     * Event to cancel a pre-purchase reservation for a resource in room-inventory
+     */
+    'payments.cancel_pre_purchase_reservation': {
+        userId: string;
+        resourceId: string;
+        reservedQuantity: number;
+    };
 }
 /**
  * Represents the available events in the system.
