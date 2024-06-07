@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.1.7
+
+### Patch Changes
+
+-   3d3272f: Removing unitId from purchase_resource_flow
+
 ## 1.1.6
 
 ### Patch Changes
