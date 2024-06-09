@@ -2,11 +2,6 @@ import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
 import { SocialCommands } from './social';
 import { PaymentCommands } from './payments';
-import { NotificationCommands } from './notifications';
-import { IntegrationCommands } from './integrations';
-import { AnalyticsCommands } from './analytics';
-import { EventsAdminCommands } from './eventsadmin';
-import { AvatarClothesCommands } from './avatarClothes';
 import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
@@ -30,29 +25,9 @@ export interface CommandMap {
      */
     [availableMicroservices.TestMint]: TestMintCommands;
     /**
-     * Represents the mapping of "legend-analytics" microservice commands.
-     */
-    [availableMicroservices.Analytics]: AnalyticsCommands;
-    /**
      * Represents the mapping of "auth" microservice commands.
      */
     [availableMicroservices.Auth]: AuthCommands;
-    /**
-     * Represents the mapping of "legend-avatar-clothes" microservice commands.
-     */
-    [availableMicroservices.AvatarClothes]: AvatarClothesCommands;
-    /**
-     * Represents the mapping of "events-admin" microservice commands.
-     */
-    [availableMicroservices.EventsAdmin]: EventsAdminCommands;
-    /**
-     * Represents the mapping of "legend-integrations" microservice commands.
-     */
-    [availableMicroservices.Integrations]: IntegrationCommands;
-    /**
-     * Represents the mapping of "notificaciones" microservice commands.
-     */
-    [availableMicroservices.Notifications]: NotificationCommands;
     /**
      * Represents the mapping of "payments" microservice commands.
      */

@@ -41,7 +41,5 @@ export const createConsumers = async (consumers: QueueConsumerProps[]) => {
             arguments: { 'x-dead-letter-exchange': consumerExchange }
         });
         await channel.bindQueue(requeueQueue, exchange.Requeue, routingKey);
-        // Set the prefetch count to process only one message at a time to maintain order and control concurrency.
-        await channel.prefetch(1); // process only one message at a time
     }
 };
