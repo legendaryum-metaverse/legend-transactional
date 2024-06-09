@@ -109,7 +109,4 @@ export const createHeaderConsumers = async (queueName: string, events: Microserv
             await channel.deleteExchange(`${ev}_${queueName}`, { ifUnused: false });
         }
     }
-
-    // Set the prefetch count to process only one message at a time to maintain order and control concurrency.
-    await channel.prefetch(1); // process only one message at a time
 };

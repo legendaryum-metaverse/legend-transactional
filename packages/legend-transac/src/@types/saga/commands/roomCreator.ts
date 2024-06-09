@@ -1,12 +1,7 @@
 /**
  * Different commands related to the "room-creator" microservice.
  */
-export const roomCreatorCommands = {
-    /**
-     * Command to create rooms for a new user.
-     */
-    CreateMyRoomsToNewUser: 'new_user:create_my_rooms'
-} as const;
+export const roomCreatorCommands = {} as const;
 /**
  * Available commands for the "room-creator" microservice.
  */

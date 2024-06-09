@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { connectToSagaCommandEmitter, prepare, stopRabbitMQ } from 'legend-transactional';
+import { connectToSagaCommandEmitter, stopRabbitMQ } from 'legend-transactional';
 import { handler } from './handler';
 
 const app = express();
@@ -15,8 +15,11 @@ app.get('/ping', (_req: Request, res: Response) => {
 });
 
 app.listen(PORT, async () => {
-    await prepare(process.env.RABBIT_URI ?? 'amqp://rabbit:1234@localhost:5672');
-    const e = await connectToSagaCommandEmitter('test-mint');
+    const e = await connectToSagaCommandEmitter({
+        microservice: 'test-mint',
+        events: [],
+        url: process.env.RABBIT_URI ?? 'amqp://rabbit:1234@localhost:5672'
+    });
     e.on('mint_image', handler);
     console.info(`${String.fromCodePoint(0x1f680)} Server is running on port ${PORT}`);
 });

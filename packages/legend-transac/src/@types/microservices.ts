@@ -18,26 +18,6 @@ export const availableMicroservices = {
      */
     Auth: 'auth',
     /**
-     * Represents the "legend-analytics" microservice.
-     */
-    Analytics: 'legend-analytics',
-    /**
-     * Represents the "legend-avatar-clothes" microservice.
-     */
-    AvatarClothes: 'legend-avatar-clothes',
-    /**
-     * Represents the "events-admin" microservice.
-     */
-    EventsAdmin: 'events-admin',
-    /**
-     * Represents the "legend-integrations" microservice.
-     */
-    Integrations: 'legend-integrations',
-    /**
-     * Represents the "notificaciones" microservice.
-     */
-    Notifications: 'notificaciones',
-    /**
      * Represents the "payments" microservice.
      */
     Payments: 'payments',
