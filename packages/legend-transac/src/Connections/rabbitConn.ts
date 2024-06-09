@@ -65,14 +65,28 @@ export const closeRabbitMQConn = async (): Promise<void> => {
 };
 
 /**
- * Checks the health of a RabbitMQ connection by creating a test channel and checking a queue.
- * @param {string} queue - The name of the queue to check.
+ * Save the queue name for health check purposes.
+ */
+let healthCheckQueue: string | null = null;
+
+/**
+ * Save the queue name for health check purposes.
+ * @param queue
+ */
+export const saveQueueForHealthCheck = (queue: string) => {
+    healthCheckQueue = queue;
+};
+
+/**
+ * Checks the health of a RabbitMQ connection by creating a test channel and checking an already created queue.
  * @returns {Promise<boolean>} A promise that resolves to `true` if the connection is healthy and the queue exists, or `false` otherwise.
  */
-export const isConnectionHealthy = async (queue: string): Promise<boolean> => {
+export const isConnectionHealthy = async (): Promise<boolean> => {
     let isHealthy = false;
     if (isTheConnectionClosed) return isHealthy;
     if (conn === null) return isHealthy;
+    if (healthCheckQueue === null) return isHealthy;
+    const queue = healthCheckQueue;
     // si el check falla, se cierra la conexión:
     // https://github.com/amqp-node/amqplib/issues/649
     const closeListener = (e: Error) => {

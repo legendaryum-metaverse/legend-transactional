@@ -1,5 +1,5 @@
 import { exchange } from '../@types/rabbit-mq';
-import { getConsumeChannel } from '../Connections';
+import { getConsumeChannel, saveQueueForHealthCheck } from '../Connections';
 import { microserviceEvent, type MicroserviceEvent } from '../@types';
 import { getEventObject } from '../utils';
 
@@ -55,6 +55,7 @@ export const createHeaderConsumers = async (queueName: string, events: Microserv
     await channel.assertExchange(exchange.MatchingRequeue, 'headers', { durable: true });
 
     await channel.assertQueue(queueName, { durable: true });
+    saveQueueForHealthCheck(queueName);
 
     await channel.assertQueue(requeueQueue, {
         durable: true,

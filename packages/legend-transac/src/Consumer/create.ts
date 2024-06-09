@@ -1,5 +1,5 @@
 import { QueueConsumerProps, exchange } from '../@types/rabbit-mq';
-import { getConsumeChannel } from '../Connections';
+import { getConsumeChannel, saveQueueForHealthCheck } from '../Connections';
 /**
  * Create consumers for specified queues, bind them to exchanges, and set up requeue mechanism.
  *
@@ -33,6 +33,7 @@ export const createConsumers = async (consumers: QueueConsumerProps[]) => {
         await channel.assertExchange(consumerExchange, 'direct', { durable: true });
         await channel.assertQueue(queueName, { durable: true });
         await channel.bindQueue(queueName, consumerExchange, routingKey);
+        saveQueueForHealthCheck(queueName);
 
         // Set up requeue mechanism by creating a requeue exchange and binding requeue queue to it.
         await channel.assertExchange(exchange.Requeue, 'direct', { durable: true });
