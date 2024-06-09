@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.3.0
+
+### Minor Changes
+
+-   f698b7f: Healthcheck strategy modified
+
 ## 1.2.0
 
 ### Minor Changes
