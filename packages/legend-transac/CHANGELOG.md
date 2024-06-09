@@ -1,5 +1,12 @@
 # legend-transactional
 
+## 1.2.0
+
+### Minor Changes
+
+-   52294f0: - Init class to retrieve the emitters as methods, each one can prepare the connection.
+    -   Cleaning resources that are not used anymore.
+
 ## 1.1.7
 
 ### Patch Changes
