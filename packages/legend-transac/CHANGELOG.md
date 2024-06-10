@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.0
+
+### Minor Changes
+
+-   696dab0: Transactional service to handle saga orchestration
+
 ## 1.3.1
 
 ### Patch Changes
