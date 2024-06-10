@@ -38,7 +38,7 @@ let isReady = false;
  * @see getRabbitMQConn
  * @see getConsumeChannel
  */
-export const prepare = async (url: string) => {
+const prepare = async (url: string) => {
     if (isReady) return;
     saveUri(url);
     await getRabbitMQConn();
