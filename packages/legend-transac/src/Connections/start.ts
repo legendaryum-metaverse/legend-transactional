@@ -48,6 +48,8 @@ export const prepare = async (url: string) => {
 /**
  * Start a global saga listener to handle incoming saga events/commands from all microservices.
  *
+ * @param {string} url - The RabbitMQ URL to establish a connection.
+ *
  * @returns {Promise<Emitter>} Emitter<ConsumerSagaEvents<T>> - A promise that resolves to an emitter
  * for handling the saga events emitted by the specified microservice.
  * @throws {Error} If the RabbitMQ URI is not initialized or there is an issue with the connection.
@@ -81,9 +83,10 @@ export const prepare = async (url: string) => {
  * @see connectToSagaCommandEmitter
  * @see commenceSagaListener
  */
-export const startGlobalSagaStepListener = async <T extends AvailableMicroservices>(): Promise<
-    Emitter<SagaConsumeSagaEvents<T>>
-> => {
+export const startGlobalSagaStepListener = async <T extends AvailableMicroservices>(
+    url: string
+): Promise<Emitter<SagaConsumeSagaEvents<T>>> => {
+    await prepare(url);
     const queueO = {
         queueName: queue.ReplyToSaga,
         exchange: exchange.ReplyToSaga
@@ -95,6 +98,8 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
 };
 /**
  * Start a saga listener to handle incoming **commence saga events**
+ *
+ * @param {string} url - The RabbitMQ URL to establish a connection.
  *
  * @returns {Promise<Emitter>} Emitter<ConsumerCommenceSaga<T>> - A promise that resolves to an emitter
  * for handling the saga emitted to commence a saga.
@@ -126,7 +131,10 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
  * @see connectToSagaCommandEmitter
  * @see startGlobalSagaStepListener
  */
-export const commenceSagaListener = async <U extends SagaTitle>(): Promise<Emitter<CommenceSagaEvents<U>>> => {
+export const commenceSagaListener = async <U extends SagaTitle>(
+    url: string
+): Promise<Emitter<CommenceSagaEvents<U>>> => {
+    await prepare(url);
     const q = {
         queueName: queue.CommenceSaga,
         exchange: exchange.CommenceSaga
@@ -136,40 +144,46 @@ export const commenceSagaListener = async <U extends SagaTitle>(): Promise<Emitt
     void consume<CommenceSagaEvents<U>>(e, q.queueName, commenceSagaConsumeCallback);
     return e;
 };
+
+let transactionalInitialized = false;
 /**
- * Connects to the saga listeners.
- *
- * @param {string} url - The URL of the RabbitMQ server to establish a connection.
- * @returns {Promise} - An object containing the saga listeners.
- * @throws {Error} If the RabbitMQ URI is not initialized or there is an issue with the connection.
- *
+ * A class to connect to the saga orchestration system and handle incoming saga events/commands.
+ * @template T - `AvailableMicroservices` enum.
+ * @template U - `SagaTitle` enum.
+ * @class
  * @example
- * const url = 'amqp://localhost';
- * const {
- *         globalSagaStepListener: g,
- *         commenceSagaListener: c
- *     } = await startSaga(url);
- * // Start listening to the saga events/commands
- * // When not needed anymore, you can close the RabbitMQ connection
- * await stopRabbitMQ();
- * @see stopRabbitMQ
- * @see startGlobalSagaStepListener
- * @see commenceSagaListener
+ *   const t = new Transactional('amqp://localhost');
+ *   const e = await t.startGlobalSagaStepListener();
+ *   e.on('*', (command, { step, channel }) => {
+ *   // Process all incoming saga commands
+ *   });
+ *
+ *   const c = await saga.commenceSagaListener();
+ *   c.on("update_user:image", async ({ channel, saga }) => {
+ *   // Start the 'update_user:image' saga
+ *   });
+ *
+ *   // When not needed anymore, you can close the RabbitMQ connection
+ *   await stopRabbitMQ();
+ *   @see stopRabbitMQ
+ *   @see commenceSagaListener
+ *   @see startGlobalSagaStepListener
  */
-export const startSaga = async <T extends AvailableMicroservices, U extends SagaTitle>(
-    url: string
-): Promise<{
-    globalSagaStepListener: Emitter<SagaConsumeSagaEvents<T>>;
-    commenceSagaListener: Emitter<CommenceSagaEvents<U>>;
-}> => {
-    await prepare(url);
-    const g = await startGlobalSagaStepListener<T>();
-    const c = await commenceSagaListener<U>();
-    return {
-        globalSagaStepListener: g,
-        commenceSagaListener: c
+export class Transactional<T extends AvailableMicroservices, U extends SagaTitle> {
+    constructor(private url: string) {
+        if (transactionalInitialized) {
+            throw new Error('Transactional already initialized');
+        }
+        transactionalInitialized = true;
+    }
+
+    startGlobalSagaStepListener = () => {
+        return startGlobalSagaStepListener<T>(this.url);
     };
-};
+    commenceSagaListener = () => {
+        return commenceSagaListener<U>(this.url);
+    };
+}
 
 /**
  * Configuration for receiving saga commands to a specific microservice and handle incoming subscription events.
@@ -290,9 +304,7 @@ export const connectToEvents = async <T extends AvailableMicroservices, U extend
     void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
     return e;
 };
-/**
- * Configuration for starting a transactional connection to a specific microservice. Allow a singletons connection to a microservice.
- */
+
 let sagaInitialized = false;
 
 /**
