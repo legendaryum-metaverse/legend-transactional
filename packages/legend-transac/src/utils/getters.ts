@@ -1,6 +1,6 @@
 import { AvailableMicroservices, exchange, MicroserviceEvent, QueueConsumerProps } from '../@types';
 
-const getQueueName = (microservice: AvailableMicroservices) => {
+export const getQueueName = (microservice: AvailableMicroservices) => {
     return `${microservice}_saga_commands`;
 };
 
