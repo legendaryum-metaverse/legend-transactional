@@ -61,10 +61,10 @@ export interface EventPayload {
  * Represents the available events in the system.
  */
 export const microserviceEvent = {
-    'PAYMENTS.CANCEL_PRE_PURCHASE_RESERVATION': 'payments.cancel_pre_purchase_reservation',
     'TEST.IMAGE': 'test.image',
     'TEST.MINT': 'test.mint',
     ///////////////////////////
+    'PAYMENTS.CANCEL_PRE_PURCHASE_RESERVATION': 'payments.cancel_pre_purchase_reservation',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
