@@ -25,9 +25,9 @@
     "eslint-config-custom": "workspace:*",
     "jest": "^29.7.0",
     "nodemon": "latest",
-    "prettier": "^3.3.0",
+    "prettier": "^3.3.1",
     "tsup": "latest",
-    "turbo": "^1.13.3",
+    "turbo": "^1.13.4",
     "typescript": "latest"
   },
   "pnpm": {},
@@ -36,6 +36,6 @@
     "pnpm": ">=9.0.0"
   },
   "dependencies": {
-    "@types/node": "^20.14.0"
+    "@types/node": "^20.14.2"
   }
 }
