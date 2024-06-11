@@ -75,7 +75,7 @@ export const microserviceEvent = {
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room-snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
-    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
+    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat'
 } as const;
 /**
  * Available microservices events in the system.
