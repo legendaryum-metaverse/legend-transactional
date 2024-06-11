@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.1
+
+### Patch Changes
+
+-   7cc7f3b: Added new event room-snapshot.first_snapshot to to notify the first saved snapshot of a room.
+
 ## 1.4.0
 
 ### Minor Changes
