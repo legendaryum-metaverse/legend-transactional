@@ -37,6 +37,12 @@ export interface EventPayload {
         message: Record<string, unknown>;
     };
     /**
+     * Event to notify the first saved snapshot of a room.
+     */
+    'room_snapshot.first_snapshot': {
+        slug: string;
+    };
+    /**
      * Event to block chat between two users.
      */
     'social.block_chat': {
@@ -66,6 +72,7 @@ export const microserviceEvent = {
     ///////////////////////////
     'PAYMENTS.CANCEL_PRE_PURCHASE_RESERVATION': 'payments.cancel_pre_purchase_reservation',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
+    'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
     'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat'
