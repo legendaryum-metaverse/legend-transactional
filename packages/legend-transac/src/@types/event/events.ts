@@ -56,6 +56,13 @@ export interface EventPayload {
         userId: string;
         userToUnblockId: string;
     };
+    /**
+     * Event to publish a product in the showcase microservice.
+     */
+
+    'showcase.publish_product': {
+        slug: string;
+    };
 }
 /**
  * Represents the available events in the system.
@@ -68,7 +75,8 @@ export const microserviceEvent = {
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
-    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat'
+    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
+    'SHOWCASE.PUBLISH_PRODUCT': 'showcase.publish_product'
 } as const;
 /**
  * Available microservices events in the system.
