@@ -37,6 +37,12 @@ export interface EventPayload {
         message: Record<string, unknown>;
     };
     /**
+     * Event to notify the first saved snapshot of a room.
+     */
+    'room-snapshot.first_snapshot': {
+        slug: string;
+    };
+    /**
      * Event to block chat between two users.
      */
     'social.block_chat': {
@@ -56,13 +62,6 @@ export interface EventPayload {
         userId: string;
         userToUnblockId: string;
     };
-    /**
-     * Event to publish a product in the showcase microservice.
-     */
-
-    'showcase.publish_product': {
-        slug: string;
-    };
 }
 /**
  * Represents the available events in the system.
@@ -73,10 +72,10 @@ export const microserviceEvent = {
     ///////////////////////////
     'PAYMENTS.CANCEL_PRE_PURCHASE_RESERVATION': 'payments.cancel_pre_purchase_reservation',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
+    'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room-snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
     'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
-    'SHOWCASE.PUBLISH_PRODUCT': 'showcase.publish_product'
 } as const;
 /**
  * Available microservices events in the system.
