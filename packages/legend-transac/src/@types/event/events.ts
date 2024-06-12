@@ -22,14 +22,6 @@ export interface EventPayload {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Event to cancel a pre-purchase reservation for a resource in room-inventory
-     */
-    'payments.cancel_pre_purchase_reservation': {
-        userId: string;
-        resourceId: string;
-        reservedQuantity: number;
-    };
-    /**
      * Websocket event to notify the client about a payment related event.
      */
     'payments.notify_client': {
@@ -70,7 +62,6 @@ export const microserviceEvent = {
     'TEST.IMAGE': 'test.image',
     'TEST.MINT': 'test.mint',
     ///////////////////////////
-    'PAYMENTS.CANCEL_PRE_PURCHASE_RESERVATION': 'payments.cancel_pre_purchase_reservation',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
