@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.3
+
+### Patch Changes
+
+-   0dfc9d6: Delete commands and an event not longer used in the asset resource purchase flow
+
 ## 1.4.2
 
 ### Patch Changes
