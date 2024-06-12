@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.2
+
+### Patch Changes
+
+-   f19b678: new command 'SavePurchasedResource' in room-inventory and remove 'PurchaseResource' command in room-snapshot
+
 ## 1.4.1
 
 ### Patch Changes
