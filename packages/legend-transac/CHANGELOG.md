@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.4
+
+### Patch Changes
+
+-   18e5d5a: new event 'room_creator.update_user_room' to update user room
+
 ## 1.4.3
 
 ### Patch Changes
