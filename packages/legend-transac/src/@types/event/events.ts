@@ -29,7 +29,7 @@ export interface EventPayload {
         message: Record<string, unknown>;
     };
     /**
-     * Event to change the template id of a room
+     * Event to update user room
      */
     'room_creator.update_user_room': {
         room: {
