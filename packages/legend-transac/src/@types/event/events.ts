@@ -1,4 +1,21 @@
 /**
+ * Room in Room Creator
+ */
+export interface Room {
+    Id: string;
+    CreateAt: string;
+    UpdateAt: string;
+    type: string;
+    name: string;
+    ownerId: string;
+    ownerEmail: string;
+    maxPlayers: number;
+    maxLayers: number;
+    templateId: string;
+    haveEditor: boolean;
+}
+
+/**
  * Represents the available event's payload in the system.
  */
 export interface EventPayload {
@@ -32,27 +49,13 @@ export interface EventPayload {
      * Event to notify the creation of a room.
      */
     'room_creator.created_room': {
-        name: string;
-        id: string;
-        product: Record<string, unknown>;
+        room: Room;
     };
     /**
      * Event emitted when a room is updated.
      */
     'room_creator.updated_room': {
-        room: {
-            Id: string;
-            CreateAt: string;
-            UpdateAt: string;
-            type: string;
-            name: string;
-            ownerId: string;
-            ownerEmail: string;
-            maxPlayers: number;
-            maxLayers: number;
-            templateId: string;
-            haveEditor: boolean;
-        };
+        room: Room;
     };
     /**
      * Event to notify the first saved snapshot of a room.
