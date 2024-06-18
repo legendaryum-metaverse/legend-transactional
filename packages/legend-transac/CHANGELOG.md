@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.5
+
+### Patch Changes
+
+-   60454ba: new event room_creator.created_room to create a new product virtual in showcase
+
 ## 1.4.4
 
 ### Patch Changes
