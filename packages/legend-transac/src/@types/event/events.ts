@@ -29,9 +29,9 @@ export interface EventPayload {
         message: Record<string, unknown>;
     };
     /**
-     * Event to update user room
+     * Event emitted when a room is updated.
      */
-    'room_creator.update_user_room': {
+    'room_creator.updated_room': {
         room: {
             Id: string;
             CreateAt: string;
@@ -81,7 +81,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
-    'ROOM_CREATOR.UPDATE_USER_ROOM': 'room_creator.update_user_room',
+    'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.UPDATED_ROOM',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
