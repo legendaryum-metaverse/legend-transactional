@@ -31,9 +31,20 @@ export interface EventPayload {
     /**
      * Event to change the template id of a room
      */
-    'room_creator.change_template_id': {
-        roomId: string;
-        templateId: string;
+    'room_creator.update_user_room': {
+        room: {
+            Id: string;
+            CreateAt: string;
+            UpdateAt: string;
+            type: string;
+            name: string;
+            ownerId: string;
+            ownerEmail: string;
+            maxPlayers: number;
+            maxLayers: number;
+            templateId: string;
+            haveEditor: boolean;
+        };
     };
     /**
      * Event to notify the first saved snapshot of a room.
@@ -70,7 +81,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
-    'ROOM_CREATOR.CHANGE_TEMPLATE_ID': 'room_creator.change_template_id',
+    'ROOM_CREATOR.UPDATE_USER_ROOM': 'room_creator.update_user_room',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
