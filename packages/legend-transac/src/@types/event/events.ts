@@ -81,7 +81,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
-    'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.UPDATED_ROOM',
+    'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
