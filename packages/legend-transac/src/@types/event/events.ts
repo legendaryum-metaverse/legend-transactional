@@ -1,4 +1,21 @@
 /**
+ * Room in Room Creator
+ */
+export interface Room {
+    Id: string;
+    CreateAt: string;
+    UpdateAt: string;
+    type: string;
+    name: string;
+    ownerId: string;
+    ownerEmail: string;
+    maxPlayers: number;
+    maxLayers: number;
+    templateId: string;
+    haveEditor: boolean;
+}
+
+/**
  * Represents the available event's payload in the system.
  */
 export interface EventPayload {
@@ -29,22 +46,16 @@ export interface EventPayload {
         message: Record<string, unknown>;
     };
     /**
+     * Event to notify the creation of a room.
+     */
+    'room_creator.created_room': {
+        room: Room;
+    };
+    /**
      * Event emitted when a room is updated.
      */
     'room_creator.updated_room': {
-        room: {
-            Id: string;
-            CreateAt: string;
-            UpdateAt: string;
-            type: string;
-            name: string;
-            ownerId: string;
-            ownerEmail: string;
-            maxPlayers: number;
-            maxLayers: number;
-            templateId: string;
-            haveEditor: boolean;
-        };
+        room: Room;
     };
     /**
      * Event to notify the first saved snapshot of a room.
@@ -81,6 +92,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
+    'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
