@@ -60,13 +60,6 @@ export interface EventPayload {
         message: Record<string, unknown>;
     };
     /**
-     * Event emitted when a user changes buildings within the island
-     */
-    'room_creator.building_change_in_island': {
-        building: string;
-        roomType: RoomType;
-    };
-    /**
      * Event to notify the creation of a room.
      */
     'room_creator.created_room': {
@@ -77,6 +70,13 @@ export interface EventPayload {
      */
     'room_creator.updated_room': {
         room: Room;
+    };
+    /**
+     * Event emitted when a user changes buildings within the island
+     */
+    'room_snapshot.building_change_in_island': {
+        building: string;
+        roomType: RoomType;
     };
     /**
      * Event to notify the first saved snapshot of a room.
@@ -113,9 +113,9 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
-    'ROOM_CREATOR.BUILDING_CHANGE_IN_ISLAND': 'room_creator.building_change_in_island',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
+    'ROOM_SNAPSHOT.BUILDING_CHANGE_IN_ISLAND': 'room_snapshot.building_change_in_island',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
