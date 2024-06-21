@@ -1,11 +1,25 @@
 /**
+ * Types of rooms
+ */
+export const RoomTypes = {
+    ISLAND: 'island',
+    HOUSE: 'house',
+    HALL_OF_FAME: 'hallOfFame'
+} as const;
+
+/**
+ * Type of RoomTypes
+ */
+export type RoomType = (typeof RoomTypes)[keyof typeof RoomTypes];
+
+/**
  * Room in Room Creator
  */
 export interface Room {
     Id: string;
     CreateAt: string;
     UpdateAt: string;
-    type: string;
+    type: RoomType;
     name: string;
     ownerId: string;
     ownerEmail: string;
@@ -44,6 +58,13 @@ export interface EventPayload {
     'payments.notify_client': {
         room: `payments-${string}`;
         message: Record<string, unknown>;
+    };
+    /**
+     * Event emitted when a user changes buildings within the island
+     */
+    'room_creator.building_change_in_island': {
+        building: string;
+        roomType: RoomType;
     };
     /**
      * Event to notify the creation of a room.
@@ -92,6 +113,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
+    'ROOM_CREATOR.BUILDING_CHANGE_IN_ISLAND': 'room_creator.building_change_in_island',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
