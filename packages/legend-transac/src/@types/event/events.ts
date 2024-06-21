@@ -75,8 +75,9 @@ export interface EventPayload {
      * Event emitted when a user changes buildings within the island
      */
     'room_snapshot.building_change_in_island': {
+        userId: string;
+        roomId: string;
         building: string;
-        roomType: RoomType;
     };
     /**
      * Event to notify the first saved snapshot of a room.
