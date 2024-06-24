@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.7
+
+### Patch Changes
+
+-   70e5a7e: test_deploy
+
 ## 1.4.6
 
 ### Patch Changes
