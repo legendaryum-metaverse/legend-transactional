@@ -72,6 +72,13 @@ export interface EventPayload {
         room: Room;
     };
     /**
+     * Event emitted when the image of a virtual product's building is updated
+     */
+    'room_inventory.update_vp_building_image': {
+        images: string[];
+        roomId: string;
+    };
+    /**
      * Event emitted when a user changes buildings within the island
      */
     'room_snapshot.building_change_in_island': {
@@ -116,6 +123,7 @@ export const microserviceEvent = {
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
+    'ROOM_INVENTORY.UPDATE_VP_BUILDING_IMAGE': 'room_inventory.update_vp_building_image',
     'ROOM_SNAPSHOT.BUILDING_CHANGE_IN_ISLAND': 'room_snapshot.building_change_in_island',
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
