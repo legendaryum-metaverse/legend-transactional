@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.12
+
+### Patch Changes
+
+-   464f86d: test
+
 ## 1.4.11
 
 ### Patch Changes
