@@ -83,7 +83,6 @@ export interface EventPayload {
      */
     'room_snapshot.building_change_in_island': {
         userId: string;
-        roomId: string;
         building: string;
     };
     /**
