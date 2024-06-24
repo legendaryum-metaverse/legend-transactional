@@ -1,5 +1,12 @@
 # legend-transactional
 
+## 1.4.6
+
+### Patch Changes
+
+-   154ee03: - new event room_inventory.update_vp_building_image
+    -   new event room_snapshot.building_change_in_island
+
 ## 1.4.5
 
 ### Patch Changes
