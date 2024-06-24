@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.10
+
+### Patch Changes
+
+-   451946a: test
+
 ## 1.4.9
 
 ### Patch Changes
