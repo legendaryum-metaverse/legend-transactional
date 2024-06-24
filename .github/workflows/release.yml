@@ -60,6 +60,17 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           #
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Debug
+        if: always()
+        # The objective is to travel the logs to find the error, make a for in the logs with cat
+        # /home/runner/.npm/_logs/2024-06-24T16_27_24_651Z-debug-0.log
+        run: | 
+          echo "Debugging logs"
+          for file in $(ls -1 /home/runner/.npm/_logs/*.log); do
+            echo -e "\033[1;31m$file\033[0m"
+            cat $file
+          done
+
       - name: Set legend-transactional Package and Version
         id: set_env
         if: steps.changesets.outputs.published == 'true'
