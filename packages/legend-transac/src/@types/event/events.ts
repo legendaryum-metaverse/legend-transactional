@@ -82,7 +82,8 @@ export interface EventPayload {
      */
     'room_inventory.update_vp_building_image': {
         images: string[];
-        roomId: string;
+        roomType: string;
+        userId: string;
     };
     /**
      * Event emitted when a user changes buildings within the island
