@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.8
+
+### Patch Changes
+
+-   d92e99c: update payload in room_inventory.update_vp_building_image event
+
 ## 1.4.7
 
 ### Patch Changes
