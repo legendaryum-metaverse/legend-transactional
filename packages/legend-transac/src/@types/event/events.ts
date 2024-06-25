@@ -53,6 +53,12 @@ export interface EventPayload {
     };
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
+     * Event to notify the deletion of a user.
+     */
+    'auth.deleted_user': {
+        userId: string;
+    };
+    /**
      * Websocket event to notify the client about a payment related event.
      */
     'payments.notify_client': {
@@ -119,6 +125,7 @@ export const microserviceEvent = {
     'TEST.IMAGE': 'test.image',
     'TEST.MINT': 'test.mint',
     ///////////////////////////
+    'AUTH.DELETED_USER': 'auth.deleted_user',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
