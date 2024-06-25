@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.7
+
+### Patch Changes
+
+-   162a3f6: new event auth.deleted_user to delete all related info
+
 ## 1.4.6
 
 ### Patch Changes
