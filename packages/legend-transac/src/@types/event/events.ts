@@ -76,6 +76,7 @@ export interface EventPayload {
      */
     'room_creator.updated_room': {
         room: Room;
+        images: string[];
     };
     /**
      * Event emitted when the image of a virtual product's building is updated
