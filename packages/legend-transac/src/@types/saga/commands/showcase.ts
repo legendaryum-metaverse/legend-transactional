@@ -3,9 +3,9 @@
  */
 export const showcaseCommands = {
     /**
-     * Command to update the product virtual information.
+     * Command to update the product virtual and randomize the pv-image related.
      */
-    update_product_virtual: 'update_product_virtual'
+    randomize_island_pv_image: 'randomize_island_pv_image'
 } as const;
 /**
  * Available commands for the "legend-showcase" microservice.

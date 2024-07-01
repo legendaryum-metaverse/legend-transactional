@@ -10,7 +10,7 @@ export const sagaTitle = {
      */
     PurchaseResourceFlow: 'purchase_resource_flow',
     /**
-     * Saga used to update the island room template.
+     * Saga used to update the island room template and randomize the pv-image related.
      */
     UpdateIslandRoomTemplate: 'update_island_room_template'
 } as const;
