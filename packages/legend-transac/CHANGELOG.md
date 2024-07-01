@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.9
+
+### Patch Changes
+
+-   3b26ae0: Added new saga update_island_room_template to update data from island rooms in room creators and showcase
+
 ## 1.4.8
 
 ### Patch Changes
