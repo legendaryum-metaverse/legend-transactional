@@ -48,7 +48,11 @@ export const availableMicroservices = {
     /**
      * Represents the "rapid-messaging" microservice.
      */
-    RapidMessaging: 'rapid-messaging'
+    RapidMessaging: 'rapid-messaging',
+    /**
+     * Represents the "legend-missions" microservice.
+     */
+    Missions: 'legend-missions'
 } as const;
 /**
  * Type of available microservices in the system.
