@@ -59,6 +59,13 @@ export interface EventPayload {
         userId: string;
     };
     /**
+     * Event to give the user coins for completing a mission
+     */
+    'legend_missions.completed_mission_reward': {
+        userId: string;
+        coins: number;
+    };
+    /**
      * Websocket event to notify the client about a payment related event.
      */
     'payments.notify_client': {
@@ -127,6 +134,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'AUTH.DELETED_USER': 'auth.deleted_user',
+    'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
