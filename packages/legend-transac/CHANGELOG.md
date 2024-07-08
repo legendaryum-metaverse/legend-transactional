@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.10
+
+### Patch Changes
+
+-   83a51ee: event to give the user coins for completing a mission
+
 ## 1.4.9
 
 ### Patch Changes
