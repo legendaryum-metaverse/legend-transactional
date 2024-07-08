@@ -8,11 +8,7 @@ export const sagaTitle = {
     /**
      * Saga used in the flow to purchase resources and deduct coins from the user.
      */
-    PurchaseResourceFlow: 'purchase_resource_flow',
-    /**
-     * Saga used to update the island room template and randomize the pv-image related.
-     */
-    UpdateIslandRoomTemplate: 'update_island_room_template'
+    PurchaseResourceFlow: 'purchase_resource_flow'
 } as const;
 /**
  * Available saga titles.
@@ -30,12 +26,6 @@ export interface SagaCommencePayload {
         resourceId: string;
         price: number;
         quantity: number;
-    };
-    ['update_island_room_template']: {
-        roomId: string;
-        templateId: string;
-        userId: string;
-        images: string[];
     };
 }
 
