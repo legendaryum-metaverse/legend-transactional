@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.12
+
+### Patch Changes
+
+-   b605c30: micro missions added to available microservices list
+
 ## 1.4.11
 
 ### Patch Changes
