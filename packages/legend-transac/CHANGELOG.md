@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.11
+
+### Patch Changes
+
+-   c1965b6: Delete update_island_room_template_commence_saga
+
 ## 1.4.10
 
 ### Patch Changes
