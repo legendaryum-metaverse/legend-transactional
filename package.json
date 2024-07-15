@@ -25,7 +25,7 @@
     "eslint-config-custom": "workspace:*",
     "jest": "^29.7.0",
     "nodemon": "latest",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "tsup": "latest",
     "turbo": "^1.13.4",
     "typescript": "latest"
