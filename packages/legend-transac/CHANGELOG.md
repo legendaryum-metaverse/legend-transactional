@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.13
+
+### Patch Changes
+
+-   eaa4eca: Event to set a mission in progress
+
 ## 1.4.12
 
 ### Patch Changes
