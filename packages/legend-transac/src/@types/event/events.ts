@@ -66,6 +66,12 @@ export interface EventPayload {
         coins: number;
     };
     /**
+     * Event to set a mission in progress
+     */
+    'legend_missions.ongoing_mission': {
+        redisKey: string;
+    };
+    /**
      * Websocket event to notify the client about a payment related event.
      */
     'payments.notify_client': {
@@ -135,6 +141,7 @@ export const microserviceEvent = {
     ///////////////////////////
     'AUTH.DELETED_USER': 'auth.deleted_user',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
+    'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
