@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.14
+
+### Patch Changes
+
+-   9465346: no actual content is changed, only testing the new turbo v2 and swc 0.4
+
 ## 1.4.13
 
 ### Patch Changes
