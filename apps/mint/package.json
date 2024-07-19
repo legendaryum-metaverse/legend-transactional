@@ -14,13 +14,13 @@
     "tsconfig": "workspace:*"
   },
   "scripts": {
-    "build": "swc src -d dist",
+    "build": "swc src -s -d dist --strip-leading-paths",
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
     "start": "node ./dist/server.js",
     "type-check": "tsc --noEmit --project tsconfig.json",
-    "watch-compile": "swc src -w --out-dir dist",
+    "watch-compile": "swc src -w --out-dir dist --strip-leading-paths",
     "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/server.js"
   },
   "keywords": [],

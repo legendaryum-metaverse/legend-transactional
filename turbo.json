@@ -1,12 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["**/*", "!.turbo/**/*", "!e2e/**/*", "!performance/**/*"],
-      "outputs": ["dist/**/*"],
-      "outputMode": "new-only"
+      "outputs": ["dist/**/*"]
     },
     "build:dev": {
       "dependsOn": ["^build:dev"],
@@ -16,14 +15,12 @@
     "lint": {
       "dependsOn": ["^build:dev"],
       "inputs": ["src/**"],
-      "env": ["PORT", "RABBIT_URI"],
-      "outputMode": "new-only"
+      "env": ["PORT", "RABBIT_URI"]
     },
     "lint:fix": {
       "dependsOn": ["^build:dev"],
       "inputs": ["src/**"],
-      "env": ["PORT", "RABBIT_URI"],
-      "outputMode": "new-only"
+      "env": ["PORT", "RABBIT_URI"]
     },
     "saga#type-check": {
       "dependsOn": ["legend-transactional#build:dev"],
@@ -38,8 +35,7 @@
       "inputs": ["src/**"]
     },
     "type-check": {
-      "inputs": ["src/**"],
-      "outputMode": "new-only"
+      "inputs": ["src/**"]
     },
     "dev": {
       "dependsOn": ["legend-transactional#build:dev"],
@@ -47,12 +43,10 @@
       "persistent": true
     },
     "test": {
-      "outputMode": "new-only",
       "env": ["INPUT_JSON-STRING", "IS_JEST-TEST"]
     },
     "test:report": {
-      "outputs": ["coverage/**/*"],
-      "outputMode": "new-only"
+      "outputs": ["coverage/**/*"]
     }
   }
 }

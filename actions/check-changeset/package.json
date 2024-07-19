@@ -17,7 +17,7 @@
     "tty-table": "^4.2.3"
   },
   "scripts": {
-    "build": "swc src -d dist",
+    "build": "swc src -s -d dist --strip-leading-paths",
     "package": "pnpm run build && ncc build --source-map --license licenses.txt",
     "dev": "concurrently \"pnpm run watch-compile\" \"pnpm run watch-dev\"",
     "lint": "eslint --ext .ts src test",
@@ -28,7 +28,7 @@
     "test:report": "./scripts/run_test.sh npx jest --runInBand --detectOpenHandles --forceExit --coverage",
     "start": "node ./dist/index.js",
     "type-check": "tsc --noEmit --project tsconfig.json",
-    "watch-compile": "swc src -w --out-dir dist",
+    "watch-compile": "swc src -w --out-dir dist --strip-leading-paths",
     "watch-dev": "nodemon --watch \"dist/**/*\" -e js ./dist/index.js"
   },
   "keywords": [],

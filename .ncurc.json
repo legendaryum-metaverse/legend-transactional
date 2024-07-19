@@ -1,3 +1,3 @@
 {
-  "reject": ["chalk", "markdown-table", "@swc/cli"]
+  "reject": ["chalk", "markdown-table", "eslint"]
 }
