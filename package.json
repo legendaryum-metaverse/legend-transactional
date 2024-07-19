@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
-    "@swc/cli": "^0.1.65",
+    "@swc/cli": "^0.4.0",
     "@swc/jest": "^0.2.36",
     "@types/jest": "^29.5.12",
     "concurrently": "^8.2.2",
@@ -25,9 +25,9 @@
     "eslint-config-custom": "workspace:*",
     "jest": "^29.7.0",
     "nodemon": "latest",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "tsup": "latest",
-    "turbo": "^1.13.4",
+    "turbo": "^2.0.8",
     "typescript": "latest"
   },
   "pnpm": {},
@@ -35,7 +35,8 @@
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
+  "packageManager": "pnpm@9.5.0",
   "dependencies": {
-    "@types/node": "^20.14.10"
+    "@types/node": "^20.14.11"
   }
 }
