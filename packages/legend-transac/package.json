@@ -1,6 +1,6 @@
 {
   "name": "legend-transactional",
-  "version": "1.4.14",
+  "version": "1.4.15",
   "description": "A simple transactional, event-driven communication framework for microservices using RabbitMQ",
   "author": "Jorge Clavijo <jym272@gmail.com> (https://github.com/jym272)",
   "license": "MIT",
