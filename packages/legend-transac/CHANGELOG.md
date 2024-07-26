@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.15
+
+### Patch Changes
+
+-   27ff94a: Event to logout a user from all micros.
+
 ## 1.4.14
 
 ### Patch Changes
