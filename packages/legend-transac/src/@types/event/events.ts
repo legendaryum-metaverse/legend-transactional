@@ -59,6 +59,12 @@ export interface EventPayload {
         userId: string;
     };
     /**
+     * Event to logout a user.
+     */
+    'auth.logout_user': {
+        userId: string;
+    };
+    /**
      * Event to give the user coins for completing a mission
      */
     'legend_missions.completed_mission_reward': {
@@ -140,6 +146,7 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'AUTH.DELETED_USER': 'auth.deleted_user',
+    'AUTH.LOGOUT_USER': 'auth.logout_user',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
