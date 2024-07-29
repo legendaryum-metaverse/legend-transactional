@@ -103,6 +103,8 @@ export interface EventPayload {
         images: string[];
         roomType: string;
         userId: string;
+        username: string;
+        userEmail: string;
     };
     /**
      * Event emitted when a user changes buildings within the island
@@ -110,6 +112,8 @@ export interface EventPayload {
     'room_snapshot.building_change_in_island': {
         userId: string;
         building: string;
+        username: string;
+        userEmail: string;
     };
     /**
      * Event to notify the first saved snapshot of a room.
