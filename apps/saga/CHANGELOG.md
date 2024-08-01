@@ -1,5 +1,12 @@
 # saga
 
+## 0.0.76
+
+### Patch Changes
+
+-   Updated dependencies [bf124d2]
+    -   legend-transactional@1.4.16
+
 ## 0.0.75
 
 ### Patch Changes
