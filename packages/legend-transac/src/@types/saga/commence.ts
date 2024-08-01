@@ -2,10 +2,6 @@ import { SagaCommenceConsumeChannel } from '../../Consumer';
 
 export const sagaTitle = {
     /**
-     * Saga used to update the social user's image.
-     */
-    UpdateUserImage: 'update_user:image',
-    /**
      * Saga used in the flow to purchase resources and deduct coins from the user.
      */
     PurchaseResourceFlow: 'purchase_resource_flow'
@@ -16,11 +12,6 @@ export const sagaTitle = {
 export type SagaTitle = (typeof sagaTitle)[keyof typeof sagaTitle];
 
 export interface SagaCommencePayload {
-    ['update_user:image']: {
-        userId: string;
-        folderName: string;
-        bucketName: string;
-    };
     ['purchase_resource_flow']: {
         userId: string;
         resourceId: string;
