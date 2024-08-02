@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.17
+
+### Patch Changes
+
+-   081dab3: delete step in auth command to update social user image
+
 ## 1.4.16
 
 ### Patch Changes
