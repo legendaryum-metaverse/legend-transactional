@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.18
+
+### Patch Changes
+
+-   336cfa8: coins update subscription event
+
 ## 1.4.17
 
 ### Patch Changes
