@@ -37,6 +37,6 @@
   },
   "packageManager": "pnpm@9.6.0",
   "dependencies": {
-    "@types/node": "^20.14.13"
+    "@types/node": "^20.14.14"
   }
 }
