@@ -56,7 +56,7 @@ export const availableMicroservices = {
     /**
      * Represents the "social-media-rooms" microservice.
      */
-    SocialMediaRooms: 'social-media-rooms',
+    SocialMediaRooms: 'social-media-rooms'
 } as const;
 /**
  * Type of available microservices in the system.
