@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.19
+
+### Patch Changes
+
+-   b1e371e: micro social media rooms added to available microservices list
+
 ## 1.4.18
 
 ### Patch Changes
