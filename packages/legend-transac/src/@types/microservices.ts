@@ -18,13 +18,29 @@ export const availableMicroservices = {
      */
     Auth: 'auth',
     /**
+     * Represents the "legend-missions" microservice.
+     */
+    Missions: 'legend-missions',
+    /**
      * Represents the "payments" microservice.
      */
     Payments: 'payments',
     /**
+     * Represents the "rapid-messaging" microservice.
+     */
+    RapidMessaging: 'rapid-messaging',
+    /**
      * Represents the "room-creator" microservice.
      */
     RoomCreator: 'room-creator',
+    /**
+     * Represents the "room-inventory" microservice.
+     */
+    RoomInventory: 'room-inventory',
+    /**
+     * Represents the "room-snapshot" microservice.
+     */
+    RoomSnapshot: 'room-snapshot',
     /**
      * Represents the "legend-showcase" microservice.
      */
@@ -34,25 +50,13 @@ export const availableMicroservices = {
      */
     Social: 'social',
     /**
+     * Represents the "social-media-rooms" microservice.
+     */
+    SocialMediaRooms: 'social-media-rooms',
+    /**
      * Represents the "legend-storage" microservice.
      */
-    Storage: 'legend-storage',
-    /**
-     * Represents the "room-snapshot" microservice.
-     */
-    RoomSnapshot: 'room-snapshot',
-    /**
-     * Represents the "room-inventory" microservice.
-     */
-    RoomInventory: 'room-inventory',
-    /**
-     * Represents the "rapid-messaging" microservice.
-     */
-    RapidMessaging: 'rapid-messaging',
-    /**
-     * Represents the "legend-missions" microservice.
-     */
-    Missions: 'legend-missions'
+    Storage: 'legend-storage'
 } as const;
 /**
  * Type of available microservices in the system.
