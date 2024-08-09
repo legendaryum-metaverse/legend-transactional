@@ -31,13 +31,29 @@ export interface CommandMap {
      */
     [availableMicroservices.Auth]: AuthCommands;
     /**
+     * Represents the mapping of "legend-missions" microservice commands.
+     */
+    [availableMicroservices.Missions]: MissionsCommands;
+    /**
      * Represents the mapping of "payments" microservice commands.
      */
     [availableMicroservices.Payments]: PaymentCommands;
     /**
+     * Represents the mapping of "rapid-messaging" microservice commands.
+     */
+    [availableMicroservices.RapidMessaging]: RapidMessagingCommands;
+    /**
      * Represents the mapping of "room-creator" microservice commands.
      */
     [availableMicroservices.RoomCreator]: RoomCreatorCommands;
+    /**
+     * Represents the mapping of "room-inventory" microservice commands.
+     */
+    [availableMicroservices.RoomInventory]: RoomInventoryCommands;
+    /**
+     * Represents the mapping of "room-snapshot" microservice commands.
+     */
+    [availableMicroservices.RoomSnapshot]: RoomSnapshotCommands;
     /**
      * Represents the mapping of "social" microservice commands.
      */
@@ -47,29 +63,13 @@ export interface CommandMap {
      */
     [availableMicroservices.Social]: SocialCommands;
     /**
-     * Represents the mapping of "legend-storage" microservice commands.
-     */
-    [availableMicroservices.Storage]: StorageCommands;
-    /**
-     * Represents the mapping of "room-snapshot" microservice commands.
-     */
-    [availableMicroservices.RoomSnapshot]: RoomSnapshotCommands;
-    /**
-     * Represents the mapping of "room-inventory" microservice commands.
-     */
-    [availableMicroservices.RoomInventory]: RoomInventoryCommands;
-    /**
-     * Represents the mapping of "rapid-messaging" microservice commands.
-     */
-    [availableMicroservices.RapidMessaging]: RapidMessagingCommands;
-    /**
-     * Represents the mapping of "legend-missions" microservice commands.
-     */
-    [availableMicroservices.Missions]: MissionsCommands;
-    /**
      * Represents the mapping of "social-media-rooms" microservice commands.
      */
     [availableMicroservices.SocialMediaRooms]: SocialMediaRoomsCommands;
+    /**
+     * Represents the mapping of "legend-storage" microservice commands.
+     */
+    [availableMicroservices.Storage]: StorageCommands;
 }
 /**
  * Represents a command specific to a microservice.
