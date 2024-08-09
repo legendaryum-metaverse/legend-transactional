@@ -5,4 +5,4 @@ export const socialMediaRoomsCommands = {} as const;
 /**
  * Available commands for the "social-media-rooms" microservice.
  */
-export type SocialMediaRoomsCommandsCommands = (typeof socialMediaRoomsCommands)[keyof typeof socialMediaRoomsCommands];
+export type SocialMediaRoomsCommands = (typeof socialMediaRoomsCommands)[keyof typeof socialMediaRoomsCommands];
