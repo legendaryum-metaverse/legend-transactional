@@ -11,6 +11,7 @@ import { AvailableMicroservices, availableMicroservices } from '../../microservi
 import { RoomInventoryCommands } from './room-inventory';
 import { RapidMessagingCommands } from './rapid-messaging';
 import { MissionsCommands } from './missions';
+import { SocialMediaRoomsCommandsCommands } from './social-media-rooms';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -65,6 +66,10 @@ export interface CommandMap {
      * Represents the mapping of "legend-missions" microservice commands.
      */
     [availableMicroservices.Missions]: MissionsCommands;
+    /**
+     * Represents the mapping of "social-media-rooms" microservice commands.
+     */
+    [availableMicroservices.SocialMediaRooms]: SocialMediaRoomsCommandsCommands;
 }
 /**
  * Represents a command specific to a microservice.

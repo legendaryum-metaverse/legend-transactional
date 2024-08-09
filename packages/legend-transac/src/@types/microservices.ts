@@ -52,7 +52,11 @@ export const availableMicroservices = {
     /**
      * Represents the "legend-missions" microservice.
      */
-    Missions: 'legend-missions'
+    Missions: 'legend-missions',
+    /**
+     * Represents the "social-media-rooms" microservice.
+     */
+    SocialMediaRooms: 'social-media-rooms',
 } as const;
 /**
  * Type of available microservices in the system.
