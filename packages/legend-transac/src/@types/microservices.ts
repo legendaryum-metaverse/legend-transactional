@@ -42,6 +42,10 @@ export const availableMicroservices = {
      */
     RoomSnapshot: 'room-snapshot',
     /**
+     * Represents the "legend-send-email" microservice.
+     */
+    SendEmail: 'legend-send-email',
+    /**
      * Represents the "legend-showcase" microservice.
      */
     Showcase: 'legend-showcase',

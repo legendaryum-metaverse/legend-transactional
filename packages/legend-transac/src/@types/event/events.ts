@@ -30,6 +30,20 @@ export interface Room {
 }
 
 /**
+ * Types of Payment Email Types
+ */
+export const PaymentEmailTypes = {
+    PURCHASE: 'purchase',
+    SUBSCRIPTION: 'subscription',
+    NEW_SUBSCRIPTION: 'new_subscription'
+} as const;
+
+/**
+ * Type of Payment Email Types
+ */
+export type PaymentEmailType = (typeof PaymentEmailTypes)[keyof typeof PaymentEmailTypes];
+
+/**
  * Represents the available event's payload in the system.
  */
 export interface EventPayload {
@@ -90,6 +104,14 @@ export interface EventPayload {
     'payments.notify_client': {
         room: `payments-${string}`;
         message: Record<string, unknown>;
+    };
+    /**
+     * Event to send an email to users.
+     */
+    'payments.send_email': {
+        userId: string;
+        emailType: PaymentEmailType;
+        coins: number;
     };
     /**
      * Event to notify the creation of a room.
@@ -158,6 +180,7 @@ export const microserviceEvent = {
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
+    'PAYMENTS.SEND_EMAIL': 'payments.send_email',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_INVENTORY.UPDATE_VP_BUILDING_IMAGE': 'room_inventory.update_vp_building_image',
