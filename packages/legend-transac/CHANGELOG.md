@@ -1,5 +1,13 @@
 # legend-transactional
 
+## 1.4.20
+
+### Patch Changes
+
+-   ae2fc9f: micro lengend-send-email added to available microservices list
+
+    Event to set a send a new email to a user
+
 ## 1.4.19
 
 ### Patch Changes
