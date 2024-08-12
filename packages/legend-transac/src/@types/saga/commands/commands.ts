@@ -12,6 +12,7 @@ import { RoomInventoryCommands } from './room-inventory';
 import { RapidMessagingCommands } from './rapid-messaging';
 import { MissionsCommands } from './missions';
 import { SocialMediaRoomsCommands } from './social-media-rooms';
+import { SendEmailCommands } from './send-email';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -54,6 +55,10 @@ export interface CommandMap {
      * Represents the mapping of "room-snapshot" microservice commands.
      */
     [availableMicroservices.RoomSnapshot]: RoomSnapshotCommands;
+    /**
+     * Represents the mapping of "legend-send-email" microservice commands.
+     */
+    [availableMicroservices.SendEmail]: SendEmailCommands;
     /**
      * Represents the mapping of "social" microservice commands.
      */

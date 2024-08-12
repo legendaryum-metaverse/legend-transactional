@@ -7,6 +7,7 @@ export * from './rapid-messaging';
 export * from './room-inventory';
 export * from './room-snapshot';
 export * from './roomCreator';
+export * from './send-email';
 export * from './showcase';
 export * from './social';
 export * from './social-media-rooms';

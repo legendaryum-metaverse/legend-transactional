@@ -56,7 +56,11 @@ export const availableMicroservices = {
     /**
      * Represents the "legend-storage" microservice.
      */
-    Storage: 'legend-storage'
+    Storage: 'legend-storage',
+    /**
+     * Represents the "legend-send-email" microservice.
+    */
+    SendEmail: 'legend-send-email'
 } as const;
 /**
  * Type of available microservices in the system.
