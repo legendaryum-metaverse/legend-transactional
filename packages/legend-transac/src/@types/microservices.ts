@@ -42,6 +42,10 @@ export const availableMicroservices = {
      */
     RoomSnapshot: 'room-snapshot',
     /**
+     * Represents the "legend-send-email" microservice.
+     */
+    SendEmail: 'legend-send-email',
+    /**
      * Represents the "legend-showcase" microservice.
      */
     Showcase: 'legend-showcase',
@@ -56,11 +60,7 @@ export const availableMicroservices = {
     /**
      * Represents the "legend-storage" microservice.
      */
-    Storage: 'legend-storage',
-    /**
-     * Represents the "legend-send-email" microservice.
-     */
-    SendEmail: 'legend-send-email'
+    Storage: 'legend-storage'
 } as const;
 /**
  * Type of available microservices in the system.
