@@ -59,7 +59,7 @@ export const availableMicroservices = {
     Storage: 'legend-storage',
     /**
      * Represents the "legend-send-email" microservice.
-    */
+     */
     SendEmail: 'legend-send-email'
 } as const;
 /**
