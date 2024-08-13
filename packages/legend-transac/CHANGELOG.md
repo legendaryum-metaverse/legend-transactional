@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.4.21
+
+### Patch Changes
+
+-   43f4471: Event to delete assets in batch
+
 ## 1.4.20
 
 ### Patch Changes
