@@ -196,8 +196,7 @@ export const microserviceEvent = {
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
     'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
-    'SOCIAL_MEDIA_ROOMS.DELETE_IN_BATCH': 'social_media_rooms.delete_in_batch',
-    
+    'SOCIAL_MEDIA_ROOMS.DELETE_IN_BATCH': 'social_media_rooms.delete_in_batch'
 } as const;
 /**
  * Available microservices events in the system.
