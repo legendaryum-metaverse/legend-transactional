@@ -166,6 +166,13 @@ export interface EventPayload {
         userId: string;
         userToUnblockId: string;
     };
+    /**
+     * Event to delete assets in batch
+     */
+    'social_media_rooms.delete_in_batch': {
+        bucketName: string;
+        filePaths: string[];
+    };
 }
 /**
  * Represents the available events in the system.
@@ -188,7 +195,8 @@ export const microserviceEvent = {
     'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
-    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat'
+    'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
+    'SOCIAL_MEDIA_ROOMS.DELETE_IN_BATCH': 'social_media_rooms.delete_in_batch'
 } as const;
 /**
  * Available microservices events in the system.
