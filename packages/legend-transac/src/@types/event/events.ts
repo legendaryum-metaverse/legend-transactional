@@ -99,16 +99,16 @@ export interface EventPayload {
         redisKey: string;
     };
     /**
-     * Websocket event to notify the client about a payment related event.
+     * Websocket event to notify the client about a coins related event.
      */
-    'payments.notify_client': {
-        room: `payments-${string}`;
+    'coins.notify_client': {
+        room: `coins-${string}`;
         message: Record<string, unknown>;
     };
     /**
-     * Event to send an email to users.
+     * Event to send email to users.
      */
-    'payments.send_email': {
+    'coins.send_email': {
         userId: string;
         emailType: PaymentEmailType;
         coins: number;
@@ -183,11 +183,11 @@ export const microserviceEvent = {
     ///////////////////////////
     'AUTH.DELETED_USER': 'auth.deleted_user',
     'AUTH.LOGOUT_USER': 'auth.logout_user',
+    'COINS.NOTIFY_CLIENT': 'coins.notify_client',
+    'COINS.SEND_EMAIL': 'coins.send_email',
     'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
-    'PAYMENTS.NOTIFY_CLIENT': 'payments.notify_client',
-    'PAYMENTS.SEND_EMAIL': 'payments.send_email',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_INVENTORY.UPDATE_VP_BUILDING_IMAGE': 'room_inventory.update_vp_building_image',

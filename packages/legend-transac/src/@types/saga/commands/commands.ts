@@ -1,7 +1,7 @@
 import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
 import { SocialCommands } from './social';
-import { PaymentCommands } from './payments';
+import { CoinsCommands } from './coins';
 import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
@@ -36,9 +36,9 @@ export interface CommandMap {
      */
     [availableMicroservices.Missions]: MissionsCommands;
     /**
-     * Represents the mapping of "payments" microservice commands.
+     * Represents the mapping of "coins" microservice commands.
      */
-    [availableMicroservices.Payments]: PaymentCommands;
+    [availableMicroservices.Coins]: CoinsCommands;
     /**
      * Represents the mapping of "rapid-messaging" microservice commands.
      */
