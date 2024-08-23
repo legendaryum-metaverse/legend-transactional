@@ -22,9 +22,9 @@ export const availableMicroservices = {
      */
     Missions: 'legend-missions',
     /**
-     * Represents the "payments" microservice.
+     * Represents the "coins" microservice.
      */
-    Payments: 'payments',
+    Coins: 'coins',
     /**
      * Represents the "rapid-messaging" microservice.
      */

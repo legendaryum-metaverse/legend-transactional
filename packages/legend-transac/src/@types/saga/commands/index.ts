@@ -2,7 +2,7 @@ export * from './auth';
 export * from './commands';
 export * from './image';
 export * from './mint';
-export * from './payments';
+export * from './coins';
 export * from './rapid-messaging';
 export * from './room-inventory';
 export * from './room-snapshot';
