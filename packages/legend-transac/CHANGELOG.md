@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.0
+
+### Minor Changes
+
+-   b804faf: Change payment domain to coins
+
 ## 1.4.21
 
 ### Patch Changes

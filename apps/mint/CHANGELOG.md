@@ -1,5 +1,12 @@
 # micro-mint
 
+## 0.0.82
+
+### Patch Changes
+
+-   Updated dependencies [b804faf]
+    -   legend-transactional@1.5.0
+
 ## 0.0.81
 
 ### Patch Changes
