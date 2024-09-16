@@ -16,10 +16,10 @@
     "test:report": "turbo run test:report --concurrency=1"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.7",
+    "@changesets/cli": "^2.27.8",
     "@swc/cli": "^0.4.0",
     "@swc/jest": "^0.2.36",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "eslint-config-custom": "workspace:*",
@@ -27,7 +27,7 @@
     "nodemon": "latest",
     "prettier": "^3.3.3",
     "tsup": "latest",
-    "turbo": "^2.1.1",
+    "turbo": "^2.1.2",
     "typescript": "latest"
   },
   "pnpm": {},
@@ -35,8 +35,8 @@
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@9.9.0",
+  "packageManager": "pnpm@9.10.0",
   "dependencies": {
-    "@types/node": "^20.16.3"
+    "@types/node": "^20.16.5"
   }
 }
