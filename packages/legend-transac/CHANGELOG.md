@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.1
+
+### Patch Changes
+
+-   1d7f33f: email is added to 'coins.send_email' event
+
 ## 1.5.0
 
 ### Minor Changes
