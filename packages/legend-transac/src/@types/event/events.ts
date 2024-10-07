@@ -110,6 +110,7 @@ export interface EventPayload {
      */
     'coins.send_email': {
         userId: string;
+        email: string;
         emailType: PaymentEmailType;
         coins: number;
     };
