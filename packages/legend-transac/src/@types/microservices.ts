@@ -18,13 +18,17 @@ export const availableMicroservices = {
      */
     Auth: 'auth',
     /**
+     * Represents the "coins" microservice.
+     */
+    Coins: 'coins',
+    /**
      * Represents the "legend-missions" microservice.
      */
     Missions: 'legend-missions',
     /**
-     * Represents the "coins" microservice.
+     * Represents the "rankings" microservice.
      */
-    Coins: 'coins',
+    Rankings: 'rankings',
     /**
      * Represents the "rapid-messaging" microservice.
      */

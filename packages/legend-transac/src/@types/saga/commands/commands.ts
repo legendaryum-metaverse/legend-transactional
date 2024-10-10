@@ -13,6 +13,7 @@ import { RapidMessagingCommands } from './rapid-messaging';
 import { MissionsCommands } from './missions';
 import { SocialMediaRoomsCommands } from './social-media-rooms';
 import { SendEmailCommands } from './send-email';
+import { RankingsCommands } from './rankings';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -31,14 +32,19 @@ export interface CommandMap {
      * Represents the mapping of "auth" microservice commands.
      */
     [availableMicroservices.Auth]: AuthCommands;
+
+    /**
+     * Represents the mapping of "coins" microservice commands.
+     */
+    [availableMicroservices.Coins]: CoinsCommands;
     /**
      * Represents the mapping of "legend-missions" microservice commands.
      */
     [availableMicroservices.Missions]: MissionsCommands;
     /**
-     * Represents the mapping of "coins" microservice commands.
+     * Represents the mapping of "rankings" microservice commands.
      */
-    [availableMicroservices.Coins]: CoinsCommands;
+    [availableMicroservices.Rankings]: RankingsCommands;
     /**
      * Represents the mapping of "rapid-messaging" microservice commands.
      */
