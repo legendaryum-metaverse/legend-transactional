@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.2
+
+### Patch Changes
+
+-   a9185aa: Rankings microservice added
+
 ## 1.5.1
 
 ### Patch Changes
