@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.5
+
+### Patch Changes
+
+-   5c7012d: new event to duplicate minimal user data in the microservice that listens to it. this occurs when the user is created
+
 ## 1.5.4
 
 ### Patch Changes
