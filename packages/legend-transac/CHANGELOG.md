@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.3
+
+### Patch Changes
+
+-   6071acc: Commands to create new user in a transaction manner
+
 ## 1.5.2
 
 ### Patch Changes
