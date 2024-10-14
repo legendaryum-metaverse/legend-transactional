@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.4
+
+### Patch Changes
+
+-   ba5b0ce: Create social user step renamed
+
 ## 1.5.3
 
 ### Patch Changes
