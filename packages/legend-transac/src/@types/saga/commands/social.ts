@@ -3,6 +3,10 @@
  */
 export const socialCommands = {
     /**
+     * Command to create a new user.
+     */
+    CreateUser: 'create_user',
+    /**
      * Command to update the social user's image.
      */
     UpdateUserImage: 'update_user:image'
