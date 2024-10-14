@@ -73,17 +73,19 @@ export interface EventPayload {
         userId: string;
     };
     /**
-     * Event to duplicate minimal user data in the microservice that listens to it.
-     */
-    'auth.duplicate_minimal_user_data': {
-        id: string;
-        email: string;
-    };
-    /**
      * Event to logout a user.
      */
     'auth.logout_user': {
         userId: string;
+    };
+    /**
+     * Event to duplicate minimal user data in the microservice that listens to it. This occurs when the user is created.
+     */
+    'auth.new_user': {
+        id: string;
+        email: string;
+        username: string;
+        userlastname: string;
     };
     /**
      * Event to update a user's subscription.
@@ -190,8 +192,8 @@ export const microserviceEvent = {
     'TEST.MINT': 'test.mint',
     ///////////////////////////
     'AUTH.DELETED_USER': 'auth.deleted_user',
-    'AUTH.DUPLICATE_MINIMAL_USER_DATA': 'auth.duplicate_minimal_user_data',
     'AUTH.LOGOUT_USER': 'auth.logout_user',
+    'AUTH.NEW_USER': 'auth.new_user',
     'COINS.NOTIFY_CLIENT': 'coins.notify_client',
     'COINS.SEND_EMAIL': 'coins.send_email',
     'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
