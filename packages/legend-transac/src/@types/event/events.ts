@@ -156,7 +156,7 @@ export interface EventPayload {
     /**
      * Event to send emails to winners when the ranking finishes
      */
-    'legend_rankings.send_email_to_winners': {
+    'legend_rankings.rankings_finished': {
         completedRankings: CompletedRanking[];
     };
     /**
@@ -235,7 +235,7 @@ export const microserviceEvent = {
     'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
-    'LEGEND_RANKINGS.SEND_EMAIL_TO_WINNERS': 'legend_rankings.send_email_to_winners',
+    'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_INVENTORY.UPDATE_VP_BUILDING_IMAGE': 'room_inventory.update_vp_building_image',
