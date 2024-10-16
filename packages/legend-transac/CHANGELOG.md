@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.7
+
+### Patch Changes
+
+-   8b0cdcb: new event to send emails to winners when the ranking finishes and fix in the organization of events
+
 ## 1.5.6
 
 ### Patch Changes
