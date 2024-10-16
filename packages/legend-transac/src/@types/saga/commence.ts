@@ -4,7 +4,11 @@ export const sagaTitle = {
     /**
      * Saga used in the flow to purchase resources and deduct coins from the user.
      */
-    PurchaseResourceFlow: 'purchase_resource_flow'
+    PurchaseResourceFlow: 'purchase_resource_flow',
+    /**
+     * Saga used in to reward users based on their rankings.
+     */
+    RankingsUsersReward: 'rankings_users_reward'
 } as const;
 /**
  * Available saga titles.
@@ -17,6 +21,9 @@ export interface SagaCommencePayload {
         resourceId: string;
         price: number;
         quantity: number;
+    };
+    ['rankings_users_reward']: {
+        rewards: { userId: string; coins: number }[];
     };
 }
 
