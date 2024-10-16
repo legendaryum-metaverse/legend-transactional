@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.6
+
+### Patch Changes
+
+-   a71f646: reward users with coins, saga step for coins and commence saga
+
 ## 1.5.5
 
 ### Patch Changes
