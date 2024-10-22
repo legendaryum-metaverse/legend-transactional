@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.8
+
+### Patch Changes
+
+-   c10cd89: update payload for legend_rankings.rankings_finished event
+
 ## 1.5.7
 
 ### Patch Changes
