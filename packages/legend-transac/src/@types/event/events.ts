@@ -69,6 +69,16 @@ export interface RankingWinners {
  */
 export interface CompletedRanking {
     title: string;
+    description: string;
+    authorEmail: string;
+    /**
+     * End date converted to string
+     */
+    endsAt: string;
+    /**
+     * JSON stringified with each user's rewards
+     */
+    reward: string;
     rewardType: RankingsRewardsType;
     winners: RankingWinners[];
 }
