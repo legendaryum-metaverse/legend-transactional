@@ -1,8 +1,7 @@
 /**
  * Different commands related to the "blockchain" microservice.
  */
-export const blockchainCommands = {
-} as const;
+export const blockchainCommands = {} as const;
 /**
  * Available commands for the "blockchain" microservice.
  */
