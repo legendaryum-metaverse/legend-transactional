@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './blockchain';
 export * from './commands';
 export * from './image';
 export * from './mint';

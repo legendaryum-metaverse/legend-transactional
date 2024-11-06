@@ -18,6 +18,10 @@ export const availableMicroservices = {
      */
     Auth: 'auth',
     /**
+     * Represents the "blockchain" microservice.
+     */
+    Blockchain: 'blockchain',
+    /**
      * Represents the "coins" microservice.
      */
     Coins: 'coins',
