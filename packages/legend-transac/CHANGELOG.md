@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.9
+
+### Patch Changes
+
+-   68624d4: new domain: blockchain
+
 ## 1.5.8
 
 ### Patch Changes
