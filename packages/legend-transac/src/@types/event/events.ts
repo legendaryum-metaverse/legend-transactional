@@ -98,6 +98,16 @@ export const gender = {
 export type Gender = (typeof gender)[keyof typeof gender];
 
 /**
+ * Representes the user location
+ */
+export interface UserLocation {
+    continent: string;
+    country: string;
+    region: string;
+    city: string;
+}
+
+/**
  * Represents the social user model
  */
 export interface SocialUser {
@@ -110,6 +120,10 @@ export interface SocialUser {
     followers?: string[];
     following?: string[];
     email: string;
+    birthday?: Date;
+    location?: UserLocation;
+    avatar?: string;
+    avatarScreenshot?: string;
     userImage?: string;
     glbUrl?: string;
     description?: string;
