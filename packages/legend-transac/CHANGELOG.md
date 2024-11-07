@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.10
+
+### Patch Changes
+
+-   f4e35cc: update social.new_user event payload
+
 ## 1.5.9
 
 ### Patch Changes
