@@ -84,6 +84,45 @@ export interface CompletedRanking {
 }
 
 /**
+ * Represents the possible genders a social user can have
+ */
+export const gender = {
+    Male: 'MALE',
+    Female: 'FEMALE',
+    Undefined: 'UNDEFINED'
+} as const;
+
+/**
+ * The `Gender` type is derived from the keys of the `gender`
+ */
+export type Gender = (typeof gender)[keyof typeof gender];
+
+/**
+ * Represents the social user model
+ */
+export interface SocialUser {
+    _id: string;
+    username: string;
+    firstName?: string;
+    lastName?: string;
+    gender: Gender;
+    isPublicProfile?: boolean;
+    followers?: string[];
+    following?: string[];
+    email: string;
+    userImage?: string;
+    glbUrl?: string;
+    description?: string;
+    socialMedia?: Map<string, string>;
+    preferences: string[];
+    blockedUsers: string[];
+    RPMAvatarId?: string;
+    RPMUserId?: string;
+    paidPriceId?: string;
+    createdAt: Date;
+}
+
+/**
  * Represents the available event's payload in the system.
  */
 export interface EventPayload {
@@ -213,7 +252,7 @@ export interface EventPayload {
      * New user in social table in social microservice
      */
     'social.new_user': {
-        userId: string;
+        socialUser: SocialUser;
     };
     /**
      * Event to unblock chat between two users.
