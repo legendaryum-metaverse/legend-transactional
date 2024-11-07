@@ -117,8 +117,8 @@ export interface SocialUser {
     lastName?: string;
     gender: Gender;
     isPublicProfile?: boolean;
-    followers?: string[];
-    following?: string[];
+    followers: string[];
+    following: string[];
     email: string;
     birthday?: Date;
     location?: UserLocation;
