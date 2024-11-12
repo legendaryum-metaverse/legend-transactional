@@ -276,9 +276,9 @@ export interface EventPayload {
         userToUnblockId: string;
     };
     /**
-     * Event to update the social user
+     * A social user has been updated
      */
-    'social.update_user': {
+    'social.updated_user': {
         socialUser: SocialUser;
     };
     /**
@@ -313,7 +313,7 @@ export const microserviceEvent = {
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
     'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
-    'SOCIAL.UPDATE_USER': 'social.update_user',
+    'SOCIAL.UPDATED_USER': 'social.updated_user',
     'SOCIAL_MEDIA_ROOMS.DELETE_IN_BATCH': 'social_media_rooms.delete_in_batch'
 } as const;
 /**
