@@ -276,6 +276,12 @@ export interface EventPayload {
         userToUnblockId: string;
     };
     /**
+     * Event to update the social user
+     */
+    'social.update_user': {
+        socialUser: SocialUser;
+    };
+    /**
      * Event to delete assets in batch
      */
     'social_media_rooms.delete_in_batch': {
@@ -307,6 +313,7 @@ export const microserviceEvent = {
     'SOCIAL.BLOCK_CHAT': 'social.block_chat',
     'SOCIAL.NEW_USER': 'social.new_user',
     'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
+    'SOCIAL.UPDATE_USER': 'social.update_user',
     'SOCIAL_MEDIA_ROOMS.DELETE_IN_BATCH': 'social_media_rooms.delete_in_batch'
 } as const;
 /**
