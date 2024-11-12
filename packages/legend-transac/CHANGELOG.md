@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.11
+
+### Patch Changes
+
+-   a430437: event to update social user
+
 ## 1.5.10
 
 ### Patch Changes
