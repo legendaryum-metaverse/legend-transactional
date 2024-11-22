@@ -44,19 +44,6 @@ export const PaymentEmailTypes = {
 export type PaymentEmailType = (typeof PaymentEmailTypes)[keyof typeof PaymentEmailTypes];
 
 /**
- * Types of Rankings Rewards Types
- */
-export const RankingsRewardsTypes = {
-    LEGENDS: 'Legends',
-    CODE_EXCHANGE: 'CodeExchange'
-} as const;
-
-/**
- * Type of Rankings Rewards Types
- */
-export type RankingsRewardsType = (typeof RankingsRewardsTypes)[keyof typeof RankingsRewardsTypes];
-
-/**
  * Represents the winners of a ranking with their respective rewards
  */
 export interface RankingWinners {
@@ -79,7 +66,7 @@ export interface CompletedRanking {
      * JSON stringified with each user's rewards
      */
     reward: string;
-    rewardType: RankingsRewardsType;
+    rewardType: string;
     winners: RankingWinners[];
 }
 
