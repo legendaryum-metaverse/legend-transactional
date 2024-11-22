@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.12
+
+### Patch Changes
+
+-   9848048: feat: replace enum with string in the 'rewardType' field of the 'CompletedRanking' structure
+
 ## 1.5.11
 
 ### Patch Changes
