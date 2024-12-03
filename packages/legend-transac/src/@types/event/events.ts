@@ -123,6 +123,11 @@ export interface SocialUser {
     createdAt: Date;
 }
 
+export interface CompletedCryptoRanking {
+    walletAddress: string;
+    winners: RankingWinners[];
+}
+
 /**
  * Represents the available event's payload in the system.
  */
@@ -202,6 +207,12 @@ export interface EventPayload {
      */
     'legend_missions.ongoing_mission': {
         redisKey: string;
+    };
+    /**
+     * Event to send crypto rewards to the winners of a ranking
+     */
+    'legend_rankings.crypto_ranking_finished': {
+        completedCryptoRankings: CompletedCryptoRanking[];
     };
     /**
      * Event to send emails to winners when the ranking finishes
@@ -291,6 +302,7 @@ export const microserviceEvent = {
     'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
+    'LEGEND_RANKINGS.CRYPTO_RANKING_FINISHED': 'legend_rankings.crypto_ranking_finished',
     'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
