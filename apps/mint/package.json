@@ -1,6 +1,6 @@
 {
   "name": "micro-mint",
-  "version": "0.0.95",
+  "version": "0.0.96",
   "description": "",
   "main": "./dist/server.js",
   "private": true,

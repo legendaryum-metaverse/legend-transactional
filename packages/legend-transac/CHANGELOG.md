@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.14
+
+### Patch Changes
+
+- bc39db1: feat: event replacement for sending crypto rewards via a saga
+
 ## 1.5.13
 
 ### Patch Changes
