@@ -8,7 +8,11 @@ export const sagaTitle = {
     /**
      * Saga used in to reward users based on their rankings.
      */
-    RankingsUsersReward: 'rankings_users_reward'
+    RankingsUsersReward: 'rankings_users_reward',
+    /**
+     * Saga used to initiate a crypto transfer for ranking winners.
+     */
+    TransferCryptoRewardToRankingWinners: 'transfer_crypto_reward_to_ranking_winners'
 } as const;
 /**
  * Available saga titles.
@@ -24,6 +28,15 @@ export interface SagaCommencePayload {
     };
     ['rankings_users_reward']: {
         rewards: { userId: string; coins: number }[];
+    };
+    ['transfer_crypto_reward_to_ranking_winners']: {
+        completedCryptoRankings: {
+            walletAddress: string;
+            winners: {
+                userId: string;
+                reward: number;
+            }[];
+        }[];
     };
 }
 
