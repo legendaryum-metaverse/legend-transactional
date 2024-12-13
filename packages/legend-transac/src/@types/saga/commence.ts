@@ -34,7 +34,7 @@ export interface SagaCommencePayload {
             walletAddress: string;
             winners: {
                 userId: string;
-                reward: number;
+                reward: string;
             }[];
         }[];
     };
