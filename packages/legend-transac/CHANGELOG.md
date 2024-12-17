@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.15
+
+### Patch Changes
+
+- 0c3d82c: feat: crypto ranking reward from f64 to string
+
 ## 1.5.14
 
 ### Patch Changes
