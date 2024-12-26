@@ -68,8 +68,8 @@ export interface CompletedRanking {
     reward: string;
     rewardType: string;
     winners: RankingWinners[];
-    nftBlockchainNetwork: string;
-    nftContractAddress: string;
+    nftBlockchainNetwork?: string;
+    nftContractAddress?: string;
 }
 
 /**
