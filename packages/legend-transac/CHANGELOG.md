@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.16
+
+### Patch Changes
+
+- 2f5d114: feat: add nft fields to CompletedRanking interface
+
 ## 1.5.15
 
 ### Patch Changes
