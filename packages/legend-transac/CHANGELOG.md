@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.17
+
+### Patch Changes
+
+- 6cbf7ee: feat: add 'walletCryptoAsset' field in CompletedRanking interface
+
 ## 1.5.16
 
 ### Patch Changes
