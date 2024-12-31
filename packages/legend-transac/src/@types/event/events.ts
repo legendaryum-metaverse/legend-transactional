@@ -72,7 +72,7 @@ export interface CompletedRanking {
     nftBlockchainNetwork?: string;
     nftContractAddress?: string;
     // Present only if reward_type is "Crypto"
-    walletCryptoAsset: string;
+    walletCryptoAsset?: string;
 }
 
 /**
