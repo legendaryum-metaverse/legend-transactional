@@ -68,8 +68,11 @@ export interface CompletedRanking {
     reward: string;
     rewardType: string;
     winners: RankingWinners[];
+    // Present only if reward_type is "Nft"
     nftBlockchainNetwork?: string;
     nftContractAddress?: string;
+    // Present only if reward_type is "Crypto"
+    walletCryptoAsset: string;
 }
 
 /**
