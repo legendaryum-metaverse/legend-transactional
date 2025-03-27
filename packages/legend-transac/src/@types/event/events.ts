@@ -215,6 +215,20 @@ export interface EventPayload {
         completedRankings: CompletedRanking[];
     };
     /**
+     * Event to update the allowed mission subscription IDs
+     */
+    'legend_showcase.update_allowed_mission_subscription_ids': {
+        productVirtualSlug: string;
+        allowedSubscriptionIds: string[];
+    };
+    /**
+     * Event to update the allowed ranking subscription IDs
+     */
+    'legend_showcase.update_allowed_ranking_subscription_ids': {
+        productVirtualId: string;
+        allowedSubscriptionIds: string[];
+    };
+    /**
      * Event to notify the creation of a room.
      */
     'room_creator.created_room': {
@@ -297,6 +311,10 @@ export const microserviceEvent = {
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
+    'LEGEND_SHOWCASE.UPDATE_ALLOWED_MISSION_SUBSCRIPTION_IDS':
+        'legend_showcase.update_allowed_mission_subscription_ids',
+    'LEGEND_SHOWCASE.UPDATE_ALLOWED_RANKING_SUBSCRIPTION_IDS':
+        'legend_showcase.update_allowed_ranking_subscription_ids',
     'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
     'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
     'ROOM_INVENTORY.UPDATE_VP_BUILDING_IMAGE': 'room_inventory.update_vp_building_image',
