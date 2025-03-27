@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 1.5.18
+
+### Patch Changes
+
+- 6ad8e60: feat: new events to update allowed ranking and mission subscription ids
+
 ## 1.5.17
 
 ### Patch Changes
