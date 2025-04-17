@@ -1,7 +1,6 @@
-import * as amqp from 'amqplib';
-import amqplib, { Connection } from 'amqplib';
+import amqplib, { ChannelModel } from 'amqplib';
 
-let conn: amqp.Connection | null = null;
+let conn: ChannelModel | null = null;
 let url: string | null = null;
 let isTheConnectionClosed = true;
 /**
@@ -27,7 +26,7 @@ const getUri = (): string => {
     return url;
 };
 
-const startListeners = (c: amqp.Connection) => {
+const startListeners = (c: ChannelModel) => {
     c.addListener('close', (e: Error) => {
         isTheConnectionClosed = true;
         console.error('[legend_transac:__Connection closed__]', e.message);
@@ -43,7 +42,7 @@ const startListeners = (c: amqp.Connection) => {
  *
  * @returns {Promise<Connection>} A promise that resolves to the RabbitMQ connection.
  */
-export const getRabbitMQConn = async (): Promise<Connection> => {
+export const getRabbitMQConn = async (): Promise<ChannelModel> => {
     if (conn === null) {
         conn = await amqplib.connect(getUri());
         isTheConnectionClosed = false;
