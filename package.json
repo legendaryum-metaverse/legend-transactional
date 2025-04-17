@@ -32,11 +32,11 @@
   },
   "pnpm": {},
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=9.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.8.1",
   "dependencies": {
-    "@types/node": "^20.17.30"
+    "@types/node": "^22.14.1"
   }
 }
