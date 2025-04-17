@@ -163,10 +163,10 @@ importers:
   packages/legend-transac:
     dependencies:
       '@types/amqplib':
-        specifier: latest
+        specifier: ^0.10.7
         version: 0.10.7
       amqplib:
-        specifier: latest
+        specifier: ^0.10.7
         version: 0.10.7
       mitt:
         specifier: latest

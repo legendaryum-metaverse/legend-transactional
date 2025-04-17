@@ -39,8 +39,8 @@
     "prebuild": "pnpm run type-check"
   },
   "dependencies": {
-    "amqplib": "latest",
-    "@types/amqplib": "latest",
+    "amqplib": "^0.10.7",
+    "@types/amqplib": "^0.10.7",
     "mitt": "latest"
   },
   "devDependencies": {
@@ -48,8 +48,8 @@
     "eslint-config-custom": "workspace:*"
   },
   "peerDependencies": {
-    "amqplib": ">=0.10.3",
-    "@types/amqplib": ">=0.10.1",
+    "amqplib": ">=0.10.7",
+    "@types/amqplib": ">=0.10.7",
     "mitt": ">=3.0.1"
   },
   "tsup": {
