@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.0.1
+
+### Patch Changes
+
+- ec95144: feat: new event 'legend_showcase.product_virtual_deleted'
+
 ## 2.0.0
 
 ### Major Changes
