@@ -215,6 +215,13 @@ export interface EventPayload {
         completedRankings: CompletedRanking[];
     };
     /**
+     * Event triggered when a product virtual is deleted
+     */
+    'legend_showcase.product_virtual_deleted': {
+        productVirtualId: string;
+        productVirtualSlug: string;
+    };
+    /**
      * Event to update the allowed mission subscription IDs
      */
     'legend_showcase.update_allowed_mission_subscription_ids': {
@@ -311,6 +318,7 @@ export const microserviceEvent = {
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
+    'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
     'LEGEND_SHOWCASE.UPDATE_ALLOWED_MISSION_SUBSCRIPTION_IDS':
         'legend_showcase.update_allowed_mission_subscription_ids',
     'LEGEND_SHOWCASE.UPDATE_ALLOWED_RANKING_SUBSCRIPTION_IDS':
