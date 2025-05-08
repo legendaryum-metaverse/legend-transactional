@@ -195,6 +195,9 @@ export interface EventPayload {
         emailType: PaymentEmailType;
         coins: number;
     };
+    /**
+     * Event to give the user coins for completing a mission
+     */
     'legend_missions.completed_mission_reward': {
         userId: string;
         coins: number;
@@ -212,9 +215,6 @@ export interface EventPayload {
         maxPlayersClaimingReward: number;
         timeToReward: number;
     };
-    /**
-     * Event to give the user coins for completing a mission
-     */
     /**
      * Event to set a mission in progress
      */
