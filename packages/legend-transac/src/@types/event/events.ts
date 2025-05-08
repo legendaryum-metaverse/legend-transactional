@@ -195,13 +195,26 @@ export interface EventPayload {
         emailType: PaymentEmailType;
         coins: number;
     };
-    /**
-     * Event to give the user coins for completing a mission
-     */
     'legend_missions.completed_mission_reward': {
         userId: string;
         coins: number;
     };
+    /**
+     * Event to notify the mission's author that it has been created
+     */
+    'legend_missions.new_mission_created': {
+        title: string;
+        author: string;
+        authorEmail: string;
+        reward: number;
+        startDate: string;
+        endDate: string;
+        maxPlayersClaimingReward: number;
+        timeToReward: number;
+    };
+    /**
+     * Event to give the user coins for completing a mission
+     */
     /**
      * Event to set a mission in progress
      */
@@ -316,6 +329,7 @@ export const microserviceEvent = {
     'COINS.SEND_EMAIL': 'coins.send_email',
     'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
+    'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
     'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
