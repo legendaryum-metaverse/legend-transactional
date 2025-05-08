@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.0.2
+
+### Patch Changes
+
+- e05f0bd: feat: new event 'legend_missions.new_mission_created'
+
 ## 2.0.1
 
 ### Patch Changes
