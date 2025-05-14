@@ -203,6 +203,17 @@ export interface EventPayload {
         coins: number;
     };
     /**
+     * Event to notify that a user has completed a mission with crypto reward
+     */
+    'legend_missions.crypto_mission_completed': {
+        // Wallet address from which rewards will be transferred
+        walletAddress: string;
+        // ID of the user who completed the mission
+        userId: string;
+        // Amount to be transferred
+        reward: string;
+    };
+    /**
      * Event to notify the mission's author that it has been created
      */
     'legend_missions.new_mission_created': {
@@ -329,6 +340,7 @@ export const microserviceEvent = {
     'COINS.SEND_EMAIL': 'coins.send_email',
     'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
+    'LEGEND_MISSIONS.CRYPTO_MISSION_COMPLETED': 'legend_missions.crypto_mission_completed',
     'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
     'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
