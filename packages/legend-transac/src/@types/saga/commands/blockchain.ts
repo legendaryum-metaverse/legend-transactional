@@ -3,6 +3,10 @@
  */
 export const blockchainCommands = {
     /**
+     * Saga step to transfer crypto reward to the winner of a mission.
+     */
+    TransferMissionRewardToWinner: 'crypto_reward:transfer_mission_reward_to_winner',
+    /**
      * Saga step to make transfers to winners.
      */
     TransferRewardToWinners: 'crypto_reward:transfer_reward_to_winners'
