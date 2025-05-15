@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.0.3
+
+### Patch Changes
+
+- 292ff64: feat: new event to notify that a user has completed a mission with crypto reward
+
 ## 2.0.2
 
 ### Patch Changes
