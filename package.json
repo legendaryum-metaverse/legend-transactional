@@ -16,8 +16,8 @@
     "test:report": "turbo run test:report --concurrency=1"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.2",
-    "@swc/cli": "^0.7.3",
+    "@changesets/cli": "^2.29.4",
+    "@swc/cli": "^0.7.7",
     "@swc/jest": "^0.2.38",
     "@types/jest": "^29.5.14",
     "concurrently": "^8.2.2",
@@ -27,7 +27,7 @@
     "nodemon": "latest",
     "prettier": "^3.5.3",
     "tsup": "latest",
-    "turbo": "^2.5.2",
+    "turbo": "^2.5.3",
     "typescript": "latest"
   },
   "pnpm": {},
@@ -35,8 +35,8 @@
     "node": ">=22.0.0",
     "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.11.0",
   "dependencies": {
-    "@types/node": "^22.15.3"
+    "@types/node": "^22.15.18"
   }
 }
