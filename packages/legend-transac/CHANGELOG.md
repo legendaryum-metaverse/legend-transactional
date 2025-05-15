@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.0.4
+
+### Patch Changes
+
+- 1d8a0d4: event replacement by a saga to transfer rewards from a crypto mission
+
 ## 2.0.3
 
 ### Patch Changes
