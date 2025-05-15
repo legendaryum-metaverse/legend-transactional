@@ -10,6 +10,10 @@ export const sagaTitle = {
      */
     RankingsUsersReward: 'rankings_users_reward',
     /**
+     * Saga used to initiate a crypto transfer for a mission winner.
+     */
+    TransferCryptoRewardToMissionWinner: 'transfer_crypto_reward_to_mission_winner',
+    /**
      * Saga used to initiate a crypto transfer for ranking winners.
      */
     TransferCryptoRewardToRankingWinners: 'transfer_crypto_reward_to_ranking_winners'
@@ -28,6 +32,14 @@ export interface SagaCommencePayload {
     };
     ['rankings_users_reward']: {
         rewards: { userId: string; coins: number }[];
+    };
+    ['transfer_crypto_reward_to_mission_winner']: {
+        // Wallet address from which rewards will be transferred
+        walletAddress: string;
+        // ID of the user who completed the mission
+        userId: string;
+        // Amount to be transferred
+        reward: string;
     };
     ['transfer_crypto_reward_to_ranking_winners']: {
         completedCryptoRankings: {
