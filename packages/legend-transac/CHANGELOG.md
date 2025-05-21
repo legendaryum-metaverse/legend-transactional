@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.0.5
+
+### Patch Changes
+
+- 87dd50e: add events to notify by email when a user completes a mission
+
 ## 2.0.4
 
 ### Patch Changes
