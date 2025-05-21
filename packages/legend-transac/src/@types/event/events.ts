@@ -222,6 +222,34 @@ export interface EventPayload {
         redisKey: string;
     };
     /**
+     * Event triggered to send an email notification when a user completes a crypto-based mission and earns a reward.
+     */
+    'legend_missions.send_email_crypto_mission_completed': {
+        userId: string;
+        missionTitle: string;
+        reward: number;
+        blockchainNetwork: string;
+        cryptoAsset: string;
+    };
+    /**
+     * Event triggered to send an email notification when a user redeems a code and completes a mission.
+     */
+    'legend_missions.send_email_code_exchange_mission_completed': {
+        userId: string;
+        missionTitle: string;
+        codeValue: string;
+        codeDescription: string;
+    };
+    /**
+     * Event triggered to send an email notification when a user completes an NFT-related mission.
+     */
+    'legend_missions.send_email_nft_mission_completed': {
+        userId: string;
+        missionTitle: string;
+        nftContractAddress: string;
+        nftTokenId: string;
+    };
+    /**
      * Event to send emails to winners when the ranking finishes
      */
     'legend_rankings.rankings_finished': {
@@ -331,6 +359,10 @@ export const microserviceEvent = {
     'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
     'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
     'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
+    'LEGEND_MISSIONS.SEND_EMAIL_CRYPTO_MISSION_COMPLETED': 'legend_missions.send_email_crypto_mission_completed',
+    'LEGEND_MISSIONS.SEND_EMAIL_CODE_EXCHANGE_MISSION_COMPLETED':
+        'legend_missions.send_email_code_exchange_mission_completed',
+    'LEGEND_MISSIONS.SEND_EMAIL_NFT_MISSION_COMPLETED': 'legend_missions.send_email_nft_mission_completed',
     'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
     'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
     'LEGEND_SHOWCASE.UPDATE_ALLOWED_MISSION_SUBSCRIPTION_IDS':
