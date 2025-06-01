@@ -27,7 +27,7 @@
     "nodemon": "latest",
     "prettier": "^3.5.3",
     "tsup": "latest",
-    "turbo": "^2.5.3",
+    "turbo": "^2.5.4",
     "typescript": "latest"
   },
   "pnpm": {},
@@ -37,6 +37,6 @@
   },
   "packageManager": "pnpm@10.11.0",
   "dependencies": {
-    "@types/node": "^22.15.18"
+    "@types/node": "^22.15.29"
   }
 }
