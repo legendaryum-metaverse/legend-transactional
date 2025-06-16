@@ -12,24 +12,24 @@ import { getConsumeChannel } from '../Connections';
  * @typeParam E - The event type(s) associated with the consumed messages.
  */
 export const consume = async <E extends Record<EventType, unknown>>(
-    e: Emitter<E>,
-    queueName: string,
-    cb: (msg: ConsumeMessage | null, channel: Channel, e: Emitter<E>, queueName: string) => void
+  e: Emitter<E>,
+  queueName: string,
+  cb: (msg: ConsumeMessage | null, channel: Channel, e: Emitter<E>, queueName: string) => void,
 ): Promise<void> => {
-    // Establish a consume channel and event emitter.
-    const channel = await getConsumeChannel();
-    // Set the prefetch count to process only one message at a time to maintain order and control concurrency.
-    await channel.prefetch(1); // process only one message at a time
-    // Consume messages from the specified queue and process using the provided callback function.
-    await channel.consume(
-        queueName,
-        msg => {
-            cb(msg, channel, e, queueName);
-        },
-        {
-            exclusive: false,
-            // noAck means that the message will be acknowledged automatically by the broker once it is delivered.
-            noAck: false
-        }
-    );
+  // Establish a consume channel and event emitter.
+  const channel = await getConsumeChannel();
+  // Set the prefetch count to process only one message at a time to maintain order and control concurrency.
+  await channel.prefetch(1); // process only one message at a time
+  // Consume messages from the specified queue and process using the provided callback function.
+  await channel.consume(
+    queueName,
+    (msg) => {
+      cb(msg, channel, e, queueName);
+    },
+    {
+      exclusive: false,
+      // noAck means that the message will be acknowledged automatically by the broker once it is delivered.
+      noAck: false,
+    },
+  );
 };

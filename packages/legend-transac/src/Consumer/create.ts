@@ -21,26 +21,26 @@ import { getConsumeChannel, saveQueueForHealthCheck } from '../Connections';
  * @see connectToSagaCommandEmitter
  */
 export const createConsumers = async (consumers: QueueConsumerProps[]) => {
-    const channel = await getConsumeChannel();
+  const channel = await getConsumeChannel();
 
-    // Iterate through the list of consumers and set up necessary configurations.
-    for await (const consumer of consumers) {
-        const { exchange: consumerExchange, queueName } = consumer;
-        const requeueQueue = `${queueName}_requeue`;
-        const routingKey = `${queueName}_routing_key`;
+  // Iterate through the list of consumers and set up necessary configurations.
+  for await (const consumer of consumers) {
+    const { exchange: consumerExchange, queueName } = consumer;
+    const requeueQueue = `${queueName}_requeue`;
+    const routingKey = `${queueName}_routing_key`;
 
-        // Assert exchange and queue for the consumer.
-        await channel.assertExchange(consumerExchange, 'direct', { durable: true });
-        await channel.assertQueue(queueName, { durable: true });
-        await channel.bindQueue(queueName, consumerExchange, routingKey);
-        saveQueueForHealthCheck(queueName);
+    // Assert exchange and queue for the consumer.
+    await channel.assertExchange(consumerExchange, 'direct', { durable: true });
+    await channel.assertQueue(queueName, { durable: true });
+    await channel.bindQueue(queueName, consumerExchange, routingKey);
+    saveQueueForHealthCheck(queueName);
 
-        // Set up requeue mechanism by creating a requeue exchange and binding requeue queue to it.
-        await channel.assertExchange(exchange.Requeue, 'direct', { durable: true });
-        await channel.assertQueue(requeueQueue, {
-            durable: true,
-            arguments: { 'x-dead-letter-exchange': consumerExchange }
-        });
-        await channel.bindQueue(requeueQueue, exchange.Requeue, routingKey);
-    }
+    // Set up requeue mechanism by creating a requeue exchange and binding requeue queue to it.
+    await channel.assertExchange(exchange.Requeue, 'direct', { durable: true });
+    await channel.assertQueue(requeueQueue, {
+      durable: true,
+      arguments: { 'x-dead-letter-exchange': consumerExchange },
+    });
+    await channel.bindQueue(requeueQueue, exchange.Requeue, routingKey);
+  }
 };

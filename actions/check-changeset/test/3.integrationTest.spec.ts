@@ -1,52 +1,52 @@
 import { run } from '@/run';
 
 const spy = {
-    console: null as unknown as jest.SpyInstance
+  console: null as unknown as jest.SpyInstance,
 };
 beforeEach(() => {
-    process.env['IS_JEST-TEST'] = 'TRUE';
-    spy.console = jest.spyOn(console, 'error').mockImplementation(() => {
-        // do nothing
-    });
+  process.env['IS_JEST-TEST'] = 'TRUE';
+  spy.console = jest.spyOn(console, 'error').mockImplementation(() => {
+    // do nothing
+  });
 });
 
 afterEach(() => {
-    spy.console.mockClear();
+  spy.console.mockClear();
 });
 
 afterAll(() => {
-    process.env['IS_JEST-TEST'] = '';
-    spy.console.mockRestore();
+  process.env['IS_JEST-TEST'] = '';
+  spy.console.mockRestore();
 });
 
 // Antes de todos los test se cargas env vars de scripts/run_test.sh
 describe('triggering action succeeds', () => {
-    beforeAll(() => {
-        const jsonString =
-            '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
-        process.env['INPUT_JSON-STRING'] = jsonString;
-    });
-    afterAll(() => {
-        process.env['INPUT_JSON-STRING'] = '';
-    });
-    it('get the release plan with the correct columns in msg', () => {
-        run();
-        expect(console.error).toHaveBeenCalledTimes(0);
-    });
+  beforeAll(() => {
+    const jsonString =
+      '{"changesets":[{"releases":[{"name":"saga","type":"patch"}],"summary":"asdawd","id":"sweet-horses-joke"}],"releases":[{"name":"saga","type":"patch","oldVersion":"0.0.2","changesets":["sweet-horses-joke"],"newVersion":"0.0.3"}]}\n';
+    process.env['INPUT_JSON-STRING'] = jsonString;
+  });
+  afterAll(() => {
+    process.env['INPUT_JSON-STRING'] = '';
+  });
+  it('get the release plan with the correct columns in msg', () => {
+    run();
+    expect(console.error).toHaveBeenCalledTimes(0);
+  });
 });
 
 describe('triggering action fails', () => {
-    it('get the release plan with the correct columns in msg', () => {
-        run();
-        expect(console.error).toHaveBeenCalledTimes(1);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-        const o = spy.console.mock.calls[0][0];
-        // console.log(Object.getOwnPropertyDescriptors(o));
-        // const newError = Object.getOwnPropertyDescriptors(o) as unknown as Error;
-        // console.log(newError.message);
-        const catchError = o as unknown as Error;
-        expect(catchError.message).toContain('Input required and not supplied: json-string');
-    });
+  it('get the release plan with the correct columns in msg', () => {
+    run();
+    expect(console.error).toHaveBeenCalledTimes(1);
+
+    const o = spy.console.mock.calls[0][0];
+    // console.log(Object.getOwnPropertyDescriptors(o));
+    // const newError = Object.getOwnPropertyDescriptors(o) as unknown as Error;
+    // console.log(newError.message);
+    const catchError = o as unknown as Error;
+    expect(catchError.message).toContain('Input required and not supplied: json-string');
+  });
 });
 
 /*const envVars = {

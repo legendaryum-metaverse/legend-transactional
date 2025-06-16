@@ -13,24 +13,24 @@ import { SagaConsumeChannel } from '../channels';
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
 export const sagaConsumeCallback = <T extends AvailableMicroservices>(
-    msg: ConsumeMessage | null,
-    channel: Channel,
-    e: Emitter<SagaConsumeSagaEvents<T>>,
-    queueName: string
+  msg: ConsumeMessage | null,
+  channel: Channel,
+  e: Emitter<SagaConsumeSagaEvents<T>>,
+  queueName: string,
 ) => {
-    if (!msg) {
-        console.error('NO MSG AVAILABLE');
-        return;
-    }
-    let currentStep: SagaStep<T>;
-    try {
-        currentStep = JSON.parse(msg.content.toString()) as SagaStep<T>;
-    } catch (error) {
-        console.error('ERROR PARSING MSG', error);
-        channel.nack(msg, false, false);
-        return;
-    }
-    const responseChannel = new SagaConsumeChannel(channel, msg, queueName, currentStep);
+  if (!msg) {
+    console.error('NO MSG AVAILABLE');
+    return;
+  }
+  let currentStep: SagaStep<T>;
+  try {
+    currentStep = JSON.parse(msg.content.toString()) as SagaStep<T>;
+  } catch (error) {
+    console.error('ERROR PARSING MSG', error);
+    channel.nack(msg, false, false);
+    return;
+  }
+  const responseChannel = new SagaConsumeChannel(channel, msg, queueName, currentStep);
 
-    e.emit(currentStep.command, { step: currentStep, channel: responseChannel });
+  e.emit(currentStep.command, { step: currentStep, channel: responseChannel });
 };

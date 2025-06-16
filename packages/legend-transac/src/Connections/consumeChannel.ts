@@ -9,10 +9,10 @@ let consumeChannel: Channel | null = null;
  * @throws {Error} If there is an issue with creating the _**consume**_ channel or the RabbitMQ connection.
  */
 export const getConsumeChannel = async (): Promise<Channel> => {
-    if (consumeChannel === null) {
-        consumeChannel = await (await getRabbitMQConn()).createChannel();
-    }
-    return consumeChannel;
+  if (consumeChannel === null) {
+    consumeChannel = await (await getRabbitMQConn()).createChannel();
+  }
+  return consumeChannel;
 };
 /**
  * Close the consume channel used for consuming messages from RabbitMQ.
@@ -21,8 +21,8 @@ export const getConsumeChannel = async (): Promise<Channel> => {
  * @throws {Error} If there is an issue with closing the consume channel.
  */
 export const closeConsumeChannel = async (): Promise<void> => {
-    if (consumeChannel !== null) {
-        await consumeChannel.close();
-        consumeChannel = null;
-    }
+  if (consumeChannel !== null) {
+    await consumeChannel.close();
+    consumeChannel = null;
+  }
 };

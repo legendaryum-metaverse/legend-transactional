@@ -5,10 +5,10 @@ import ConsumeChannel from './Consume';
  *
  */
 export class SagaCommenceConsumeChannel extends ConsumeChannel {
-    /**
-     * Method to acknowledge the message.
-     */
-    ackMessage(): void {
-        this.channel.ack(this.msg, false);
-    }
+  /**
+   * Method to acknowledge the message.
+   */
+  ackMessage(): void {
+    this.channel.ack(this.msg, false);
+  }
 }

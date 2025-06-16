@@ -11,7 +11,7 @@ import { closeSendChannel } from '../Broker';
  * @see closeRabbitMQConn
  */
 export const stopRabbitMQ = async (): Promise<void> => {
-    await closeConsumeChannel();
-    await closeSendChannel();
-    await closeRabbitMQConn();
+  await closeConsumeChannel();
+  await closeSendChannel();
+  await closeRabbitMQConn();
 };

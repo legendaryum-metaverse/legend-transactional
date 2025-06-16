@@ -1,23 +1,23 @@
 import {
-    SagaConsumeSagaEvents,
-    exchange,
-    queue,
-    AvailableMicroservices,
-    CommenceSagaEvents,
-    MicroserviceEvent,
-    MicroserviceConsumeEvents,
-    SagaTitle
+  SagaConsumeSagaEvents,
+  exchange,
+  queue,
+  AvailableMicroservices,
+  CommenceSagaEvents,
+  MicroserviceEvent,
+  MicroserviceConsumeEvents,
+  SagaTitle,
 } from '../@types';
 import { getRabbitMQConn, saveUri } from './rabbitConn';
 import { getConsumeChannel } from './consumeChannel';
 import {
-    commenceSagaConsumeCallback,
-    consume,
-    createConsumers,
-    createHeaderConsumers,
-    sagaStepCallback,
-    sagaConsumeCallback,
-    eventCallback
+  commenceSagaConsumeCallback,
+  consume,
+  createConsumers,
+  createHeaderConsumers,
+  sagaStepCallback,
+  sagaConsumeCallback,
+  eventCallback,
 } from '../Consumer';
 import { getQueueConsumer } from '../utils';
 import mitt, { Emitter } from 'mitt';
@@ -39,11 +39,11 @@ let isReady = false;
  * @see getConsumeChannel
  */
 const prepare = async (url: string) => {
-    if (isReady) return;
-    saveUri(url);
-    await getRabbitMQConn();
-    await getConsumeChannel();
-    isReady = true;
+  if (isReady) return;
+  saveUri(url);
+  await getRabbitMQConn();
+  await getConsumeChannel();
+  isReady = true;
 };
 /**
  * Start a global saga listener to handle incoming saga events/commands from all microservices.
@@ -84,17 +84,17 @@ const prepare = async (url: string) => {
  * @see commenceSagaListener
  */
 export const startGlobalSagaStepListener = async <T extends AvailableMicroservices>(
-    url: string
+  url: string,
 ): Promise<Emitter<SagaConsumeSagaEvents<T>>> => {
-    await prepare(url);
-    const queueO = {
-        queueName: queue.ReplyToSaga,
-        exchange: exchange.ReplyToSaga
-    };
-    const e = mitt<SagaConsumeSagaEvents<T>>();
-    await createConsumers([queueO]);
-    void consume<SagaConsumeSagaEvents<T>>(e, queueO.queueName, sagaConsumeCallback);
-    return e;
+  await prepare(url);
+  const queueO = {
+    queueName: queue.ReplyToSaga,
+    exchange: exchange.ReplyToSaga,
+  };
+  const e = mitt<SagaConsumeSagaEvents<T>>();
+  await createConsumers([queueO]);
+  void consume<SagaConsumeSagaEvents<T>>(e, queueO.queueName, sagaConsumeCallback);
+  return e;
 };
 /**
  * Start a saga listener to handle incoming **commence saga events**
@@ -132,17 +132,17 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
  * @see startGlobalSagaStepListener
  */
 export const commenceSagaListener = async <U extends SagaTitle>(
-    url: string
+  url: string,
 ): Promise<Emitter<CommenceSagaEvents<U>>> => {
-    await prepare(url);
-    const q = {
-        queueName: queue.CommenceSaga,
-        exchange: exchange.CommenceSaga
-    };
-    const e = mitt<CommenceSagaEvents<U>>();
-    await createConsumers([q]);
-    void consume<CommenceSagaEvents<U>>(e, q.queueName, commenceSagaConsumeCallback);
-    return e;
+  await prepare(url);
+  const q = {
+    queueName: queue.CommenceSaga,
+    exchange: exchange.CommenceSaga,
+  };
+  const e = mitt<CommenceSagaEvents<U>>();
+  await createConsumers([q]);
+  void consume<CommenceSagaEvents<U>>(e, q.queueName, commenceSagaConsumeCallback);
+  return e;
 };
 
 let transactionalInitialized = false;
@@ -170,19 +170,19 @@ let transactionalInitialized = false;
  *   @see startGlobalSagaStepListener
  */
 export class Transactional<T extends AvailableMicroservices, U extends SagaTitle> {
-    constructor(private url: string) {
-        if (transactionalInitialized) {
-            throw new Error('Transactional already initialized');
-        }
-        transactionalInitialized = true;
+  constructor(private url: string) {
+    if (transactionalInitialized) {
+      throw new Error('Transactional already initialized');
     }
+    transactionalInitialized = true;
+  }
 
-    startGlobalSagaStepListener = () => {
-        return startGlobalSagaStepListener<T>(this.url);
-    };
-    commenceSagaListener = () => {
-        return commenceSagaListener<U>(this.url);
-    };
+  startGlobalSagaStepListener = () => {
+    return startGlobalSagaStepListener<T>(this.url);
+  };
+  commenceSagaListener = () => {
+    return commenceSagaListener<U>(this.url);
+  };
 }
 
 /**
@@ -207,9 +207,9 @@ export class Transactional<T extends AvailableMicroservices, U extends SagaTitle
  *    await stopRabbitMQ();
  */
 export interface TransactionalConfig<T extends AvailableMicroservices, U extends MicroserviceEvent> {
-    url: string;
-    microservice: T;
-    events: U[];
+  url: string;
+  microservice: T;
+  events: U[];
 }
 
 /**
@@ -247,14 +247,14 @@ export interface TransactionalConfig<T extends AvailableMicroservices, U extends
  * @see startTransactional
  */
 export const connectToSagaCommandEmitter = async <T extends AvailableMicroservices>(
-    config: TransactionalConfig<T, MicroserviceEvent>
+  config: TransactionalConfig<T, MicroserviceEvent>,
 ): Promise<Emitter<MicroserviceConsumeSagaEvents<T>>> => {
-    await prepare(config.url);
-    const q = getQueueConsumer(config.microservice);
-    const e = mitt<MicroserviceConsumeSagaEvents<T>>();
-    await createConsumers([q]);
-    void consume<MicroserviceConsumeSagaEvents<T>>(e, q.queueName, sagaStepCallback);
-    return e;
+  await prepare(config.url);
+  const q = getQueueConsumer(config.microservice);
+  const e = mitt<MicroserviceConsumeSagaEvents<T>>();
+  await createConsumers([q]);
+  void consume<MicroserviceConsumeSagaEvents<T>>(e, q.queueName, sagaStepCallback);
+  return e;
 };
 /**
  * Connects to specific events emitted by a particular microservice.
@@ -295,14 +295,14 @@ export const connectToSagaCommandEmitter = async <T extends AvailableMicroservic
  * @see MicroserviceEvent
  */
 export const connectToEvents = async <T extends AvailableMicroservices, U extends MicroserviceEvent>(
-    config: TransactionalConfig<T, U>
+  config: TransactionalConfig<T, U>,
 ): Promise<Emitter<MicroserviceConsumeEvents<U>>> => {
-    await prepare(config.url);
-    const queueName = `${config.microservice}_match_commands` as const;
-    const e = mitt<MicroserviceConsumeEvents<U>>();
-    await createHeaderConsumers(queueName, config.events);
-    void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
-    return e;
+  await prepare(config.url);
+  const queueName = `${config.microservice}_match_commands` as const;
+  const e = mitt<MicroserviceConsumeEvents<U>>();
+  await createHeaderConsumers(queueName, config.events);
+  void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
+  return e;
 };
 
 let sagaInitialized = false;
@@ -338,19 +338,19 @@ let sagaInitialized = false;
  *   @see connectToSagaCommandEmitter
  */
 export class Saga<T extends AvailableMicroservices, U extends MicroserviceEvent> {
-    constructor(private conf: TransactionalConfig<T, U>) {
-        if (sagaInitialized) {
-            throw new Error('Saga already initialized');
-        }
-        sagaInitialized = true;
+  constructor(private conf: TransactionalConfig<T, U>) {
+    if (sagaInitialized) {
+      throw new Error('Saga already initialized');
     }
+    sagaInitialized = true;
+  }
 
-    connectToEvents = () => {
-        return connectToEvents<T, U>(this.conf);
-    };
-    connectToSagaCommandEmitter = () => {
-        return connectToSagaCommandEmitter<T>(this.conf);
-    };
+  connectToEvents = () => {
+    return connectToEvents<T, U>(this.conf);
+  };
+  connectToSagaCommandEmitter = () => {
+    return connectToSagaCommandEmitter<T>(this.conf);
+  };
 }
 /*
 
