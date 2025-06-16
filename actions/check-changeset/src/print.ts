@@ -18,27 +18,29 @@ declare module 'tty-table' {
     render: () => string;
   };
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function format(args: any[], customPrefix?: string) {
   const fullPrefix = prefix + (customPrefix === undefined ? '' : ` ${customPrefix}`);
   return (
     fullPrefix +
     util
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       .format('', ...args)
       .split('\n')
       .join(`\n${fullPrefix} `)
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function error(...args: any[]) {
   console.error(format(args, chalk.red('error')));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function info(...args: any[]) {
   console.info(format(args, chalk.cyan('info')));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function log(...args: any[]) {
   console.log(format(args));
 }

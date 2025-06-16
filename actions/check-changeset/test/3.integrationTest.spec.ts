@@ -39,7 +39,7 @@ describe('triggering action fails', () => {
   it('get the release plan with the correct columns in msg', () => {
     run();
     expect(console.error).toHaveBeenCalledTimes(1);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+
     const o = spy.console.mock.calls[0][0];
     // console.log(Object.getOwnPropertyDescriptors(o));
     // const newError = Object.getOwnPropertyDescriptors(o) as unknown as Error;

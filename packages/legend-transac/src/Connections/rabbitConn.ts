@@ -117,6 +117,7 @@ export const isConnectionHealthy = async (): Promise<boolean> => {
         });
     });
     await testChannelPromise;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     // si falla no es necesario cerrar el canal porque ya se cerró
     return isHealthy;
