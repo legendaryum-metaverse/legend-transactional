@@ -9,10 +9,10 @@ let sendChannel: Channel | null = null;
  * @throws {Error} If there is an issue with creating the **_send_** channel or getting the RabbitMQ connection.
  */
 export const getSendChannel = async (): Promise<Channel> => {
-    if (sendChannel === null) {
-        sendChannel = await (await getRabbitMQConn()).createChannel();
-    }
-    return sendChannel;
+  if (sendChannel === null) {
+    sendChannel = await (await getRabbitMQConn()).createChannel();
+  }
+  return sendChannel;
 };
 
 /**
@@ -22,8 +22,8 @@ export const getSendChannel = async (): Promise<Channel> => {
  * @throws {Error} If there is an issue with closing the **_send_** channel.
  */
 export const closeSendChannel = async (): Promise<void> => {
-    if (sendChannel !== null) {
-        await sendChannel.close();
-        sendChannel = null;
-    }
+  if (sendChannel !== null) {
+    await sendChannel.close();
+    sendChannel = null;
+  }
 };

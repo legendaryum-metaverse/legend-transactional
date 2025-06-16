@@ -11,24 +11,24 @@ import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
  * @param {string} queueName - The name of the queue from which the message was consumed.
  */
 export const commenceSagaConsumeCallback = <U extends SagaTitle>(
-    msg: ConsumeMessage | null,
-    channel: Channel,
-    e: Emitter<CommenceSagaEvents<U>>,
-    queueName: string
+  msg: ConsumeMessage | null,
+  channel: Channel,
+  e: Emitter<CommenceSagaEvents<U>>,
+  queueName: string,
 ) => {
-    if (!msg) {
-        console.error('NO MSG AVAILABLE');
-        return;
-    }
-    let saga;
-    try {
-        saga = JSON.parse(msg.content.toString()) as CommenceSaga<U>;
-    } catch (error) {
-        console.error('ERROR PARSING MSG', error);
-        channel.nack(msg, false, false);
-        return;
-    }
-    const responseChannel = new SagaCommenceConsumeChannel(channel, msg, queueName);
+  if (!msg) {
+    console.error('NO MSG AVAILABLE');
+    return;
+  }
+  let saga;
+  try {
+    saga = JSON.parse(msg.content.toString()) as CommenceSaga<U>;
+  } catch (error) {
+    console.error('ERROR PARSING MSG', error);
+    channel.nack(msg, false, false);
+    return;
+  }
+  const responseChannel = new SagaCommenceConsumeChannel(channel, msg, queueName);
 
-    e.emit(saga.title, { saga, channel: responseChannel });
+  e.emit(saga.title, { saga, channel: responseChannel });
 };

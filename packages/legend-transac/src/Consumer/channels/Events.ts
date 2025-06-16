@@ -6,10 +6,10 @@ import ConsumeChannel from './Consume';
  *
  */
 export class EventsConsumeChannel extends ConsumeChannel {
-    /**
-     * Acknowledges the consumed saga event/command.
-     */
-    ackMessage(): void {
-        this.channel.ack(this.msg, false);
-    }
+  /**
+   * Acknowledges the consumed saga event/command.
+   */
+  ackMessage(): void {
+    this.channel.ack(this.msg, false);
+  }
 }

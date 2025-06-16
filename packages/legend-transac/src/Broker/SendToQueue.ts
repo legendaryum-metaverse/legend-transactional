@@ -10,18 +10,18 @@ import { getSendChannel } from './sendChannel';
  * @returns {Promise<void>} A promise that resolves when the message has been successfully sent.
  */
 export const sendToQueue = async <T extends Record<string, any>>(queueName: string, payload: T): Promise<void> => {
-    // any -> debido a que tiparlo para todos los payloads posibles es over-engineering
-    const channel = await getSendChannel();
-    await channel.assertQueue(queueName, { durable: true });
+  // any -> debido a que tiparlo para todos los payloads posibles es over-engineering
+  const channel = await getSendChannel();
+  await channel.assertQueue(queueName, { durable: true });
 
-    // NB: `sentToQueue` and `publish` both return a boolean
-    // indicating whether it's OK to send again straight away, or
-    // (when `false`) that you should wait for the event `'drain'`
-    // to fire before writing again. We're just doing the one write,
-    // so we'll ignore it.
-    channel.sendToQueue(queueName, Buffer.from(JSON.stringify(payload)), {
-        persistent: true
-    });
+  // NB: `sentToQueue` and `publish` both return a boolean
+  // indicating whether it's OK to send again straight away, or
+  // (when `false`) that you should wait for the event `'drain'`
+  // to fire before writing again. We're just doing the one write,
+  // so we'll ignore it.
+  channel.sendToQueue(queueName, Buffer.from(JSON.stringify(payload)), {
+    persistent: true,
+  });
 };
 /**
  * Commences a saga by sending a message payload to the `CommenceSaga` queue.
@@ -37,12 +37,12 @@ export const sendToQueue = async <T extends Record<string, any>>(queueName: stri
  * @see SagaTitle
  */
 export const commenceSaga = async <U extends SagaTitle>(
-    sagaTitle: U,
-    payload: SagaCommencePayload[U]
+  sagaTitle: U,
+  payload: SagaCommencePayload[U],
 ): Promise<void> => {
-    const saga: CommenceSaga<U> = {
-        title: sagaTitle,
-        payload
-    };
-    await sendToQueue(queue.CommenceSaga, saga);
+  const saga: CommenceSaga<U> = {
+    title: sagaTitle,
+    payload,
+  };
+  await sendToQueue(queue.CommenceSaga, saga);
 };

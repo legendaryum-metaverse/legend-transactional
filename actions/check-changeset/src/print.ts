@@ -5,75 +5,75 @@ import table from 'tty-table';
 export const prefix = '🦋 ';
 // NOTE: There is a boxen types that doesn't work so made this here
 declare module 'tty-table' {
-    export default function (
-        value: { value: string; width: number }[],
-        columsn: string[][],
-        options: {
-            paddingLeft: number;
-            paddingRight: number;
-            headerAlign: string;
-            align: string;
-        }
-    ): {
-        render: () => string;
-    };
+  export default function (
+    value: { value: string; width: number }[],
+    columsn: string[][],
+    options: {
+      paddingLeft: number;
+      paddingRight: number;
+      headerAlign: string;
+      align: string;
+    },
+  ): {
+    render: () => string;
+  };
 }
 
 function format(args: any[], customPrefix?: string) {
-    const fullPrefix = prefix + (customPrefix === undefined ? '' : ` ${customPrefix}`);
-    return (
-        fullPrefix +
-        util
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            .format('', ...args)
-            .split('\n')
-            .join(`\n${fullPrefix} `)
-    );
+  const fullPrefix = prefix + (customPrefix === undefined ? '' : ` ${customPrefix}`);
+  return (
+    fullPrefix +
+    util
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      .format('', ...args)
+      .split('\n')
+      .join(`\n${fullPrefix} `)
+  );
 }
 
 export function error(...args: any[]) {
-    console.error(format(args, chalk.red('error')));
+  console.error(format(args, chalk.red('error')));
 }
 
 export function info(...args: any[]) {
-    console.info(format(args, chalk.cyan('info')));
+  console.info(format(args, chalk.cyan('info')));
 }
 
 export function log(...args: any[]) {
-    console.log(format(args));
+  console.log(format(args));
 }
 
 function verbosePrint(type: VersionType, releases: ComprehensiveRelease[]) {
-    const packages = releases.filter(r => r.type === type);
-    if (packages.length) {
-        info(chalk`Packages to be bumped at {green ${type}}`);
+  const packages = releases.filter((r) => r.type === type);
+  if (packages.length) {
+    info(chalk`Packages to be bumped at {green ${type}}`);
 
-        const columns = packages.map(({ name, newVersion: version, changesets }) => [
-            chalk.green(name),
-            version,
-            changesets.map(c => chalk.blue(` .changeset/${c}.md`)).join(' +')
-        ]);
+    const columns = packages.map(({ name, newVersion: version, changesets }) => [
+      chalk.green(name),
+      version,
+      changesets.map((c) => chalk.blue(` .changeset/${c}.md`)).join(' +'),
+    ]);
 
-        const t1 = table(
-            [
-                { value: 'Package Name', width: 20 },
-                { value: 'New Version', width: 20 },
-                { value: 'Related Changeset Summaries', width: 70 }
-            ],
-            columns,
-            { paddingLeft: 1, paddingRight: 0, headerAlign: 'center', align: 'left' }
-        );
-        log(`${t1.render()}\n`);
-    } else {
-        info(chalk`Running release would release {red NO} packages as a {green ${type}}`);
-    }
+    const t1 = table(
+      [
+        { value: 'Package Name', width: 20 },
+        { value: 'New Version', width: 20 },
+        { value: 'Related Changeset Summaries', width: 70 },
+      ],
+      columns,
+      { paddingLeft: 1, paddingRight: 0, headerAlign: 'center', align: 'left' },
+    );
+    log(`${t1.render()}\n`);
+  } else {
+    info(chalk`Running release would release {red NO} packages as a {green ${type}}`);
+  }
 }
 // changeset --status --verbose
 export const printJson = (releasePlan: ReleasePlan) => {
-    const { releases } = releasePlan;
-    verbosePrint('patch', releases);
-    log('---');
-    verbosePrint('minor', releases);
-    log('---');
-    verbosePrint('major', releases);
+  const { releases } = releasePlan;
+  verbosePrint('patch', releases);
+  log('---');
+  verbosePrint('minor', releases);
+  log('---');
+  verbosePrint('major', releases);
 };

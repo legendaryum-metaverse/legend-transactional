@@ -42,8 +42,8 @@ export const MAX_NACK_RETRIES = 20;
  * @constant
  */
 export const nodeDataDefaults: SagaStepDefaults = {
-    payload: {},
-    previousPayload: {},
-    status: status.Pending,
-    isCurrentStep: false
+  payload: {},
+  previousPayload: {},
+  status: status.Pending,
+  isCurrentStep: false,
 } as const;
