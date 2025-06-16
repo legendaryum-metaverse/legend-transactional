@@ -5,8 +5,10 @@ import json from '@eslint/json';
 import prettier from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
 import { defineConfig } from 'eslint/config';
+import turboConfig from 'eslint-config-turbo/flat';
 
 export default defineConfig([
+  ...turboConfig,
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
     plugins: { js },
