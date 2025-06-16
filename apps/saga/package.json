@@ -9,7 +9,6 @@
     "express": "latest"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
     "@types/express": "latest",
     "tsconfig": "workspace:*"
   },

@@ -44,8 +44,7 @@
     "mitt": "latest"
   },
   "devDependencies": {
-    "tsconfig": "workspace:*",
-    "eslint-config-custom": "workspace:*"
+    "tsconfig": "workspace:*"
   },
   "peerDependencies": {
     "amqplib": ">=0.10.7",
