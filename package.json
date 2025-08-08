@@ -45,6 +45,7 @@
   },
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
-    "@types/node": "^22.16.4"
+    "@types/node": "^22.16.4",
+    "amqplib": "^0.10.8"
   }
 }
