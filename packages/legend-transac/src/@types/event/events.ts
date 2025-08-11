@@ -119,7 +119,7 @@ export interface SocialUser {
   userImage?: string;
   glbUrl?: string;
   description?: string;
-  socialMedia?: Map<string, string>;
+  socialMedia?: Record<string, string>;
   preferences: string[];
   blockedUsers: string[];
   RPMAvatarId?: string;
@@ -227,7 +227,7 @@ export interface EventPayload {
   'legend_missions.send_email_crypto_mission_completed': {
     userId: string;
     missionTitle: string;
-    reward: number;
+    reward: string;
     blockchainNetwork: string;
     cryptoAsset: string;
   };
