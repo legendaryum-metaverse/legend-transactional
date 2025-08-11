@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.1.0
+
+### Minor Changes
+
+- 11d6470: events: set crypto reward to string; SocialUser.socialMedia -> Record<string, string>
+
 ## 2.0.5
 
 ### Patch Changes
@@ -162,7 +168,7 @@
 
 - ae2fc9f: micro lengend-send-email added to available microservices list
 
-    Event to set a send a new email to a user
+  Event to set a send a new email to a user
 
 ## 1.4.19
 
@@ -247,7 +253,7 @@
 ### Patch Changes
 
 - 154ee03: - new event room_inventory.update_vp_building_image
-    - new event room_snapshot.building_change_in_island
+  - new event room_snapshot.building_change_in_island
 
 ## 1.4.5
 
@@ -291,7 +297,7 @@
 
 - 350f2fe: new event payments.cancel_pre_purchase_reservation
 
-    new event payments.cancel_pre_purchase_reservation. this event is to cancel the pre-purchase reservation of a resource in room-inventory. when the Redis key in payments expires, it will be removed, and consequently, the pre-purchase reservation will be canceled
+  new event payments.cancel_pre_purchase_reservation. this event is to cancel the pre-purchase reservation of a resource in room-inventory. when the Redis key in payments expires, it will be removed, and consequently, the pre-purchase reservation will be canceled
 
 ## 1.3.0
 
@@ -304,7 +310,7 @@
 ### Minor Changes
 
 - 52294f0: - Init class to retrieve the emitters as methods, each one can prepare the connection.
-    - Cleaning resources that are not used anymore.
+  - Cleaning resources that are not used anymore.
 
 ## 1.1.7
 
@@ -385,7 +391,7 @@
 ### Patch Changes
 
 - 2d93996: - Fix the error of an export in a circular dependency context
-    - Improved build with **tsup**
+  - Improved build with **tsup**
 
 ## 1.0.2
 
@@ -404,35 +410,33 @@
 ### Major Changes
 
 - 6af26b1: ### Enhanced RabbitMQ Microservice Communication
+  - **Event-Driven Architecture**: Introduced a robust event-driven communication framework for
+    microservices using RabbitMQ. This allows services to publish and subscribe to events, facilitating loosely coupled and scalable interactions.
+  - **Saga Orchestration**: Implemented saga pattern support for coordinating complex transactions
+    across multiple microservices. The commenceSaga and startGlobalSagaStepListener functions enable reliable long-running workflows with compensation mechanisms.
+  - **Transactional Message Handling**: Added the startTransactional function to simplify the
+    setup of
+    microservices that need to both consume events and participate in sagas. This streamlines the connection, queue configuration, and event/command subscriptions.
+  - **Selective Event Consumption**: The connectToEvents function provides fine-grained control over
+    which events a microservice subscribes to, reducing unnecessary message processing.
+  - **Robust Error Handling**: Implemented negative acknowledgment (NACK) mechanisms with
+    configurable
+    retry strategies (linear backoff and Fibonacci backoff) to handle failed message processing and ensure eventual consistency.
+  - **Optimized Requeuing**: Developed a sophisticated requeuing mechanism for failed messages that
+    leverages custom headers and multiple exchanges to route messages specifically back to the microservice that encountered the error.
 
-    - **Event-Driven Architecture**: Introduced a robust event-driven communication framework for
-      microservices using RabbitMQ. This allows services to publish and subscribe to events, facilitating loosely coupled and scalable interactions.
-    - **Saga Orchestration**: Implemented saga pattern support for coordinating complex transactions
-      across multiple microservices. The commenceSaga and startGlobalSagaStepListener functions enable reliable long-running workflows with compensation mechanisms.
-    - **Transactional Message Handling**: Added the startTransactional function to simplify the
-      setup of
-      microservices that need to both consume events and participate in sagas. This streamlines the connection, queue configuration, and event/command subscriptions.
-    - **Selective Event Consumption**: The connectToEvents function provides fine-grained control over
-      which events a microservice subscribes to, reducing unnecessary message processing.
-    - **Robust Error Handling**: Implemented negative acknowledgment (NACK) mechanisms with
-      configurable
-      retry strategies (linear backoff and Fibonacci backoff) to handle failed message processing and ensure eventual consistency.
-    - **Optimized Requeuing**: Developed a sophisticated requeuing mechanism for failed messages that
-      leverages custom headers and multiple exchanges to route messages specifically back to the microservice that encountered the error.
-
-    ### Improved Code Quality and Maintainability
-
-    - **Detailed Documentation**: Added comprehensive TSDoc comments to all functions and classes,
-      providing clear explanations, usage examples, and type information.
-    - **Type Safety**: Introduced generics to ensure type safety when working with different
-      microservice
-      events and payloads.
-    - **Refactored Code**: Refactored existing functions like eventCallback to improve code clarity,
-      readability, and maintainability.
-    - **Code Comments**: Added inline comments to clarify the purpose of specific code blocks and
-      configuration details.
-    - **Standardized Conventions**: Followed consistent coding conventions throughout the codebase for
-      improved consistency and maintainability.
+  ### Improved Code Quality and Maintainability
+  - **Detailed Documentation**: Added comprehensive TSDoc comments to all functions and classes,
+    providing clear explanations, usage examples, and type information.
+  - **Type Safety**: Introduced generics to ensure type safety when working with different
+    microservice
+    events and payloads.
+  - **Refactored Code**: Refactored existing functions like eventCallback to improve code clarity,
+    readability, and maintainability.
+  - **Code Comments**: Added inline comments to clarify the purpose of specific code blocks and
+    configuration details.
+  - **Standardized Conventions**: Followed consistent coding conventions throughout the codebase for
+    improved consistency and maintainability.
 
 ## 0.3.1
 
