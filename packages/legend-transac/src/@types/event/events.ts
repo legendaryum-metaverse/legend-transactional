@@ -227,7 +227,7 @@ export interface EventPayload {
   'legend_missions.send_email_crypto_mission_completed': {
     userId: string;
     missionTitle: string;
-    reward: number;
+    reward: string;
     blockchainNetwork: string;
     cryptoAsset: string;
   };
