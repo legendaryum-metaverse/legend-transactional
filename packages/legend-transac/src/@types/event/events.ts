@@ -119,7 +119,7 @@ export interface SocialUser {
   userImage?: string;
   glbUrl?: string;
   description?: string;
-  socialMedia?: Record<string, string>;
+  socialMedia?: Map<string, string>;
   preferences: string[];
   blockedUsers: string[];
   RPMAvatarId?: string;
