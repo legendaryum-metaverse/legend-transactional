@@ -1,5 +1,12 @@
 # saga
 
+## 0.0.108
+
+### Patch Changes
+
+- Updated dependencies [9029ab9]
+  - legend-transactional@2.1.1
+
 ## 0.0.107
 
 ### Patch Changes

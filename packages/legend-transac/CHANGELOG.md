@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.1.1
+
+### Patch Changes
+
+- 9029ab9: return socialMedia type to Map in SocialUser
+
 ## 2.1.0
 
 ### Minor Changes
