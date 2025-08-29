@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.1.2
+
+### Patch Changes
+
+- bde8e2d: new ranking created
+
 ## 2.1.1
 
 ### Patch Changes
