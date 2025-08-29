@@ -1,11 +1,5 @@
 # legend-transactional
 
-## 2.1.2
-
-### Patch Changes
-
-- 0c29303: feat(types): notificationConfig en eventos + evento nuevo new_ranking_created
-
 ## 2.1.1
 
 ### Patch Changes
