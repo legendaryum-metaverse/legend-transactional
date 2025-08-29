@@ -214,6 +214,10 @@ export interface EventPayload {
     endDate: string;
     maxPlayersClaimingReward: number;
     timeToReward: number;
+    notificationConfig?: {
+      customEmails?: string[];
+      templateName: string;
+    };
   };
   /**
    * Event to set a mission in progress
@@ -254,6 +258,23 @@ export interface EventPayload {
    */
   'legend_rankings.rankings_finished': {
     completedRankings: CompletedRanking[];
+  };
+  /**
+   * Event to notify when a ranking is created
+   */
+  'legend_rankings.new_ranking_created': {
+    title: string;
+    description: string;
+    authorEmail: string;
+    rewardType: string;
+    endsAt: string;
+    nftBlockchainNetwork?: string;
+    nftContractAddress?: string;
+    walletCryptoAsset?: string;
+    notificationConfig?: {
+      customEmails?: string[];
+      templateName: string;
+    };
   };
   /**
    * Event triggered when a product virtual is deleted
@@ -364,6 +385,7 @@ export const microserviceEvent = {
     'legend_missions.send_email_code_exchange_mission_completed',
   'LEGEND_MISSIONS.SEND_EMAIL_NFT_MISSION_COMPLETED': 'legend_missions.send_email_nft_mission_completed',
   'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
+  'LEGEND_RANKINGS.NEW_RANKING_CREATED': 'legend_rankings.new_ranking_created',
   'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
   'LEGEND_SHOWCASE.UPDATE_ALLOWED_MISSION_SUBSCRIPTION_IDS': 'legend_showcase.update_allowed_mission_subscription_ids',
   'LEGEND_SHOWCASE.UPDATE_ALLOWED_RANKING_SUBSCRIPTION_IDS': 'legend_showcase.update_allowed_ranking_subscription_ids',
