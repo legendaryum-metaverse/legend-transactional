@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.2.0
+
+### Minor Changes
+
+- 6bacaba: add event legend_missions.mission_finished
+
 ## 2.1.2
 
 ### Patch Changes
