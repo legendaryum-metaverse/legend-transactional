@@ -34,7 +34,8 @@ export const eventCallback = <U extends MicroserviceEvent>(
   const stringPayload = msg.content.toString();
   let payload;
   try {
-    payload = JSON.parse(stringPayload) as EventPayload[U];
+    // Constrain the index access to valid keys to satisfy TS 5.9+
+    payload = JSON.parse(stringPayload) as EventPayload[U & keyof EventPayload];
   } catch (error) {
     console.error('ERROR PARSING MSG', error);
     channel.nack(msg, false, false);

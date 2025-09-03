@@ -4,7 +4,8 @@ import { EventsConsumeChannel } from '../../Consumer/channels/Events';
  * Represents handlers for events emitted by a microservice.
  */
 export interface EventsHandler<T extends MicroserviceEvent> {
-  payload: EventPayload[T];
+  // Guard the index access so TS 5.9+ is satisfied without changing public API
+  payload: EventPayload[T & keyof EventPayload];
   channel: EventsConsumeChannel;
 }
 /**
