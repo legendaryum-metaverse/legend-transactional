@@ -380,6 +380,7 @@ export const microserviceEvent = {
   'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
+  'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
   'LEGEND_MISSIONS.SEND_EMAIL_CRYPTO_MISSION_COMPLETED': 'legend_missions.send_email_crypto_mission_completed',
   'LEGEND_MISSIONS.SEND_EMAIL_CODE_EXCHANGE_MISSION_COMPLETED':
     'legend_missions.send_email_code_exchange_mission_completed',
