@@ -226,6 +226,17 @@ export interface EventPayload {
     redisKey: string;
   };
   /**
+   * Event triggered when a mission finishes and needs to send final reports to participants
+   */
+  'legend_missions.mission_finished': {
+    missionTitle: string;
+    participants: Array<{
+      userId?: string;
+      email?: string;
+      position?: number;
+    }>;
+  };
+  /**
    * Event triggered to send an email notification when a user completes a crypto-based mission and earns a reward.
    */
   'legend_missions.send_email_crypto_mission_completed': {
