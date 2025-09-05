@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.2.1
+
+### Patch Changes
+
+- 52b8309: add payload event 'legend_missions.mission_finished
+
 ## 2.2.0
 
 ### Minor Changes
