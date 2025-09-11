@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.2.2
+
+### Patch Changes
+
+- c642a60: add auth.blocked_user event support
+
 ## 2.2.1
 
 ### Patch Changes
