@@ -173,6 +173,15 @@ export interface EventPayload {
     userlastname: string;
   };
   /**
+   * Event to notify when a user is blocked (permanent emits only).
+   */
+  'auth.blocked_user': {
+    userId: string;
+    blockType: 'permanent' | 'temporary';
+    blockReason?: string;
+    blockExpirationHours?: number;
+  };
+  /**
    * Event to update a user's subscription.
    */
   'coins.update_subscription': {
@@ -385,6 +394,7 @@ export const microserviceEvent = {
   'AUTH.DELETED_USER': 'auth.deleted_user',
   'AUTH.LOGOUT_USER': 'auth.logout_user',
   'AUTH.NEW_USER': 'auth.new_user',
+  'AUTH.BLOCKED_USER': 'auth.blocked_user',
   'COINS.NOTIFY_CLIENT': 'coins.notify_client',
   'COINS.SEND_EMAIL': 'coins.send_email',
   'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
