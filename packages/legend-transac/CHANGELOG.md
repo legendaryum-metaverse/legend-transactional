@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.2.3
+
+### Patch Changes
+
+- 49f4b9a: add intermediate rewards support
+
 ## 2.2.2
 
 ### Patch Changes
