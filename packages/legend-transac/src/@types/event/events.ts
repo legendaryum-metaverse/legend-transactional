@@ -408,19 +408,19 @@ export interface EventPayload {
     /**
      * The event that was received
      */
-    receivedEvent: string;
+    received_event: string;
     /**
      * Timestamp when the event was received (UNIX timestamp in seconds)
      */
-    receivedAt: number;
+    received_at: number;
     /**
      * The queue name from which the event was consumed
      */
-    queueName: string;
+    queue_name: string;
     /**
      * Optional event identifier for tracking
      */
-    eventId?: string;
+    event_id?: string;
   };
   /**
    * Emitted when an event is successfully processed by a microservice for audit tracking
@@ -433,19 +433,19 @@ export interface EventPayload {
     /**
      * The original event that was processed
      */
-    processedEvent: string;
+    processed_event: string;
     /**
      * Timestamp when the event was processed (UNIX timestamp in seconds)
      */
-    processedAt: number;
+    processed_at: number;
     /**
      * The queue name where the event was consumed
      */
-    queueName: string;
+    queue_name: string;
     /**
      * Optional event identifier for tracking
      */
-    eventId?: string;
+    event_id?: string;
   };
   /**
    * Emitted when a message is rejected/nacked and sent to dead letter queue
@@ -458,27 +458,27 @@ export interface EventPayload {
     /**
      * The original event that was rejected
      */
-    rejectedEvent: string;
+    rejected_event: string;
     /**
      * Timestamp when the event was rejected (UNIX timestamp in seconds)
      */
-    rejectedAt: number;
+    rejected_at: number;
     /**
      * The queue name where the event was rejected from
      */
-    queueName: string;
+    queue_name: string;
     /**
      * Reason for rejection (delay, fibonacci_strategy, etc.)
      */
-    rejectionReason: 'delay' | 'fibonacci_strategy';
+    rejection_reason: 'delay' | 'fibonacci_strategy';
     /**
      * Optional retry count
      */
-    retryCount?: number;
+    retry_count?: number;
     /**
      * Optional event identifier for tracking
      */
-    eventId?: string;
+    event_id?: string;
   };
 }
 /**
