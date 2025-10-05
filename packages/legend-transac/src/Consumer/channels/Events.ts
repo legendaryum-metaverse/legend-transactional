@@ -59,7 +59,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
   /**
    * Override nackWithDelay to emit audit.dead_letter event
    */
-  public nackWithDelay = (delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } => {
+  public nackWithDelay(delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } {
     // Call parent's nack implementation using the instance method
     const parentNack = super.nackWithDelay(delay, maxRetries);
 
@@ -80,15 +80,15 @@ export class EventsConsumeChannel extends ConsumeChannel {
     });
 
     return parentNack;
-  };
+  }
 
   /**
    * Override nackWithFibonacciStrategy to emit audit.dead_letter event
    */
-  public nackWithFibonacciStrategy = (
+  public nackWithFibonacciStrategy(
     maxOccurrence: number = MAX_OCCURRENCE,
     maxRetries?: number,
-  ): { count: number; delay: number; occurrence: number } => {
+  ): { count: number; delay: number; occurrence: number } {
     // Call parent's nack implementation using the instance method
     const parentNack = super.nackWithFibonacciStrategy(maxOccurrence, maxRetries);
 
@@ -109,5 +109,5 @@ export class EventsConsumeChannel extends ConsumeChannel {
     });
 
     return parentNack;
-  };
+  }
 }
