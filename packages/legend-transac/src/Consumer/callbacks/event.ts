@@ -2,6 +2,8 @@ import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { EventsConsumeChannel } from '../channels/Events';
 import { EventPayload, MicroserviceConsumeEvents, microserviceEvent, MicroserviceEvent } from '../../@types';
+import { publishAuditReceived } from '../../Broker/PublishAuditEvent';
+import { extractMicroserviceFromQueue } from '../../utils';
 /**
  * Callback function for consuming and handling microservice events.
  *
@@ -68,7 +70,24 @@ export const eventCallback = <U extends MicroserviceEvent>(
     );
   }
 
-  const responseChannel = new EventsConsumeChannel(channel, msg, queueName);
+  // Emit audit.received event BEFORE processing (automatic audit tracking)
+  // This tracks when an event is received by a microservice before processing starts
+  const microservice = extractMicroserviceFromQueue(queueName);
+  const receivedEvent = event[0];
+  const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
+
+  //fire-and-forget -> Emit the audit.received event (never fail the main flow if audit fails)
+  publishAuditReceived(channel, {
+    microservice,
+    receivedEvent,
+    receivedAt: timestamp,
+    queueName,
+    eventId: undefined, // Optional: can be enhanced later with message ID tracking
+  }).catch((error) => {
+    console.error('Failed to emit audit.received event:', error);
+  });
+
+  const responseChannel = new EventsConsumeChannel(channel, msg, queueName, microservice, receivedEvent);
 
   // si event.length > 1, a esta altura todos los eventos son válidos y se pueden emitir. Recordar llego un solo mensaje con extra headers.
   // Sin embargo, el payload es tipado para cada evento.

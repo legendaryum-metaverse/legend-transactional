@@ -3,3 +3,4 @@ export * from './channels';
 export * from './consume';
 export * from './create';
 export * from './header';
+export * from './auditInfrastructure';
