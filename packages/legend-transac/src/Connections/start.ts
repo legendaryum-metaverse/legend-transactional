@@ -348,6 +348,9 @@ export class Saga<T extends AvailableMicroservices, U extends MicroserviceEvent>
     if (sagaInitialized) {
       throw new Error('Saga already initialized');
     }
+    // Para que este micro pueda realizar pasos del saga y realizar commence_saga ops las queue's deben existir, no es responsabilidad
+    // de los micros crear estos recursos, el micro "transactional" debe crear estos recursos -> "queue.CommenceSaga" en commenceSagaListener
+    // y "queue.ReplyToSaga" en startGlobalSagaStepListener
     sagaInitialized = true;
   }
 

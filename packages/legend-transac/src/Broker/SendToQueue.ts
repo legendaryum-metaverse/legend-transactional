@@ -14,8 +14,6 @@ export const sendToQueue =
   async <T extends Record<string, any>>(queueName: string, payload: T): Promise<void> => {
     // any -> debido a que tiparlo para todos los payloads posibles es over-engineering
     const channel = await getSendChannel();
-    await channel.assertQueue(queueName, { durable: true });
-
     // NB: `sentToQueue` and `publish` both return a boolean
     // indicating whether it's OK to send again straight away, or
     // (when `false`) that you should wait for the event `'drain'`
