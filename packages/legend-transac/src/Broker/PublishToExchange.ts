@@ -26,8 +26,6 @@ export const publishEvent = async <T extends MicroserviceEvent>(
   event: T,
 ) => {
   const channel = await getSendChannel();
-  // Assert exchange, el mismo assert que en en el Consumer/header.ts
-  await channel.assertExchange(exchange.Matching, 'headers', { durable: true });
   channel.publish(exchange.Matching, ``, Buffer.from(JSON.stringify(msg)), {
     headers: {
       ...getEventObject(event),
