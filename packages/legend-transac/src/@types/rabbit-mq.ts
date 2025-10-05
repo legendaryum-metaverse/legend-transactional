@@ -3,6 +3,13 @@
  */
 export const queue = {
   /**
+   * Audit queue names for separate audit event types
+   * @constant
+   */
+  AuditReceived: 'audit_received_commands',
+  AuditProcessed: 'audit_processed_commands',
+  AuditDeadLetter: 'audit_dead_letter_commands',
+  /**
    * Queue used for sending replies in response to saga events.
    */
   ReplyToSaga: 'reply_to_saga',
@@ -15,6 +22,10 @@ export const queue = {
  * Represents the names of exchanges, which act as message routing hubs in the RabbitMQ context.
  */
 export const exchange = {
+  /**
+   * Audit exchange name for direct routing of audit events
+   */
+  Audit: 'audit_exchange',
   /**
    * Exchange dedicated to requeueing messages that require further processing in a saga process
    */

@@ -15,6 +15,7 @@ import { SocialMediaRoomsCommands } from './social-media-rooms';
 import { SendEmailCommands } from './send-email';
 import { RankingsCommands } from './rankings';
 import { BlockchainCommands } from './blockchain';
+import { AuditEdaCommands } from './audit-eda';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -33,6 +34,10 @@ export interface CommandMap {
    * Represents the mapping of "auth" microservice commands.
    */
   [availableMicroservices.Auth]: AuthCommands;
+  /**
+   * Represents the mapping of "audit-eda" microservice commands.
+   */
+  [availableMicroservices.AuditEda]: AuditEdaCommands;
   /**
    * Represents the mapping of "blockchain" microservice commands.
    */

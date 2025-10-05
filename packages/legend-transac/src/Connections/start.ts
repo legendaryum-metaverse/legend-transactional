@@ -18,6 +18,7 @@ import {
   sagaStepCallback,
   sagaConsumeCallback,
   eventCallback,
+  createAuditLoggingResources,
 } from '../Consumer';
 import { getQueueConsumer } from '../utils';
 import mitt, { Emitter } from 'mitt';
@@ -301,6 +302,11 @@ export const connectToEvents = async <T extends AvailableMicroservices, U extend
   const queueName = `${config.microservice}_match_commands` as const;
   const e = mitt<MicroserviceConsumeEvents<U>>();
   await createHeaderConsumers(queueName, config.events);
+
+  // Create audit logging resources automatically when connecting to events
+  // This feature is related only to "events", that is why we create it here
+  await createAuditLoggingResources();
+
   void consume<MicroserviceConsumeEvents<U>>(e, queueName, eventCallback);
   return e;
 };
