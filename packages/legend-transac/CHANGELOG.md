@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.3.0
+
+### Minor Changes
+
+- 8908783: Logging audit eda
+
 ## 2.2.3
 
 ### Patch Changes
