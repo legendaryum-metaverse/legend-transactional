@@ -79,10 +79,10 @@ export const eventCallback = <U extends MicroserviceEvent>(
   //fire-and-forget -> Emit the audit.received event (never fail the main flow if audit fails)
   publishAuditReceived(channel, {
     microservice,
-    receivedEvent,
-    receivedAt: timestamp,
-    queueName,
-    eventId: undefined, // Optional: can be enhanced later with message ID tracking
+    received_event: receivedEvent,
+    received_at: timestamp,
+    queue_name: queueName,
+    event_id: undefined, // Optional: can be enhanced later with message ID tracking
   }).catch((error) => {
     console.error('Failed to emit audit.received event:', error);
   });

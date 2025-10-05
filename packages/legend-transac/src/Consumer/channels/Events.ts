@@ -47,10 +47,10 @@ export class EventsConsumeChannel extends ConsumeChannel {
 
     publishAuditProcessed(this.channel, {
       microservice: this.microservice,
-      processedEvent: this.processedEvent,
-      processedAt: timestamp,
-      queueName: this.queueName,
-      eventId: undefined, // Optional: can be enhanced later
+      processed_event: this.processedEvent,
+      processed_at: timestamp,
+      queue_name: this.queueName,
+      event_id: undefined, // Optional: can be enhanced later
     }).catch((error) => {
       console.error('Failed to emit audit.processed event:', error);
     });
@@ -68,12 +68,12 @@ export class EventsConsumeChannel extends ConsumeChannel {
 
     publishAuditDeadLetter(this.channel, {
       microservice: this.microservice,
-      rejectedEvent: this.processedEvent,
-      rejectedAt: timestamp,
-      queueName: this.queueName,
-      rejectionReason: 'delay',
-      retryCount: parentNack.count,
-      eventId: undefined,
+      rejected_event: this.processedEvent,
+      rejected_at: timestamp,
+      queue_name: this.queueName,
+      rejection_reason: 'delay',
+      retry_count: parentNack.count,
+      event_id: undefined,
     }).catch((error) => {
       // Log but don't fail the nack operation
       console.error('Failed to emit audit.dead_letter event:', error);
@@ -97,12 +97,12 @@ export class EventsConsumeChannel extends ConsumeChannel {
 
     publishAuditDeadLetter(this.channel, {
       microservice: this.microservice,
-      rejectedEvent: this.processedEvent,
-      rejectedAt: timestamp,
-      queueName: this.queueName,
-      rejectionReason: 'fibonacci_strategy',
-      retryCount: parentNack.count,
-      eventId: undefined,
+      rejected_event: this.processedEvent,
+      rejected_at: timestamp,
+      queue_name: this.queueName,
+      rejection_reason: 'fibonacci_strategy',
+      retry_count: parentNack.count,
+      event_id: undefined,
     }).catch((error) => {
       // Log but don't fail the nack operation
       console.error('Failed to emit audit.dead_letter event:', error);
