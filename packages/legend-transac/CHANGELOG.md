@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.3.1
+
+### Patch Changes
+
+- a8ff749: correct types
+
 ## 2.3.0
 
 ### Minor Changes
