@@ -58,10 +58,10 @@ abstract class ConsumeChannel {
    *
    * @see NACKING_DELAY_MS
    */
-  public nackWithDelay = (delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } => {
+  public nackWithDelay(delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } {
     const { delay: delayNackRetry, count } = this.nack({ delay, maxRetries });
     return { count, delay: delayNackRetry };
-  };
+  }
 
   /**
    * Negatively acknowledges (NACKs) the message using a Fibonacci backoff strategy.
@@ -76,12 +76,12 @@ abstract class ConsumeChannel {
    *   - `occurrence`: The current occurrence count for the Fibonacci sequence.
    * @see MAX_OCCURRENCE
    */
-  public nackWithFibonacciStrategy = (
+  public nackWithFibonacciStrategy(
     maxOccurrence: number = MAX_OCCURRENCE,
     maxRetries?: number,
-  ): { count: number; delay: number; occurrence: number } => {
+  ): { count: number; delay: number; occurrence: number } {
     return this.nack({ maxOccurrence, maxRetries });
-  };
+  }
   /**
    * Private helper function to handle the actual NACK logic.
    *
@@ -91,15 +91,11 @@ abstract class ConsumeChannel {
    *   - `delay` and `maxRetries`: For linear backoff with a fixed delay and retry limit.
    *   - `maxOccurrence`: For Fibonacci backoff with a maximum occurrence count.
    */
-  private nack = ({
-    maxRetries,
-    maxOccurrence,
-    delay,
-  }: Nack): {
+  private nack({ maxRetries, maxOccurrence, delay }: Nack): {
     count: number;
     delay: number;
     occurrence: number;
-  } => {
+  } {
     const { msg, queueName, channel } = this;
     channel.nack(msg, false, false); // nack without requeueing immediately
 
@@ -175,7 +171,7 @@ abstract class ConsumeChannel {
     }
 
     return { count, delay: nackDelay, occurrence };
-  };
+  }
 }
 
 export default ConsumeChannel;

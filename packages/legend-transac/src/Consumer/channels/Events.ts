@@ -58,11 +58,10 @@ export class EventsConsumeChannel extends ConsumeChannel {
 
   /**
    * Override nackWithDelay to emit audit.dead_letter event
-   * Note: We override instead of calling super because nackWithDelay is an arrow function in the parent
    */
   public nackWithDelay = (delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } => {
     // Call parent's nack implementation using the instance method
-    const parentNack = ConsumeChannel.prototype.nackWithDelay.call(this, delay, maxRetries);
+    const parentNack = this.nackWithDelay(delay, maxRetries);
 
     // Emit audit.dead_letter event automatically
     const timestamp = Math.floor(Date.now() / 1000);
@@ -85,14 +84,13 @@ export class EventsConsumeChannel extends ConsumeChannel {
 
   /**
    * Override nackWithFibonacciStrategy to emit audit.dead_letter event
-   * Note: We override instead of calling super because nackWithFibonacciStrategy is an arrow function in the parent
    */
   public nackWithFibonacciStrategy = (
     maxOccurrence: number = MAX_OCCURRENCE,
     maxRetries?: number,
   ): { count: number; delay: number; occurrence: number } => {
     // Call parent's nack implementation using the instance method
-    const parentNack = ConsumeChannel.prototype.nackWithFibonacciStrategy.call(this, maxOccurrence, maxRetries);
+    const parentNack = this.nackWithFibonacciStrategy(maxOccurrence, maxRetries);
 
     // Emit audit.dead_letter event automatically
     const timestamp = Math.floor(Date.now() / 1000);

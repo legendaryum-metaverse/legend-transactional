@@ -19,11 +19,6 @@ export async function publishAuditEvent<T extends MicroserviceEvent>(
   payload: EventPayload[T],
 ): Promise<void> {
   try {
-    // Declare audit exchange if it doesn't exist (idempotent operation)
-    await channel.assertExchange(exchange.Audit, 'direct', {
-      durable: true,
-    });
-
     // Use event type as routing key for direct routing
     const routingKey = eventType; // 'audit.received' | 'audit.processed' | 'audit.dead_letter'
 

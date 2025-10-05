@@ -470,7 +470,7 @@ export interface EventPayload {
     /**
      * Reason for rejection (delay, fibonacci_strategy, etc.)
      */
-    rejectionReason: string;
+    rejectionReason: 'delay' | 'fibonacci_strategy';
     /**
      * Optional retry count
      */
