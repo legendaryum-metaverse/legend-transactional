@@ -61,7 +61,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
    */
   public nackWithDelay = (delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } => {
     // Call parent's nack implementation using the instance method
-    const parentNack = this.nackWithDelay(delay, maxRetries);
+    const parentNack = super.nackWithDelay(delay, maxRetries);
 
     // Emit audit.dead_letter event automatically
     const timestamp = Math.floor(Date.now() / 1000);
@@ -90,7 +90,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
     maxRetries?: number,
   ): { count: number; delay: number; occurrence: number } => {
     // Call parent's nack implementation using the instance method
-    const parentNack = this.nackWithFibonacciStrategy(maxOccurrence, maxRetries);
+    const parentNack = super.nackWithFibonacciStrategy(maxOccurrence, maxRetries);
 
     // Emit audit.dead_letter event automatically
     const timestamp = Math.floor(Date.now() / 1000);
