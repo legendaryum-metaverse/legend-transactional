@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.3.2
+
+### Patch Changes
+
+- fe5fea4: unnecesary resource re-creation
+
 ## 2.3.1
 
 ### Patch Changes
