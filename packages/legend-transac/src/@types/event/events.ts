@@ -394,6 +394,92 @@ export interface EventPayload {
     bucketName: string;
     filePaths: string[];
   };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  // AUDIT EVENTS - For tracking event lifecycle and debugging
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * Emitted when an event is received by a microservice before processing starts (audit tracking)
+   */
+  'audit.received': {
+    /**
+     * The microservice that received the event
+     */
+    microservice: string;
+    /**
+     * The event that was received
+     */
+    receivedEvent: string;
+    /**
+     * Timestamp when the event was received (UNIX timestamp in seconds)
+     */
+    receivedAt: number;
+    /**
+     * The queue name from which the event was consumed
+     */
+    queueName: string;
+    /**
+     * Optional event identifier for tracking
+     */
+    eventId?: string;
+  };
+  /**
+   * Emitted when an event is successfully processed by a microservice for audit tracking
+   */
+  'audit.processed': {
+    /**
+     * The microservice that processed the event
+     */
+    microservice: string;
+    /**
+     * The original event that was processed
+     */
+    processedEvent: string;
+    /**
+     * Timestamp when the event was processed (UNIX timestamp in seconds)
+     */
+    processedAt: number;
+    /**
+     * The queue name where the event was consumed
+     */
+    queueName: string;
+    /**
+     * Optional event identifier for tracking
+     */
+    eventId?: string;
+  };
+  /**
+   * Emitted when a message is rejected/nacked and sent to dead letter queue
+   */
+  'audit.dead_letter': {
+    /**
+     * The microservice that rejected the event
+     */
+    microservice: string;
+    /**
+     * The original event that was rejected
+     */
+    rejectedEvent: string;
+    /**
+     * Timestamp when the event was rejected (UNIX timestamp in seconds)
+     */
+    rejectedAt: number;
+    /**
+     * The queue name where the event was rejected from
+     */
+    queueName: string;
+    /**
+     * Reason for rejection (delay, fibonacci_strategy, etc.)
+     */
+    rejectionReason: 'delay' | 'fibonacci_strategy';
+    /**
+     * Optional retry count
+     */
+    retryCount?: number;
+    /**
+     * Optional event identifier for tracking
+     */
+    eventId?: string;
+  };
 }
 /**
  * Represents the available events in the system.
@@ -401,6 +487,11 @@ export interface EventPayload {
 export const microserviceEvent = {
   'TEST.IMAGE': 'test.image',
   'TEST.MINT': 'test.mint',
+  ///////////////////////////
+  // AUDIT EVENTS - For tracking event lifecycle
+  'AUDIT.RECEIVED': 'audit.received',
+  'AUDIT.PROCESSED': 'audit.processed',
+  'AUDIT.DEAD_LETTER': 'audit.dead_letter',
   ///////////////////////////
   'AUTH.DELETED_USER': 'auth.deleted_user',
   'AUTH.LOGOUT_USER': 'auth.logout_user',

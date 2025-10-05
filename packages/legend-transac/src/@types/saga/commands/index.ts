@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './audit-eda';
 export * from './blockchain';
 export * from './commands';
 export * from './image';
