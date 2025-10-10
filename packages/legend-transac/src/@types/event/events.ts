@@ -418,9 +418,9 @@ export interface EventPayload {
      */
     queue_name: string;
     /**
-     * Optional event identifier for tracking
+     * UUID v7 from message properties for cross-event tracking
      */
-    event_id?: string;
+    event_id: string;
   };
   /**
    * Emitted when an event is successfully processed by a microservice for audit tracking
@@ -443,9 +443,9 @@ export interface EventPayload {
      */
     queue_name: string;
     /**
-     * Optional event identifier for tracking
+     * UUID v7 from message properties for cross-event tracking
      */
-    event_id?: string;
+    event_id: string;
   };
   /**
    * Emitted when a message is rejected/nacked and sent to dead letter queue
@@ -476,9 +476,9 @@ export interface EventPayload {
      */
     retry_count?: number;
     /**
-     * Optional event identifier for tracking
+     * UUID v7 from message properties for cross-event tracking
      */
-    event_id?: string;
+    event_id: string;
   };
 }
 /**

@@ -1,6 +1,8 @@
 import { EventPayload, exchange, MicroserviceEvent } from '../@types';
 import { getEventObject } from '../utils';
 import { getSendChannel } from './sendChannel';
+import { v7 as uuidv7 } from 'uuid';
+import { getStoredConfig } from '../Connections';
 /**
  * Publishes a microservice event to all subscribed microservices.
  *
@@ -26,11 +28,16 @@ export const publishEvent = async <T extends MicroserviceEvent>(
   event: T,
 ) => {
   const channel = await getSendChannel();
+  const userId = getStoredConfig().microservice; //publisher microservice
+  const messageId = uuidv7();
+
   channel.publish(exchange.Matching, ``, Buffer.from(JSON.stringify(msg)), {
     headers: {
       ...getEventObject(event),
       // key para emitir eventos a todos los micros, todos los micros tienen el bind al exchange Matching
       'all-micro': 'yes',
     },
+    messageId,
+    userId,
   });
 };
