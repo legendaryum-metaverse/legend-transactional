@@ -477,4 +477,3 @@ export class Saga<T extends AvailableMicroservices, U extends MicroserviceEvent>
     return connectToSagaCommandEmitter<T>(this.conf);
   };
 }
-

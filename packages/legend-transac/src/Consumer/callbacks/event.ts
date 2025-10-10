@@ -74,7 +74,7 @@ export const eventCallback = <U extends MicroserviceEvent>(
 
   // Emit audit.received event BEFORE processing (automatic audit tracking)
   // This tracks when an event is received by a microservice before processing starts
-  const microservice = extractMicroserviceFromQueue(queueName);
+  const receiverMicroservice = extractMicroserviceFromQueue(queueName);
   const receivedEvent = event[0];
   const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
 
@@ -85,9 +85,13 @@ export const eventCallback = <U extends MicroserviceEvent>(
     event_id = uuidv7();
   }
 
+  // Extract publisher microservice from message properties (set by the publisher)
+  const publisherMicroservice = msg.properties.userId || 'unknown';
+
   //fire-and-forget -> Emit the audit.received event (never fail the main flow if audit fails)
   publishAuditEvent(channel, 'audit.received', {
-    microservice,
+    publisher_microservice: publisherMicroservice,
+    receiver_microservice: receiverMicroservice,
     received_event: receivedEvent,
     received_at: timestamp,
     queue_name: queueName,
@@ -96,7 +100,15 @@ export const eventCallback = <U extends MicroserviceEvent>(
     console.error('Failed to emit audit.received event:', error);
   });
 
-  const responseChannel = new EventsConsumeChannel(channel, msg, queueName, microservice, receivedEvent, event_id);
+  const responseChannel = new EventsConsumeChannel(
+    channel,
+    msg,
+    queueName,
+    receiverMicroservice,
+    receivedEvent,
+    event_id,
+    publisherMicroservice,
+  );
 
   // si event.length > 1, a esta altura todos los eventos son válidos y se pueden emitir. Recordar llego un solo mensaje con extra headers.
   // Sin embargo, el payload es tipado para cada evento.

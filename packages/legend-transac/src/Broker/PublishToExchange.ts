@@ -3,6 +3,7 @@ import { getEventObject } from '../utils';
 import { getSendChannel } from './sendChannel';
 import { v7 as uuidv7 } from 'uuid';
 import { getStoredConfig } from '../Connections';
+import { publishAuditEvent } from './PublishAuditEvent';
 /**
  * Publishes a microservice event to all subscribed microservices.
  *
@@ -28,9 +29,10 @@ export const publishEvent = async <T extends MicroserviceEvent>(
   event: T,
 ) => {
   const channel = await getSendChannel();
-  const userId = getStoredConfig().microservice; //publisher microservice
+  const publisherMicroservice = getStoredConfig().microservice; //publisher microservice
   const messageId = uuidv7();
 
+  // Publish the main event to the matching exchange
   channel.publish(exchange.Matching, ``, Buffer.from(JSON.stringify(msg)), {
     headers: {
       ...getEventObject(event),
@@ -38,6 +40,17 @@ export const publishEvent = async <T extends MicroserviceEvent>(
       'all-micro': 'yes',
     },
     messageId,
-    userId,
+    userId: publisherMicroservice,
+  });
+
+  // Emit audit.published event (fire-and-forget - never fail the main flow)
+  const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
+  publishAuditEvent(channel, 'audit.published', {
+    publisher_microservice: publisherMicroservice,
+    published_event: event,
+    published_at: timestamp,
+    event_id: messageId,
+  }).catch((error) => {
+    console.error('Failed to emit audit.published event:', error);
   });
 };

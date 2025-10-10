@@ -12,7 +12,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
   /**
    * The microservice name that is processing the event
    */
-  private readonly microservice: string;
+  private readonly processorMicroservice: string;
 
   /**
    * The original event that was received
@@ -25,27 +25,35 @@ export class EventsConsumeChannel extends ConsumeChannel {
   private readonly eventId: string;
 
   /**
+   * The microservice that originally published the event
+   */
+  private readonly publisherMicroservice: string;
+
+  /**
    * Creates a new EventsConsumeChannel instance
    *
    * @param channel - The AMQP Channel
    * @param msg - The consumed message
    * @param queueName - The queue name
-   * @param microservice - The microservice name processing the event
+   * @param processorMicroservice - The microservice name processing the event
    * @param processedEvent - The event type being processed
-   * @param eventId - Optional unique event identifier (messageId) for audit tracking
+   * @param eventId - Unique event identifier (messageId) for audit tracking
+   * @param publisherMicroservice - The microservice that originally published the event
    */
   constructor(
     channel: Channel,
     msg: ConsumeMessage,
     queueName: string,
-    microservice: string,
+    processorMicroservice: string,
     processedEvent: string,
     eventId: string,
+    publisherMicroservice: string,
   ) {
     super(channel, msg, queueName);
-    this.microservice = microservice;
+    this.processorMicroservice = processorMicroservice;
     this.processedEvent = processedEvent;
     this.eventId = eventId;
+    this.publisherMicroservice = publisherMicroservice;
   }
 
   /**
@@ -60,7 +68,8 @@ export class EventsConsumeChannel extends ConsumeChannel {
     const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
 
     publishAuditEvent(this.channel, 'audit.processed', {
-      microservice: this.microservice,
+      publisher_microservice: this.publisherMicroservice,
+      processor_microservice: this.processorMicroservice,
       processed_event: this.processedEvent,
       processed_at: timestamp,
       queue_name: this.queueName,
@@ -81,7 +90,8 @@ export class EventsConsumeChannel extends ConsumeChannel {
     const timestamp = Math.floor(Date.now() / 1000);
 
     publishAuditEvent(this.channel, 'audit.dead_letter', {
-      microservice: this.microservice,
+      publisher_microservice: this.publisherMicroservice,
+      rejector_microservice: this.processorMicroservice,
       rejected_event: this.processedEvent,
       rejected_at: timestamp,
       queue_name: this.queueName,
@@ -110,13 +120,14 @@ export class EventsConsumeChannel extends ConsumeChannel {
     const timestamp = Math.floor(Date.now() / 1000);
 
     publishAuditEvent(this.channel, 'audit.dead_letter', {
-      microservice: this.microservice,
+      publisher_microservice: this.publisherMicroservice,
+      rejector_microservice: this.processorMicroservice,
       rejected_event: this.processedEvent,
       rejected_at: timestamp,
       queue_name: this.queueName,
       rejection_reason: 'fibonacci_strategy',
       retry_count: parentNack.count,
-      event_id: this.eventId, //
+      event_id: this.eventId, // UUID v7 from message properties for cross-event tracking
     }).catch((error) => {
       // Log but don't fail the nack operation
       console.error('Failed to emit audit.dead_letter event:', error);
