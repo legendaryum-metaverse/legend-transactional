@@ -8,7 +8,6 @@ import {
   MicroserviceConsumeEvents,
   SagaTitle,
 } from '../@types';
-import { getRabbitMQConn, saveUri } from './rabbitConn';
 import { getConsumeChannel } from './consumeChannel';
 import {
   commenceSagaConsumeCallback,
@@ -23,28 +22,139 @@ import {
 import { getQueueConsumer } from '../utils';
 import mitt, { Emitter } from 'mitt';
 import { MicroserviceConsumeSagaEvents } from '../@types/saga/microservice';
+import amqplib, { ChannelModel } from 'amqplib';
+
+let conn: ChannelModel | null = null;
+let isTheConnectionClosed = true;
+
+const startListeners = (c: ChannelModel) => {
+  c.addListener('close', (e: Error) => {
+    isTheConnectionClosed = true;
+    console.error('[legend_transac:__Connection closed__]', e.message);
+  });
+  c.addListener('error', (e: Error) => {
+    isTheConnectionClosed = true;
+    console.error('[legend_transac:__Connection error__]', e.message);
+  });
+};
+
+let storedConfig: TransactionalConfig<AvailableMicroservices, MicroserviceEvent> | undefined;
+
+export const getStoredConfig = () => {
+  if (!storedConfig) {
+    throw new Error('RabbitMQ Config not initialized.');
+  }
+  return storedConfig;
+};
 
 /**
- * Prepare the library for consuming messages by saving the RabbitMQ URI, establishing a connection
- * and getting the **_consume_** channel.
+ * Get the RabbitMQ connection or establish a new connection if not already connected.
+ *
+ * @returns {Promise<ChannelModel>} A promise that resolves to the RabbitMQ connection.
  */
-let isReady = false;
+export const getRabbitMQConn = async (): Promise<ChannelModel> => {
+  if (conn === null) {
+    conn = await amqplib.connect(getStoredConfig().url);
+    isTheConnectionClosed = false;
+    startListeners(conn);
+  }
+  return conn;
+};
+/**
+ * Close the RabbitMQ connection if it is open.
+ *
+ * @returns {Promise<void>} A promise that resolves when the connection is successfully closed.
+ */
+export const closeRabbitMQConn = async (): Promise<void> => {
+  if (conn !== null) {
+    await conn.close();
+    conn = null;
+    storedConfig = undefined;
+  }
+};
+
+/**
+ * Save the queue name for health check purposes.
+ */
+let healthCheckQueue: string | null = null;
+
+/**
+ * Save the queue name for health check purposes.
+ * @param queue
+ */
+export const saveQueueForHealthCheck = (queue: string) => {
+  healthCheckQueue = queue;
+};
+
+/**
+ * Checks the health of a RabbitMQ connection by creating a test channel and checking an already created queue.
+ * @returns {Promise<boolean>} A promise that resolves to `true` if the connection is healthy and the queue exists, or `false` otherwise.
+ */
+export const isConnectionHealthy = async (): Promise<boolean> => {
+  let isHealthy = false;
+  if (isTheConnectionClosed) return isHealthy;
+  if (conn === null) return isHealthy;
+  if (healthCheckQueue === null) return isHealthy;
+  const queue = healthCheckQueue;
+  // si el check falla, se cierra la conexión:
+  // https://github.com/amqp-node/amqplib/issues/649
+  const closeListener = (e: Error) => {
+    isTheConnectionClosed = true;
+    console.error('[legend_transac:health_check_listener:__Connection closed__]', e.message);
+  };
+
+  const errorListener = (e: Error) => {
+    isTheConnectionClosed = true;
+    console.error('[legend_transac:health_check_listener:__Connection error__]', e.message);
+  };
+
+  conn.addListener('close', closeListener);
+  conn.addListener('error', errorListener);
+  const testChannel = await conn.createConfirmChannel();
+
+  try {
+    const testChannelPromise = new Promise<void>((resolve, reject) => {
+      testChannel
+        .checkQueue(queue)
+        .then(() => {
+          // console.log('[Check success]', info);
+          isHealthy = true;
+          resolve();
+        })
+        .catch((e) => {
+          console.error('[legend_transac:health_check_listener:Check failed]', (e as Error).message);
+          reject(e);
+        });
+    });
+    await testChannelPromise;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (e) {
+    // si falla no es necesario cerrar el canal porque ya se cerró
+    return isHealthy;
+  }
+  await testChannel.close();
+  conn.removeListener('close', closeListener);
+  conn.removeListener('error', errorListener);
+  // success
+  return isHealthy;
+};
+
 /**
  * Prepare the library for consuming messages by saving the RabbitMQ URI, establishing a connection,
  * and getting the **_consume_** channel.
  *
- * @param {string} url - The RabbitMQ URL to establish a connection.
  * @throws {Error} If there is an issue with saving the URI, establishing a connection, or getting the consume channel.
  * @see saveUri
  * @see getRabbitMQConn
  * @see getConsumeChannel
+ * @param config - Configuration for receiving saga commands to a specific microservice and handle incoming subscription events.
  */
-const prepare = async (url: string) => {
-  if (isReady) return;
-  saveUri(url);
+const prepare = async <T extends AvailableMicroservices>(config: TransactionalConfig<T, MicroserviceEvent>) => {
+  if (storedConfig) return storedConfig;
   await getRabbitMQConn();
   await getConsumeChannel();
-  isReady = true;
+  storedConfig = config;
+  return storedConfig;
 };
 /**
  * Start a global saga listener to handle incoming saga events/commands from all microservices.
@@ -84,10 +194,14 @@ const prepare = async (url: string) => {
  * @see connectToSagaCommandEmitter
  * @see commenceSagaListener
  */
-export const startGlobalSagaStepListener = async <T extends AvailableMicroservices>(
+const startGlobalSagaStepListener = async <T extends AvailableMicroservices>(
   url: string,
 ): Promise<Emitter<SagaConsumeSagaEvents<T>>> => {
-  await prepare(url);
+  await prepare({
+    url,
+    microservice: 'transactional',
+    events: [],
+  });
   const queueO = {
     queueName: queue.ReplyToSaga,
     exchange: exchange.ReplyToSaga,
@@ -132,10 +246,12 @@ export const startGlobalSagaStepListener = async <T extends AvailableMicroservic
  * @see connectToSagaCommandEmitter
  * @see startGlobalSagaStepListener
  */
-export const commenceSagaListener = async <U extends SagaTitle>(
-  url: string,
-): Promise<Emitter<CommenceSagaEvents<U>>> => {
-  await prepare(url);
+const commenceSagaListener = async <U extends SagaTitle>(url: string): Promise<Emitter<CommenceSagaEvents<U>>> => {
+  await prepare({
+    url,
+    microservice: 'transactional',
+    events: [],
+  });
   const q = {
     queueName: queue.CommenceSaga,
     exchange: exchange.CommenceSaga,
@@ -247,11 +363,11 @@ export interface TransactionalConfig<T extends AvailableMicroservices, U extends
  * @see stopRabbitMQ
  * @see startTransactional
  */
-export const connectToSagaCommandEmitter = async <T extends AvailableMicroservices>(
+const connectToSagaCommandEmitter = async <T extends AvailableMicroservices>(
   config: TransactionalConfig<T, MicroserviceEvent>,
 ): Promise<Emitter<MicroserviceConsumeSagaEvents<T>>> => {
-  await prepare(config.url);
-  const q = getQueueConsumer(config.microservice);
+  const storedConfig = await prepare(config);
+  const q = getQueueConsumer(storedConfig.microservice);
   const e = mitt<MicroserviceConsumeSagaEvents<T>>();
   await createConsumers([q]);
   void consume<MicroserviceConsumeSagaEvents<T>>(e, q.queueName, sagaStepCallback);
@@ -295,13 +411,13 @@ export const connectToSagaCommandEmitter = async <T extends AvailableMicroservic
  * @see AvailableMicroservices
  * @see MicroserviceEvent
  */
-export const connectToEvents = async <T extends AvailableMicroservices, U extends MicroserviceEvent>(
+const connectToEvents = async <T extends AvailableMicroservices, U extends MicroserviceEvent>(
   config: TransactionalConfig<T, U>,
 ): Promise<Emitter<MicroserviceConsumeEvents<U>>> => {
-  await prepare(config.url);
-  const queueName = `${config.microservice}_match_commands` as const;
+  const storedConfig = await prepare(config);
+  const queueName = `${storedConfig.microservice}_match_commands` as const;
   const e = mitt<MicroserviceConsumeEvents<U>>();
-  await createHeaderConsumers(queueName, config.events);
+  await createHeaderConsumers(queueName, storedConfig.events);
 
   // Create audit logging resources automatically when connecting to events
   // This feature is related only to "events", that is why we create it here
@@ -361,29 +477,4 @@ export class Saga<T extends AvailableMicroservices, U extends MicroserviceEvent>
     return connectToSagaCommandEmitter<T>(this.conf);
   };
 }
-/*
 
-const foo = async () => {
-    const saga = new Saga({
-        url: 'amqp://rabbit:1234@localhost:5672',
-        microservice: 'auth',
-        events: ['social.new_user', 'social.block_chat']
-    });
-    const eventEmitter = await saga.connectToEvents();
-    eventEmitter.on('social.new_user', ({ channel, payload }) => {
-        console.log('New user', payload);
-        channel.ackMessage();
-    });
-    eventEmitter.on('social.block_chat', ({ channel, payload }) => {
-        console.log('Bock chat', payload);
-        channel.ackMessage();
-    });
-    const commandEmitter = await saga.connectToSagaCommandEmitter();
-    commandEmitter.on('new_user:set_roles_to_rooms', ({ channel, sagaId, payload }) => {
-        console.log('Set roles to rooms', payload);
-        channel.ackMessage();
-    });
-};
-
-foo();
-*/
