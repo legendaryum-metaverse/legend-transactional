@@ -39,17 +39,19 @@
     "prebuild": "pnpm run type-check"
   },
   "dependencies": {
-    "amqplib": "^0.10.9",
     "@types/amqplib": "^0.10.7",
-    "mitt": "latest"
+    "amqplib": "^0.10.9",
+    "mitt": "latest",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "tsconfig": "workspace:*"
   },
   "peerDependencies": {
-    "amqplib": ">=0.10.7",
     "@types/amqplib": ">=0.10.7",
-    "mitt": ">=3.0.1"
+    "amqplib": ">=0.10.7",
+    "mitt": ">=3.0.1",
+    "uuid": ">=10.0.0"
   },
   "tsup": {
     "entry": [

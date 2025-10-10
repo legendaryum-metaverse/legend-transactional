@@ -16,6 +16,7 @@ import { SendEmailCommands } from './send-email';
 import { RankingsCommands } from './rankings';
 import { BlockchainCommands } from './blockchain';
 import { AuditEdaCommands } from './audit-eda';
+import { TransactionalCommands } from './transactional';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -90,6 +91,10 @@ export interface CommandMap {
    * Represents the mapping of "legend-storage" microservice commands.
    */
   [availableMicroservices.Storage]: StorageCommands;
+  /**
+   * Represents the mapping of "transactional" microservice commands.
+   */
+  [availableMicroservices.Transactional]: TransactionalCommands;
 }
 /**
  * Represents a command specific to a microservice.

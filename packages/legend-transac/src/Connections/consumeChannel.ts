@@ -1,5 +1,5 @@
-import { getRabbitMQConn } from './rabbitConn';
 import { Channel } from 'amqplib';
+import { getRabbitMQConn } from './start';
 
 let consumeChannel: Channel | null = null;
 /**

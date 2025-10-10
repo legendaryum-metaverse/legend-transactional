@@ -1,6 +1,6 @@
 import { closeConsumeChannel } from './consumeChannel';
-import { closeRabbitMQConn } from './rabbitConn';
 import { closeSendChannel } from '../Broker';
+import { closeRabbitMQConn } from './start';
 /**
  * Stop and clean up the RabbitMQ connections and channels used by the library.
  *
