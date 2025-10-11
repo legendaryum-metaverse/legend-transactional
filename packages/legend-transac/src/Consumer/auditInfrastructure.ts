@@ -25,6 +25,7 @@ export const createAuditLoggingResources = async (): Promise<void> => {
     channel.assertExchange(exchange.Audit, 'direct', { durable: true }),
 
     // Create queues for audit events
+    channel.assertQueue(queue.AuditPublished, { durable: true }),
     channel.assertQueue(queue.AuditReceived, { durable: true }),
     channel.assertQueue(queue.AuditProcessed, { durable: true }),
     channel.assertQueue(queue.AuditDeadLetter, { durable: true }),
@@ -32,6 +33,7 @@ export const createAuditLoggingResources = async (): Promise<void> => {
 
   await Promise.all([
     // Bind each queue to its specific routing key
+    channel.bindQueue(queue.AuditPublished, exchange.Audit, 'audit.published'),
     channel.bindQueue(queue.AuditReceived, exchange.Audit, 'audit.received'),
     channel.bindQueue(queue.AuditProcessed, exchange.Audit, 'audit.processed'),
     channel.bindQueue(queue.AuditDeadLetter, exchange.Audit, 'audit.dead_letter'),

@@ -398,13 +398,38 @@ export interface EventPayload {
   // AUDIT EVENTS - For tracking event lifecycle and debugging
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   /**
+   * Emitted when an event is published by a microservice (audit tracking)
+   */
+  'audit.published': {
+    /**
+     * The microservice that published the event
+     */
+    publisher_microservice: string;
+    /**
+     * The event that was published
+     */
+    published_event: string;
+    /**
+     * Timestamp when the event was published (UNIX timestamp in seconds)
+     */
+    published_at: number;
+    /**
+     * UUID v7 unique identifier for cross-event tracking
+     */
+    event_id: string;
+  };
+  /**
    * Emitted when an event is received by a microservice before processing starts (audit tracking)
    */
   'audit.received': {
     /**
+     * The microservice that published the original event
+     */
+    publisher_microservice: string;
+    /**
      * The microservice that received the event
      */
-    microservice: string;
+    receiver_microservice: string;
     /**
      * The event that was received
      */
@@ -418,18 +443,22 @@ export interface EventPayload {
      */
     queue_name: string;
     /**
-     * Optional event identifier for tracking
+     * UUID v7 from message properties for cross-event tracking
      */
-    event_id?: string;
+    event_id: string;
   };
   /**
    * Emitted when an event is successfully processed by a microservice for audit tracking
    */
   'audit.processed': {
     /**
+     * The microservice that published the original event
+     */
+    publisher_microservice: string;
+    /**
      * The microservice that processed the event
      */
-    microservice: string;
+    processor_microservice: string;
     /**
      * The original event that was processed
      */
@@ -443,18 +472,22 @@ export interface EventPayload {
      */
     queue_name: string;
     /**
-     * Optional event identifier for tracking
+     * UUID v7 from message properties for cross-event tracking
      */
-    event_id?: string;
+    event_id: string;
   };
   /**
    * Emitted when a message is rejected/nacked and sent to dead letter queue
    */
   'audit.dead_letter': {
     /**
+     * The microservice that published the original event
+     */
+    publisher_microservice: string;
+    /**
      * The microservice that rejected the event
      */
-    microservice: string;
+    rejector_microservice: string;
     /**
      * The original event that was rejected
      */
@@ -476,9 +509,9 @@ export interface EventPayload {
      */
     retry_count?: number;
     /**
-     * Optional event identifier for tracking
+     * UUID v7 from message properties for cross-event tracking
      */
-    event_id?: string;
+    event_id: string;
   };
 }
 /**
@@ -489,6 +522,7 @@ export const microserviceEvent = {
   'TEST.MINT': 'test.mint',
   ///////////////////////////
   // AUDIT EVENTS - For tracking event lifecycle
+  'AUDIT.PUBLISHED': 'audit.published',
   'AUDIT.RECEIVED': 'audit.received',
   'AUDIT.PROCESSED': 'audit.processed',
   'AUDIT.DEAD_LETTER': 'audit.dead_letter',

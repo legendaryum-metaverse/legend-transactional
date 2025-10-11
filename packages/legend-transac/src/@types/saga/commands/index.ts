@@ -15,3 +15,4 @@ export * from './showcase';
 export * from './social';
 export * from './social-media-rooms';
 export * from './storage';
+export * from './transactional';

@@ -50,6 +50,10 @@ export const availableMicroservices = {
    */
   RoomSnapshot: 'room-snapshot',
   /**
+   * Represents the "transactional" microservice.
+   */
+  Transactional: 'transactional',
+  /**
    * Represents the "legend-send-email" microservice.
    */
   SendEmail: 'legend-send-email',

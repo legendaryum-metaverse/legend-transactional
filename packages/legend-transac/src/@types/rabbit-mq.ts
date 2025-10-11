@@ -6,6 +6,7 @@ export const queue = {
    * Audit queue names for separate audit event types
    * @constant
    */
+  AuditPublished: 'audit_published_commands',
   AuditReceived: 'audit_received_commands',
   AuditProcessed: 'audit_processed_commands',
   AuditDeadLetter: 'audit_dead_letter_commands',

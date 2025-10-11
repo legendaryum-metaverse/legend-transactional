@@ -1,6 +1,6 @@
 # legend-transactional - TypeScript Implementation Guide
 
-**Version:** 2.2.3 (Production) | **Status:** ✅ Published to npm | **Language:** TypeScript
+**Version:** 2.3.0+ (Development) | **Status:** ✅ Published to npm | **Language:** TypeScript
 
 RabbitMQ-based microservice orchestration library with Saga patterns and automatic audit logging for the Legendaryum metaverse platform.
 
@@ -70,6 +70,7 @@ commenceSaga('purchase_flow', payload) → Step 1 → Step 2 → ... → Complet
 **Audit Tracking (Automatic):**
 
 ```
+Event Published → audit.published
 Event Received → audit.received
 Event ACKed → audit.processed
 Event NACKed → audit.dead_letter
@@ -79,19 +80,22 @@ Event NACKed → audit.dead_letter
 
 ## Audit Logging
 
-**Status**: ✅ Implemented in commits `8908783`, `a8ff749` (2025-10-05)
+**Status**: ✅ Enhanced in v2.3.0+ with publisher-side tracking and UUID v7 event correlation
 
 ### What It Does
 
-Automatically tracks the complete lifecycle of every event without requiring any manual code from microservice developers.
+Automatically tracks the complete lifecycle of every event (publisher → receiver → outcome) without requiring any manual code from microservice developers.
 
-**Three Audit Events**:
+**Four Audit Events**:
 
-| Event               | When                              | Payload Fields                                                                             |
-| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------ |
-| `audit.received`    | Event arrives (before processing) | microservice, receivedEvent, receivedAt, queueName, eventId?                               |
-| `audit.processed`   | Event successfully ACKed          | microservice, processedEvent, processedAt, queueName, eventId?                             |
-| `audit.dead_letter` | Event NACKed (failure)            | microservice, rejectedEvent, rejectedAt, queueName, rejectionReason, retryCount?, eventId? |
+| Event               | When                              | Key Payload Fields                                                                                          |
+| ------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `audit.published`   | Event published (source)          | publisherMicroservice, publishedEvent, publishedAt, eventId (UUID v7)                                       |
+| `audit.received`    | Event arrives (before processing) | publisherMicroservice, receiverMicroservice, receivedEvent, receivedAt, queueName, eventId                  |
+| `audit.processed`   | Event successfully ACKed          | publisherMicroservice, processorMicroservice, processedEvent, processedAt, queueName, eventId               |
+| `audit.dead_letter` | Event NACKed (failure)            | publisherMicroservice, rejectorMicroservice, rejectedEvent, rejectedAt, queueName, rejectionReason, eventId |
+
+**Event Correlation**: All audit events for a single message share the same `eventId` (UUID v7) for end-to-end tracking.
 
 **Timestamps**: UNIX seconds (not milliseconds) - `Math.floor(Date.now() / 1000)`
 
@@ -100,23 +104,25 @@ Automatically tracks the complete lifecycle of every event without requiring any
 **Exchange**: `audit_exchange` (direct)
 **Queues**:
 
+- `audit_published_commands` (routing key: `audit.published`)
 - `audit_received_commands` (routing key: `audit.received`)
 - `audit_processed_commands` (routing key: `audit.processed`)
 - `audit_dead_letter_commands` (routing key: `audit.dead_letter`)
 
-Created automatically when calling `connectToEvents()` - see `src/Consumer/auditInfrastructure.ts:18`
+Created automatically when calling `connectToEvents()` - see `src/Consumer/auditInfrastructure.ts`
 
 ### How It Works
 
 **Emission Points**:
 
-1. **Received**: `src/Consumer/callbacks/event.ts:73-91` - Before user handler
-2. **Processed**: `src/Consumer/channels/Events.ts:40-60` - After ACK
-3. **Dead Letter**: `src/Consumer/channels/Events.ts:66-120` - On NACK (both delay and Fibonacci strategies)
+1. **Published**: `src/Broker/PublishToExchange.ts:46-55` - After publishing main event (with UUID v7)
+2. **Received**: `src/Consumer/callbacks/event.ts:92-99` - Before user handler
+3. **Processed**: `src/Consumer/channels/Events.ts:70-77` - After ACK
+4. **Dead Letter**: `src/Consumer/channels/Events.ts:92-100, 122-130` - On NACK (both delay and Fibonacci strategies)
 
-**Publishing**: `src/Broker/PublishAuditEvent.ts` - Three wrapper functions
+**Publishing**: `src/Broker/PublishAuditEvent.ts` - Generic audit event publisher
 
-**Error Handling**: Audit failures NEVER interrupt the main event flow. All audit publishing is wrapped in try-catch with error logging only.
+**Error Handling**: Audit failures NEVER interrupt the main event flow. All audit publishing uses fire-and-forget pattern with error logging only.
 
 ### Configuration
 
@@ -172,9 +178,9 @@ emitter.on('social.new_user', async ({ channel, payload }) => {
 **Verify Audit Setup**:
 
 1. Start any microservice with `connectToEvents()`
-2. Check RabbitMQ UI for `audit_exchange` and 3 queues
+2. Check RabbitMQ UI for `audit_exchange` and 4 queues
 3. Publish test event
-4. Verify 2 audit events appear (received + processed)
+4. Verify 3 audit events appear (published + received + processed)
 
 **Troubleshoot Missing Audits**:
 
@@ -182,12 +188,13 @@ emitter.on('social.new_user', async ({ channel, payload }) => {
 2. Review logs for "Failed to emit audit" messages
 3. Verify queue bindings in RabbitMQ UI
 4. Confirm timestamps are seconds, not milliseconds
+5. Verify `event_id` (UUID v7) is present in message properties
 
 **Query Audit Events** (Future):
 
 - Implement `audit-eda` consumer microservice
-- Store events in database
-- Build query API for audit trails
+- Store events in database with `event_id` indexing
+- Build query API for audit trails and event correlation
 
 ---
 
@@ -198,9 +205,9 @@ emitter.on('social.new_user', async ({ channel, payload }) => {
 ```
 packages/legend-transac/src/
 ├── @types/                    # TypeScript definitions
-│   ├── event/events.ts        # 35+ event types + 3 audit events
+│   ├── event/events.ts        # 35+ event types + 4 audit events
 │   ├── saga/commands/         # 16 microservice command sets
-│   └── microservices.ts       # 17 microservices (includes audit-eda)
+│   └── microservices.ts       # 18 microservices (includes audit-eda, transactional)
 ├── Broker/                    # Message publishing
 │   ├── PublishToExchange.ts   # Regular events (headers exchange)
 │   ├── PublishAuditEvent.ts   # Audit events (direct exchange)
@@ -287,7 +294,7 @@ const events = await saga.connectToEvents();
 
 ## Event System
 
-**Total Events**: 38 (35 regular + 3 audit)
+**Total Events**: 39 (35 regular + 4 audit)
 
 **Categories**: Auth, Coins, Missions, Rankings, Room, Social, Storage, Audit
 
@@ -296,7 +303,7 @@ const events = await saga.connectToEvents();
 - `auth.new_user`, `auth.deleted_user`, `auth.logout_user`, `auth.blocked_user`
 - `coins.update_subscription`, `coins.notify_client`, `coins.send_email`
 - `social.new_user`, `social.updated_user`, `social.block_chat`
-- `audit.received`, `audit.processed`, `audit.dead_letter` (NEW)
+- `audit.published`, `audit.received`, `audit.processed`, `audit.dead_letter`
 
 **See**: `src/@types/event/events.ts` for complete list
 
@@ -597,10 +604,11 @@ try {
 
 **Debug**:
 
-1. Verify audit infrastructure created: Check RabbitMQ UI for `audit_exchange` and 3 queues
+1. Verify audit infrastructure created: Check RabbitMQ UI for `audit_exchange` and 4 queues
 2. Review logs for "Failed to emit audit" errors
 3. Confirm `connectToEvents()` was called (creates infrastructure)
 4. Check timestamps are seconds: `Math.floor(Date.now() / 1000)`, not `Date.now()`
+5. Verify `event_id` (UUID v7) is present in all audit events
 
 ---
 
@@ -695,4 +703,4 @@ abstract class ConsumeChannel {
 
 ---
 
-**Generated**: 2025-10-05 | **Version**: 2.2.3 → 2.3.0 (audit logging added)
+**Generated**: 2025-10-10 | **Version**: 2.3.0+ (audit logging enhanced with publisher-side tracking & UUID v7 event correlation)
