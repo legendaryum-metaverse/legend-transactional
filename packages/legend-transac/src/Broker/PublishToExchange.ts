@@ -40,7 +40,7 @@ export const publishEvent = async <T extends MicroserviceEvent>(
       'all-micro': 'yes',
     },
     messageId,
-    userId: publisherMicroservice,
+    appId: publisherMicroservice,
   });
 
   // Emit audit.published event (fire-and-forget - never fail the main flow)
