@@ -160,6 +160,9 @@ abstract class ConsumeChannel {
           ...xHeaders,
         },
         persistent: true,
+        // Solo se pasa lo que se necesita, se podría pasar "...msg.properties"
+        messageId: msg.properties.messageId,
+        appId: msg.properties.appId,
       });
     } else {
       // destinado al Saga
@@ -167,6 +170,9 @@ abstract class ConsumeChannel {
         expiration: nackDelay,
         headers: { ...msg.properties.headers, ...xHeaders },
         persistent: true,
+        // Solo se pasa lo que se necesita, se podría pasar "...msg.properties"
+        messageId: msg.properties.messageId,
+        appId: msg.properties.appId,
       });
     }
 

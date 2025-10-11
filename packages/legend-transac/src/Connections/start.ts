@@ -151,9 +151,9 @@ export const isConnectionHealthy = async (): Promise<boolean> => {
  */
 const prepare = async <T extends AvailableMicroservices>(config: TransactionalConfig<T, MicroserviceEvent>) => {
   if (storedConfig) return storedConfig;
+  storedConfig = config;
   await getRabbitMQConn();
   await getConsumeChannel();
-  storedConfig = config;
   return storedConfig;
 };
 /**

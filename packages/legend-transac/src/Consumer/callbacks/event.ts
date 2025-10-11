@@ -86,7 +86,12 @@ export const eventCallback = <U extends MicroserviceEvent>(
   }
 
   // Extract publisher microservice from message properties (set by the publisher)
-  const publisherMicroservice = msg.properties.appId || 'unknown';
+  let publisherMicroservice = msg.properties.appId;
+
+  if (!publisherMicroservice) {
+    console.warn('Message is missing appId (publisher microservice), setting as unknown');
+    publisherMicroservice = 'unknown';
+  }
 
   //fire-and-forget -> Emit the audit.received event (never fail the main flow if audit fails)
   publishAuditEvent(channel, 'audit.received', {
