@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.3.3
+
+### Patch Changes
+
+- 74ba333: event_int in audit logs
+
 ## 2.3.2
 
 ### Patch Changes
