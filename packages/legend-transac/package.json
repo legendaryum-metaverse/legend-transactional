@@ -70,7 +70,8 @@
     "outDir": "dist",
     "external": [
       "amqplib",
-      "mitt"
+      "mitt",
+      "uuid"
     ]
   }
 }
