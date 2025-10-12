@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.4.0
+
+### Minor Changes
+
+- de853c6: uuid lib in external build
+
 ## 2.3.3
 
 ### Patch Changes
