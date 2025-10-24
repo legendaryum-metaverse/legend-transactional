@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.4.1
+
+### Patch Changes
+
+- 2a64093: register participation_reward
+
 ## 2.4.0
 
 ### Minor Changes
