@@ -291,6 +291,17 @@ export interface EventPayload {
     templateData: Record<string, unknown>;
   };
   /**
+   * Event to deliver participation reward (post-ranking)
+   */
+  'legend_rankings.participation_reward': {
+    userId: string;
+    rankingId: number;
+    participationRewardType: string;
+    rewardConfig: Record<string, unknown>;
+    templateName: string;
+    templateData: Record<string, unknown>;
+  };
+  /**
    * Event to notify when a ranking is created
    */
   'legend_rankings.new_ranking_created': {
@@ -545,6 +556,7 @@ export const microserviceEvent = {
   'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
   'LEGEND_RANKINGS.NEW_RANKING_CREATED': 'legend_rankings.new_ranking_created',
   'LEGEND_RANKINGS.INTERMEDIATE_REWARD': 'legend_rankings.intermediate_reward',
+  'LEGEND_RANKINGS.PARTICIPATION_REWARD': 'legend_rankings.participation_reward',
   'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
   'LEGEND_SHOWCASE.UPDATE_ALLOWED_MISSION_SUBSCRIPTION_IDS': 'legend_showcase.update_allowed_mission_subscription_ids',
   'LEGEND_SHOWCASE.UPDATE_ALLOWED_RANKING_SUBSCRIPTION_IDS': 'legend_showcase.update_allowed_ranking_subscription_ids',
