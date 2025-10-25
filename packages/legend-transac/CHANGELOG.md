@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.5.0
+
+### Minor Changes
+
+- b3804b6: timestamps in ms in audit events
+
 ## 2.4.1
 
 ### Patch Changes
