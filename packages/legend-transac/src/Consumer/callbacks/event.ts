@@ -76,7 +76,7 @@ export const eventCallback = <U extends MicroserviceEvent>(
   // This tracks when an event is received by a microservice before processing starts
   const receiverMicroservice = extractMicroserviceFromQueue(queueName);
   const receivedEvent = event[0];
-  const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
+  const timestamp = Date.now(); // UNIX timestamp in milliseconds
 
   let event_id = msg.properties.messageId;
 
