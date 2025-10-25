@@ -44,7 +44,7 @@ export const publishEvent = async <T extends MicroserviceEvent>(
   });
 
   // Emit audit.published event (fire-and-forget - never fail the main flow)
-  const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
+  const timestamp = Date.now(); // UNIX timestamp in milliseconds
   publishAuditEvent(channel, 'audit.published', {
     publisher_microservice: publisherMicroservice,
     published_event: event,

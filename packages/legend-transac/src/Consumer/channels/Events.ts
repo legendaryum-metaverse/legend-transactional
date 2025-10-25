@@ -65,7 +65,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
     this.channel.ack(this.msg, false);
 
     // Then emit audit.processed event automatically
-    const timestamp = Math.floor(Date.now() / 1000); // UNIX timestamp in seconds
+    const timestamp = Date.now(); // UNIX timestamp in milliseconds
 
     publishAuditEvent(this.channel, 'audit.processed', {
       publisher_microservice: this.publisherMicroservice,
@@ -87,7 +87,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
     const parentNack = super.nackWithDelay(delay, maxRetries);
 
     // Emit audit.dead_letter event automatically
-    const timestamp = Math.floor(Date.now() / 1000);
+    const timestamp = Date.now();
 
     publishAuditEvent(this.channel, 'audit.dead_letter', {
       publisher_microservice: this.publisherMicroservice,
@@ -117,7 +117,7 @@ export class EventsConsumeChannel extends ConsumeChannel {
     const parentNack = super.nackWithFibonacciStrategy(maxOccurrence, maxRetries);
 
     // Emit audit.dead_letter event automatically
-    const timestamp = Math.floor(Date.now() / 1000);
+    const timestamp = Date.now();
 
     publishAuditEvent(this.channel, 'audit.dead_letter', {
       publisher_microservice: this.publisherMicroservice,

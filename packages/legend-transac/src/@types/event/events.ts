@@ -421,7 +421,7 @@ export interface EventPayload {
      */
     published_event: string;
     /**
-     * Timestamp when the event was published (UNIX timestamp in seconds)
+     * Timestamp when the event was published (UNIX timestamp in milliseconds)
      */
     published_at: number;
     /**
@@ -446,7 +446,7 @@ export interface EventPayload {
      */
     received_event: string;
     /**
-     * Timestamp when the event was received (UNIX timestamp in seconds)
+     * Timestamp when the event was received (UNIX timestamp in milliseconds)
      */
     received_at: number;
     /**
@@ -475,7 +475,7 @@ export interface EventPayload {
      */
     processed_event: string;
     /**
-     * Timestamp when the event was processed (UNIX timestamp in seconds)
+     * Timestamp when the event was processed (UNIX timestamp in milliseconds)
      */
     processed_at: number;
     /**
@@ -504,7 +504,7 @@ export interface EventPayload {
      */
     rejected_event: string;
     /**
-     * Timestamp when the event was rejected (UNIX timestamp in seconds)
+     * Timestamp when the event was rejected (UNIX timestamp in milliseconds)
      */
     rejected_at: number;
     /**
