@@ -73,6 +73,11 @@ export interface CompletedRanking {
   nftContractAddress?: string;
   // Present only if reward_type is "Crypto"
   walletCryptoAsset?: string;
+  /** Optional notification config forwarded from rankings (dynamic template data) */
+  notificationConfig?: Record<string, unknown> & {
+    button_link?: string;
+    button_text?: string;
+  };
 }
 
 /**
