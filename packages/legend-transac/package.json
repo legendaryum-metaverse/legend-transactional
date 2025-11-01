@@ -39,7 +39,7 @@
     "prebuild": "pnpm run type-check"
   },
   "dependencies": {
-    "@types/amqplib": "^0.10.7",
+    "@types/amqplib": "^0.10.8",
     "amqplib": "^0.10.9",
     "mitt": "latest",
     "uuid": "^13.0.0"
