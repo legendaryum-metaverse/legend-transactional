@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.5.2
+
+### Patch Changes
+
+- f904c50: add field "start_at" for ranking
+
 ## 2.5.1
 
 ### Patch Changes
