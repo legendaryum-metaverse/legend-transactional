@@ -314,6 +314,7 @@ export interface EventPayload {
     description: string;
     authorEmail: string;
     rewardType: string;
+    startAt: string;
     endsAt: string;
     nftBlockchainNetwork?: string;
     nftContractAddress?: string;
