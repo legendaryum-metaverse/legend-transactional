@@ -80,7 +80,19 @@ export class EventsConsumeChannel extends ConsumeChannel {
   }
 
   /**
-   * Override nackWithDelay to emit audit.dead_letter event
+   * Negatively acknowledges (NACKs) the message with a specified delay and maximum retry count.
+   *
+   * This method is useful when you want to requeue the message for later processing, especially if the current attempt failed due to a temporary issue.
+   *
+   * Additionally, this override automatically emits an `audit.dead_letter` event to track the rejection.
+   *
+   * @param delay - The delay (in milliseconds) before requeueing the message. Defaults to `NACKING_DELAY_MS`.
+   * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `undefined`, never giving up.
+   * @returns An object containing:
+   *   - `count`: The current retry count.
+   *   - `delay`: The actual delay applied to the nack.
+   *
+   * @see NACKING_DELAY_MS
    */
   public nackWithDelay(delay: number = NACKING_DELAY_MS, maxRetries?: number): { count: number; delay: number } {
     // Call parent's nack implementation using the instance method
@@ -107,7 +119,20 @@ export class EventsConsumeChannel extends ConsumeChannel {
   }
 
   /**
-   * Override nackWithFibonacciStrategy to emit audit.dead_letter event
+   * Negatively acknowledges (NACKs) the message using a Fibonacci backoff strategy.
+   *
+   * The delay before requeuing increases with each retry according to the Fibonacci sequence, helping to avoid overwhelming the system in case of repeated failures.
+   *
+   * Additionally, this override automatically emits an `audit.dead_letter` event to track the rejection.
+   *
+   * @param maxOccurrence - The maximum number of times the Fibonacci delay is allowed to increase before being reset. Defaults to `MAX_OCCURRENCE`.
+   * @param maxRetries - The maximum number of times to requeue the message before giving up. Defaults to `undefined`, never giving up.
+   * @returns An object containing:
+   *   - `count`: The current retry count.
+   *   - `delay`: The calculated Fibonacci delay (in milliseconds) applied to the nack.
+   *   - `occurrence`: The current occurrence count for the Fibonacci sequence.
+   *
+   * @see MAX_OCCURRENCE
    */
   public nackWithFibonacciStrategy(
     maxOccurrence: number = MAX_OCCURRENCE,
