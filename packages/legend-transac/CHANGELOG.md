@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.5.3
+
+### Patch Changes
+
+- 97a80e7: updates in jsdocs about nacking
+
 ## 2.5.2
 
 ### Patch Changes
