@@ -55,6 +55,11 @@ export const availableMicroservices = {
    * to track event lifecycle and debugging purposes.
    */
   AuditEda: 'audit-eda',
+  /**
+   * Represents the "legend-billing" microservice.
+   * Handles payment processing, subscriptions, and billing domain events.
+   */
+  Billing: 'billing',
 } as const;
 /**
  * Type of available microservices in the system.
