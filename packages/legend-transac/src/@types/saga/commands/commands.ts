@@ -1,17 +1,11 @@
 import { TestImageCommands } from './image';
 import { TestMintCommands } from './mint';
 import { SocialCommands } from './social';
-import { CoinsCommands } from './coins';
-import { RoomCreatorCommands } from './roomCreator';
 import { AuthCommands } from './auth';
 import { ShowcaseCommands } from './showcase';
 import { StorageCommands } from './storage';
-import { RoomSnapshotCommands } from './room-snapshot';
 import { AvailableMicroservices, availableMicroservices } from '../../microservices';
-import { RoomInventoryCommands } from './room-inventory';
-import { RapidMessagingCommands } from './rapid-messaging';
 import { MissionsCommands } from './missions';
-import { SocialMediaRoomsCommands } from './social-media-rooms';
 import { SendEmailCommands } from './send-email';
 import { RankingsCommands } from './rankings';
 import { BlockchainCommands } from './blockchain';
@@ -44,10 +38,6 @@ export interface CommandMap {
    */
   [availableMicroservices.Blockchain]: BlockchainCommands;
   /**
-   * Represents the mapping of "coins" microservice commands.
-   */
-  [availableMicroservices.Coins]: CoinsCommands;
-  /**
    * Represents the mapping of "legend-missions" microservice commands.
    */
   [availableMicroservices.Missions]: MissionsCommands;
@@ -55,22 +45,6 @@ export interface CommandMap {
    * Represents the mapping of "rankings" microservice commands.
    */
   [availableMicroservices.Rankings]: RankingsCommands;
-  /**
-   * Represents the mapping of "rapid-messaging" microservice commands.
-   */
-  [availableMicroservices.RapidMessaging]: RapidMessagingCommands;
-  /**
-   * Represents the mapping of "room-creator" microservice commands.
-   */
-  [availableMicroservices.RoomCreator]: RoomCreatorCommands;
-  /**
-   * Represents the mapping of "room-inventory" microservice commands.
-   */
-  [availableMicroservices.RoomInventory]: RoomInventoryCommands;
-  /**
-   * Represents the mapping of "room-snapshot" microservice commands.
-   */
-  [availableMicroservices.RoomSnapshot]: RoomSnapshotCommands;
   /**
    * Represents the mapping of "legend-send-email" microservice commands.
    */
@@ -83,10 +57,6 @@ export interface CommandMap {
    * Represents the mapping of "social" microservice commands.
    */
   [availableMicroservices.Social]: SocialCommands;
-  /**
-   * Represents the mapping of "social-media-rooms" microservice commands.
-   */
-  [availableMicroservices.SocialMediaRooms]: SocialMediaRoomsCommands;
   /**
    * Represents the mapping of "legend-storage" microservice commands.
    */
