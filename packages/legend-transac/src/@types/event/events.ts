@@ -447,7 +447,6 @@ export const microserviceEvent = {
   'AUTH.LOGOUT_USER': 'auth.logout_user',
   'AUTH.NEW_USER': 'auth.new_user',
   'AUTH.BLOCKED_USER': 'auth.blocked_user',
-  'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
   'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
@@ -465,7 +464,7 @@ export const microserviceEvent = {
   'SOCIAL.BLOCK_CHAT': 'social.block_chat',
   'SOCIAL.NEW_USER': 'social.new_user',
   'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
-  'SOCIAL.UPDATED_USER': 'social.updated_user'
+  'SOCIAL.UPDATED_USER': 'social.updated_user',
 } as const;
 /**
  * Available microservices events in the system.
