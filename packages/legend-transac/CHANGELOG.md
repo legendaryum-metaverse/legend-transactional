@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.0
+
+### Minor Changes
+
+- 344e15e: Micro cleaning https://legendaryum.atlassian.net/browse/LE-3857
+
 ## 2.5.3
 
 ### Patch Changes
