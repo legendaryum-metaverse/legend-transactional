@@ -1,35 +1,4 @@
 /**
- * Types of rooms
- */
-export const RoomTypes = {
-  ISLAND: 'island',
-  HOUSE: 'house',
-  HALL_OF_FAME: 'hallOfFame',
-} as const;
-
-/**
- * Type of RoomTypes
- */
-export type RoomType = (typeof RoomTypes)[keyof typeof RoomTypes];
-
-/**
- * Room in Room Creator
- */
-export interface Room {
-  Id: string;
-  CreateAt: string;
-  UpdateAt: string;
-  type: RoomType;
-  name: string;
-  ownerId: string;
-  ownerEmail: string;
-  maxPlayers: number;
-  maxLayers: number;
-  templateId: string;
-  haveEditor: boolean;
-}
-
-/**
  * Types of Payment Email Types
  */
 export const PaymentEmailTypes = {
@@ -187,36 +156,6 @@ export interface EventPayload {
     blockExpirationHours?: number;
   };
   /**
-   * Event to update a user's subscription.
-   */
-  'coins.update_subscription': {
-    userId: string;
-    paidPriceId: string;
-  };
-  /**
-   * Websocket event to notify the client about a coins related event.
-   */
-  'coins.notify_client': {
-    room: `coins-${string}`;
-    message: Record<string, unknown>;
-  };
-  /**
-   * Event to send email to users.
-   */
-  'coins.send_email': {
-    userId: string;
-    email: string;
-    emailType: PaymentEmailType;
-    coins: number;
-  };
-  /**
-   * Event to give the user coins for completing a mission
-   */
-  'legend_missions.completed_mission_reward': {
-    userId: string;
-    coins: number;
-  };
-  /**
    * Event to notify the mission's author that it has been created
    */
   'legend_missions.new_mission_created': {
@@ -346,39 +285,6 @@ export interface EventPayload {
     allowedSubscriptionIds: string[];
   };
   /**
-   * Event to notify the creation of a room.
-   */
-  'room_creator.created_room': {
-    room: Room;
-  };
-  /**
-   * Event emitted when a room is updated.
-   */
-  'room_creator.updated_room': {
-    room: Room;
-  };
-  /**
-   * Event emitted when the image of a virtual product's building is updated
-   */
-  'room_inventory.update_vp_building_image': {
-    images: string[];
-    roomType: string;
-    userId: string;
-  };
-  /**
-   * Event emitted when a user changes buildings within the island
-   */
-  'room_snapshot.building_change_in_island': {
-    userId: string;
-    building: string;
-  };
-  /**
-   * Event to notify the first saved snapshot of a room.
-   */
-  'room_snapshot.first_snapshot': {
-    slug: string;
-  };
-  /**
    * Event to block chat between two users.
    */
   'social.block_chat': {
@@ -403,13 +309,6 @@ export interface EventPayload {
    */
   'social.updated_user': {
     socialUser: SocialUser;
-  };
-  /**
-   * Event to delete assets in batch
-   */
-  'social_media_rooms.delete_in_batch': {
-    bucketName: string;
-    filePaths: string[];
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // AUDIT EVENTS - For tracking event lifecycle and debugging
@@ -548,10 +447,6 @@ export const microserviceEvent = {
   'AUTH.LOGOUT_USER': 'auth.logout_user',
   'AUTH.NEW_USER': 'auth.new_user',
   'AUTH.BLOCKED_USER': 'auth.blocked_user',
-  'COINS.NOTIFY_CLIENT': 'coins.notify_client',
-  'COINS.SEND_EMAIL': 'coins.send_email',
-  'COINS.UPDATE_SUBSCRIPTION': 'coins.update_subscription',
-  'LEGEND_MISSIONS.COMPLETED_MISSION_REWARD': 'legend_missions.completed_mission_reward',
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
   'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
@@ -566,16 +461,10 @@ export const microserviceEvent = {
   'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
   'LEGEND_SHOWCASE.UPDATE_ALLOWED_MISSION_SUBSCRIPTION_IDS': 'legend_showcase.update_allowed_mission_subscription_ids',
   'LEGEND_SHOWCASE.UPDATE_ALLOWED_RANKING_SUBSCRIPTION_IDS': 'legend_showcase.update_allowed_ranking_subscription_ids',
-  'ROOM_CREATOR.CREATED_ROOM': 'room_creator.created_room',
-  'ROOM_CREATOR.UPDATED_ROOM': 'room_creator.updated_room',
-  'ROOM_INVENTORY.UPDATE_VP_BUILDING_IMAGE': 'room_inventory.update_vp_building_image',
-  'ROOM_SNAPSHOT.BUILDING_CHANGE_IN_ISLAND': 'room_snapshot.building_change_in_island',
-  'ROOM_SNAPSHOT.FIRST_SNAPSHOT': 'room_snapshot.first_snapshot',
   'SOCIAL.BLOCK_CHAT': 'social.block_chat',
   'SOCIAL.NEW_USER': 'social.new_user',
   'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
   'SOCIAL.UPDATED_USER': 'social.updated_user',
-  'SOCIAL_MEDIA_ROOMS.DELETE_IN_BATCH': 'social_media_rooms.delete_in_batch',
 } as const;
 /**
  * Available microservices events in the system.

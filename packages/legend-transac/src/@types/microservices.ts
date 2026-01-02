@@ -22,10 +22,6 @@ export const availableMicroservices = {
    */
   Blockchain: 'blockchain',
   /**
-   * Represents the "coins" microservice.
-   */
-  Coins: 'coins',
-  /**
    * Represents the "legend-missions" microservice.
    */
   Missions: 'legend-missions',
@@ -33,22 +29,6 @@ export const availableMicroservices = {
    * Represents the "rankings" microservice.
    */
   Rankings: 'rankings',
-  /**
-   * Represents the "rapid-messaging" microservice.
-   */
-  RapidMessaging: 'rapid-messaging',
-  /**
-   * Represents the "room-creator" microservice.
-   */
-  RoomCreator: 'room-creator',
-  /**
-   * Represents the "room-inventory" microservice.
-   */
-  RoomInventory: 'room-inventory',
-  /**
-   * Represents the "room-snapshot" microservice.
-   */
-  RoomSnapshot: 'room-snapshot',
   /**
    * Represents the "transactional" microservice.
    */
@@ -65,10 +45,6 @@ export const availableMicroservices = {
    * Represents the "social" microservice.
    */
   Social: 'social',
-  /**
-   * Represents the "social-media-rooms" microservice.
-   */
-  SocialMediaRooms: 'social-media-rooms',
   /**
    * Represents the "legend-storage" microservice.
    */

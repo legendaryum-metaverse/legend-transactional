@@ -6,10 +6,6 @@ export const sagaTitle = {
    */
   PurchaseResourceFlow: 'purchase_resource_flow',
   /**
-   * Saga used in to reward users based on their rankings.
-   */
-  RankingsUsersReward: 'rankings_users_reward',
-  /**
    * Saga used to initiate a crypto transfer for a mission winner.
    */
   TransferCryptoRewardToMissionWinner: 'transfer_crypto_reward_to_mission_winner',
@@ -29,9 +25,6 @@ export interface SagaCommencePayload {
     resourceId: string;
     price: number;
     quantity: number;
-  };
-  ['rankings_users_reward']: {
-    rewards: { userId: string; coins: number }[];
   };
   ['transfer_crypto_reward_to_mission_winner']: {
     // Wallet address from which rewards will be transferred
