@@ -14,9 +14,20 @@ export const availableMicroservices = {
    */
   TestMint: 'test-mint',
   /**
+   * Represents the "audit-eda" microservice for event-driven architecture auditing.
+   * This microservice consumes audit events (audit.received, audit.processed, audit.dead_letter)
+   * to track event lifecycle and debugging purposes.
+   */
+  AuditEda: 'audit-eda',
+  /**
    * Represents the "auth" microservice.
    */
   Auth: 'auth',
+  /**
+   * Represents the "legend-billing" microservice.
+   * Handles payment processing, subscriptions, and billing domain events.
+   */
+  Billing: 'billing',
   /**
    * Represents the "blockchain" microservice.
    */
@@ -49,12 +60,6 @@ export const availableMicroservices = {
    * Represents the "legend-storage" microservice.
    */
   Storage: 'legend-storage',
-  /**
-   * Represents the "audit-eda" microservice for event-driven architecture auditing.
-   * This microservice consumes audit events (audit.received, audit.processed, audit.dead_letter)
-   * to track event lifecycle and debugging purposes.
-   */
-  AuditEda: 'audit-eda',
 } as const;
 /**
  * Type of available microservices in the system.

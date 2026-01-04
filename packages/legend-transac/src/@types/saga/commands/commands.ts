@@ -11,6 +11,7 @@ import { RankingsCommands } from './rankings';
 import { BlockchainCommands } from './blockchain';
 import { AuditEdaCommands } from './audit-eda';
 import { TransactionalCommands } from './transactional';
+import { BillingCommands } from './billing';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -33,6 +34,10 @@ export interface CommandMap {
    * Represents the mapping of "audit-eda" microservice commands.
    */
   [availableMicroservices.AuditEda]: AuditEdaCommands;
+  /**
+   * Represents the mapping of "legend-billing" microservice commands.
+   */
+  [availableMicroservices.Billing]: BillingCommands;
   /**
    * Represents the mapping of "blockchain" microservice commands.
    */

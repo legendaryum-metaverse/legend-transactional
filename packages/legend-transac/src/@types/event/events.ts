@@ -1,18 +1,4 @@
 /**
- * Types of Payment Email Types
- */
-export const PaymentEmailTypes = {
-  PURCHASE: 'purchase',
-  SUBSCRIPTION: 'subscription',
-  NEW_SUBSCRIPTION: 'new_subscription',
-} as const;
-
-/**
- * Type of Payment Email Types
- */
-export type PaymentEmailType = (typeof PaymentEmailTypes)[keyof typeof PaymentEmailTypes];
-
-/**
  * Represents the winners of a ranking with their respective rewards
  */
 export interface RankingWinners {
@@ -429,6 +415,117 @@ export interface EventPayload {
      */
     event_id: string;
   };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  // BILLING EVENTS - Payment and subscription domain events (No Stripe leakage)
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * Payment has been created and is pending
+   */
+  'billing.payment_created': {
+    paymentId: string;
+    userId: string;
+    amount: number;
+    currency: string;
+    status: 'pending' | 'processing';
+    metadata: Record<string, string>;
+    occurredAt: string;
+  };
+  /**
+   * Payment completed successfully
+   */
+  'billing.payment_succeeded': {
+    paymentId: string;
+    userId: string;
+    amount: number;
+    currency: string;
+    metadata: Record<string, string>;
+    occurredAt: string;
+  };
+  /**
+   * Payment failed
+   */
+  'billing.payment_failed': {
+    paymentId: string;
+    userId: string;
+    amount: number;
+    currency: string;
+    failureReason: string | null;
+    metadata: Record<string, string>;
+    occurredAt: string;
+  };
+  /**
+   * Payment was refunded (fully or partially)
+   */
+  'billing.payment_refunded': {
+    paymentId: string;
+    userId: string;
+    amount: number;
+    refundedAmount: number;
+    currency: string;
+    metadata: Record<string, string>;
+    occurredAt: string;
+  };
+  /**
+   * New subscription created
+   */
+  'billing.subscription_created': {
+    subscriptionId: string;
+    userId: string;
+    planId: string;
+    planSlug: string;
+    status: 'pending' | 'active' | 'trialing';
+    periodStart: string;
+    periodEnd: string;
+    occurredAt: string;
+  };
+  /**
+   * Subscription was updated (plan change, status change, etc.)
+   */
+  'billing.subscription_updated': {
+    subscriptionId: string;
+    userId: string;
+    planId: string;
+    planSlug: string;
+    status: 'active' | 'past_due' | 'unpaid' | 'paused' | 'trialing';
+    cancelAtPeriodEnd: boolean;
+    periodStart: string;
+    periodEnd: string;
+    occurredAt: string;
+  };
+  /**
+   * Subscription was renewed (new billing period started)
+   */
+  'billing.subscription_renewed': {
+    subscriptionId: string;
+    userId: string;
+    planId: string;
+    planSlug: string;
+    periodStart: string;
+    periodEnd: string;
+    occurredAt: string;
+  };
+  /**
+   * Subscription was canceled (still active until period end)
+   */
+  'billing.subscription_canceled': {
+    subscriptionId: string;
+    userId: string;
+    planId: string;
+    planSlug: string;
+    canceledAt: string;
+    occurredAt: string;
+  };
+  /**
+   * Subscription has expired (no longer active)
+   */
+  'billing.subscription_expired': {
+    subscriptionId: string;
+    userId: string;
+    planId: string;
+    planSlug: string;
+    expiredAt: string;
+    occurredAt: string;
+  };
 }
 /**
  * Represents the available events in the system.
@@ -465,6 +562,17 @@ export const microserviceEvent = {
   'SOCIAL.NEW_USER': 'social.new_user',
   'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
   'SOCIAL.UPDATED_USER': 'social.updated_user',
+  ///////////////////////////
+  // BILLING EVENTS
+  'BILLING.PAYMENT_CREATED': 'billing.payment_created',
+  'BILLING.PAYMENT_SUCCEEDED': 'billing.payment_succeeded',
+  'BILLING.PAYMENT_FAILED': 'billing.payment_failed',
+  'BILLING.PAYMENT_REFUNDED': 'billing.payment_refunded',
+  'BILLING.SUBSCRIPTION_CREATED': 'billing.subscription_created',
+  'BILLING.SUBSCRIPTION_UPDATED': 'billing.subscription_updated',
+  'BILLING.SUBSCRIPTION_RENEWED': 'billing.subscription_renewed',
+  'BILLING.SUBSCRIPTION_CANCELED': 'billing.subscription_canceled',
+  'BILLING.SUBSCRIPTION_EXPIRED': 'billing.subscription_expired',
 } as const;
 /**
  * Available microservices events in the system.
