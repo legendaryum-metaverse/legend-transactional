@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.1
+
+### Patch Changes
+
+- 57f104b: more resources deleted
+
 ## 2.6.0
 
 ### Minor Changes
