@@ -2,10 +2,6 @@ import { SagaCommenceConsumeChannel } from '../../Consumer';
 
 export const sagaTitle = {
   /**
-   * Saga used in the flow to purchase resources and deduct coins from the user.
-   */
-  PurchaseResourceFlow: 'purchase_resource_flow',
-  /**
    * Saga used to initiate a crypto transfer for a mission winner.
    */
   TransferCryptoRewardToMissionWinner: 'transfer_crypto_reward_to_mission_winner',
@@ -20,12 +16,6 @@ export const sagaTitle = {
 export type SagaTitle = (typeof sagaTitle)[keyof typeof sagaTitle];
 
 export interface SagaCommencePayload {
-  ['purchase_resource_flow']: {
-    userId: string;
-    resourceId: string;
-    price: number;
-    quantity: number;
-  };
   ['transfer_crypto_reward_to_mission_winner']: {
     // Wallet address from which rewards will be transferred
     walletAddress: string;
