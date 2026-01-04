@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.2
+
+### Patch Changes
+
+- 006d7ed: add billing payment and subscription events
+
 ## 2.6.1
 
 ### Patch Changes
