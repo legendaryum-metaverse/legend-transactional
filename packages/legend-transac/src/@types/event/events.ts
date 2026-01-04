@@ -1,18 +1,4 @@
 /**
- * Types of Payment Email Types
- */
-export const PaymentEmailTypes = {
-  PURCHASE: 'purchase',
-  SUBSCRIPTION: 'subscription',
-  NEW_SUBSCRIPTION: 'new_subscription',
-} as const;
-
-/**
- * Type of Payment Email Types
- */
-export type PaymentEmailType = (typeof PaymentEmailTypes)[keyof typeof PaymentEmailTypes];
-
-/**
  * Represents the winners of a ranking with their respective rewards
  */
 export interface RankingWinners {
@@ -435,7 +421,7 @@ export interface EventPayload {
   /**
    * Payment has been created and is pending
    */
-  'billing.payment.created': {
+  'billing.payment_created': {
     paymentId: string;
     userId: string;
     amount: number;
@@ -447,7 +433,7 @@ export interface EventPayload {
   /**
    * Payment completed successfully
    */
-  'billing.payment.succeeded': {
+  'billing.payment_succeeded': {
     paymentId: string;
     userId: string;
     amount: number;
@@ -458,7 +444,7 @@ export interface EventPayload {
   /**
    * Payment failed
    */
-  'billing.payment.failed': {
+  'billing.payment_failed': {
     paymentId: string;
     userId: string;
     amount: number;
@@ -470,7 +456,7 @@ export interface EventPayload {
   /**
    * Payment was refunded (fully or partially)
    */
-  'billing.payment.refunded': {
+  'billing.payment_refunded': {
     paymentId: string;
     userId: string;
     amount: number;
@@ -482,7 +468,7 @@ export interface EventPayload {
   /**
    * New subscription created
    */
-  'billing.subscription.created': {
+  'billing.subscription_created': {
     subscriptionId: string;
     userId: string;
     planId: string;
@@ -495,7 +481,7 @@ export interface EventPayload {
   /**
    * Subscription was updated (plan change, status change, etc.)
    */
-  'billing.subscription.updated': {
+  'billing.subscription_updated': {
     subscriptionId: string;
     userId: string;
     planId: string;
@@ -509,7 +495,7 @@ export interface EventPayload {
   /**
    * Subscription was renewed (new billing period started)
    */
-  'billing.subscription.renewed': {
+  'billing.subscription_renewed': {
     subscriptionId: string;
     userId: string;
     planId: string;
@@ -521,7 +507,7 @@ export interface EventPayload {
   /**
    * Subscription was canceled (still active until period end)
    */
-  'billing.subscription.canceled': {
+  'billing.subscription_canceled': {
     subscriptionId: string;
     userId: string;
     planId: string;
@@ -532,7 +518,7 @@ export interface EventPayload {
   /**
    * Subscription has expired (no longer active)
    */
-  'billing.subscription.expired': {
+  'billing.subscription_expired': {
     subscriptionId: string;
     userId: string;
     planId: string;
@@ -578,15 +564,15 @@ export const microserviceEvent = {
   'SOCIAL.UPDATED_USER': 'social.updated_user',
   ///////////////////////////
   // BILLING EVENTS
-  'BILLING.PAYMENT.CREATED': 'billing.payment.created',
-  'BILLING.PAYMENT.SUCCEEDED': 'billing.payment.succeeded',
-  'BILLING.PAYMENT.FAILED': 'billing.payment.failed',
-  'BILLING.PAYMENT.REFUNDED': 'billing.payment.refunded',
-  'BILLING.SUBSCRIPTION.CREATED': 'billing.subscription.created',
-  'BILLING.SUBSCRIPTION.UPDATED': 'billing.subscription.updated',
-  'BILLING.SUBSCRIPTION.RENEWED': 'billing.subscription.renewed',
-  'BILLING.SUBSCRIPTION.CANCELED': 'billing.subscription.canceled',
-  'BILLING.SUBSCRIPTION.EXPIRED': 'billing.subscription.expired',
+  'BILLING.PAYMENT_CREATED': 'billing.payment_created',
+  'BILLING.PAYMENT_SUCCEEDED': 'billing.payment_succeeded',
+  'BILLING.PAYMENT_FAILED': 'billing.payment_failed',
+  'BILLING.PAYMENT_REFUNDED': 'billing.payment_refunded',
+  'BILLING.SUBSCRIPTION_CREATED': 'billing.subscription_created',
+  'BILLING.SUBSCRIPTION_UPDATED': 'billing.subscription_updated',
+  'BILLING.SUBSCRIPTION_RENEWED': 'billing.subscription_renewed',
+  'BILLING.SUBSCRIPTION_CANCELED': 'billing.subscription_canceled',
+  'BILLING.SUBSCRIPTION_EXPIRED': 'billing.subscription_expired',
 } as const;
 /**
  * Available microservices events in the system.

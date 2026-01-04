@@ -17,10 +17,6 @@ import { BillingCommands } from './billing';
  */
 export interface CommandMap {
   /**
-   * Represents the mapping of "legend-billing" microservice commands.
-   */
-  [availableMicroservices.Billing]: BillingCommands;
-  /**
    * Test purpose
    * Represents the mapping of "Image" microservice commands.
    */
@@ -38,6 +34,10 @@ export interface CommandMap {
    * Represents the mapping of "audit-eda" microservice commands.
    */
   [availableMicroservices.AuditEda]: AuditEdaCommands;
+  /**
+   * Represents the mapping of "legend-billing" microservice commands.
+   */
+  [availableMicroservices.Billing]: BillingCommands;
   /**
    * Represents the mapping of "blockchain" microservice commands.
    */

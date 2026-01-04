@@ -1,11 +1,7 @@
 /**
  * Different commands related to the "billing" microservice.
  */
-export const billingCommands = {
-  RefundPayment: 'refund_payment',
-  CancelSubscription: 'cancel_subscription',
-  CreateSubscriptionSchedule: 'create_subscription_schedule',
-} as const;
+export const billingCommands = {} as const;
 
 /**
  * Available commands for the "billing" microservice.
