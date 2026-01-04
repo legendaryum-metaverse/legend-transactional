@@ -1,5 +1,13 @@
 # micro-mint
 
+## 0.0.126
+
+### Patch Changes
+
+- 006d7ed: add billing payment and subscription events
+- Updated dependencies [006d7ed]
+  - legend-transactional@2.6.2
+
 ## 0.0.125
 
 ### Patch Changes

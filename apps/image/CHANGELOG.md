@@ -1,5 +1,13 @@
 # micro-image
 
+## 0.0.128
+
+### Patch Changes
+
+- 006d7ed: add billing payment and subscription events
+- Updated dependencies [006d7ed]
+  - legend-transactional@2.6.2
+
 ## 0.0.127
 
 ### Patch Changes
