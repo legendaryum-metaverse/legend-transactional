@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.3
+
+### Patch Changes
+
+- 22ea94b: export legend-events microservice types and interfaces
+
 ## 2.6.2
 
 ### Patch Changes
