@@ -12,6 +12,7 @@ import { BlockchainCommands } from './blockchain';
 import { AuditEdaCommands } from './audit-eda';
 import { TransactionalCommands } from './transactional';
 import { BillingCommands } from './billing';
+import { LegendEventsCommands } from './legend_events';
 /**
  * A map that defines the relationship between microservices and their corresponding commands.
  */
@@ -70,6 +71,10 @@ export interface CommandMap {
    * Represents the mapping of "transactional" microservice commands.
    */
   [availableMicroservices.Transactional]: TransactionalCommands;
+  /**
+   * Represents the mapping of "legend-events" microservice commands.
+   */
+  [availableMicroservices.Events]: LegendEventsCommands;
 }
 /**
  * Represents a command specific to a microservice.
