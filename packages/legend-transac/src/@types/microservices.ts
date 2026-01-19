@@ -41,6 +41,10 @@ export const availableMicroservices = {
    */
   Rankings: 'rankings',
   /**
+   * Represents the "legend-events" microservice.
+   */
+  Events: 'legend-events',
+  /**
    * Represents the "transactional" microservice.
    */
   Transactional: 'transactional',
