@@ -526,6 +526,118 @@ export interface EventPayload {
     expiredAt: string;
     occurredAt: string;
   };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  // LEGEND EVENTS - Event and registration domain events
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * New event created
+   */
+  'legend_events.new_event_created': {
+    eventId: number;
+    title: string;
+    description: string;
+    authorEmail: string;
+    rewardType?: string;
+    startDate: string;
+    endDate: string;
+    maxPlayers?: number;
+    ticketPriceUsd?: number;
+    isFreeTournament: boolean;
+    notificationConfig?: {
+      customEmails?: string[];
+      templateName: string;
+    };
+  };
+  /**
+   * Event has started
+   */
+  'legend_events.event_started': {
+    eventId: number;
+    title: string;
+    startedAt: string;
+  };
+  /**
+   * Event has ended
+   */
+  'legend_events.event_ended': {
+    eventId: number;
+    title: string;
+    endedAt: string;
+    totalParticipants: number;
+  };
+  /**
+   * Player registered for an event (paid or free)
+   */
+  'legend_events.player_registered': {
+    eventId: number;
+    userId: string;
+    paymentId?: string;
+    amountPaid?: number;
+    isFree: boolean;
+    registeredAt: string;
+  };
+  /**
+   * Player joined the waitlist (event full)
+   */
+  'legend_events.player_joined_waitlist': {
+    eventId: number;
+    userId: string;
+    position: number;
+    joinedAt: string;
+  };
+  /**
+   * Score submitted for an event
+   */
+  'legend_events.score_submitted': {
+    eventId: number;
+    userId: string;
+    score: number;
+    totalScore: number;
+    matchId?: string;
+    submittedAt: string;
+  };
+  /**
+   * Events have finished, send emails to winners
+   */
+  'legend_events.events_finished': {
+    completedEvents: Array<{
+      eventId: number;
+      title: string;
+      description: string;
+      authorEmail: string;
+      endsAt: string;
+      reward?: string;
+      rewardType?: string;
+      winners: Array<{
+        userId: string;
+        position: number;
+        score: number;
+      }>;
+      notificationConfig?: Record<string, unknown>;
+    }>;
+  };
+  /**
+   * Intermediate reward delivered during event
+   */
+  'legend_events.intermediate_reward': {
+    userId: string;
+    eventId: number;
+    intermediateRewardType: string;
+    rewardConfig: Record<string, unknown>;
+    templateName: string;
+    templateData: Record<string, unknown>;
+  };
+  /**
+   * Participation reward delivered post-event
+   */
+  'legend_events.participation_reward': {
+    userId: string;
+    eventId: number;
+    participationRewardType: string;
+    rewardConfig: Record<string, unknown>;
+    templateName: string;
+    templateData: Record<string, unknown>;
+  };
 }
 /**
  * Represents the available events in the system.
@@ -573,6 +685,17 @@ export const microserviceEvent = {
   'BILLING.SUBSCRIPTION_RENEWED': 'billing.subscription_renewed',
   'BILLING.SUBSCRIPTION_CANCELED': 'billing.subscription_canceled',
   'BILLING.SUBSCRIPTION_EXPIRED': 'billing.subscription_expired',
+  ///////////////////////////
+  // LEGEND EVENTS
+  'LEGEND_EVENTS.NEW_EVENT_CREATED': 'legend_events.new_event_created',
+  'LEGEND_EVENTS.EVENT_STARTED': 'legend_events.event_started',
+  'LEGEND_EVENTS.EVENT_ENDED': 'legend_events.event_ended',
+  'LEGEND_EVENTS.PLAYER_REGISTERED': 'legend_events.player_registered',
+  'LEGEND_EVENTS.PLAYER_JOINED_WAITLIST': 'legend_events.player_joined_waitlist',
+  'LEGEND_EVENTS.SCORE_SUBMITTED': 'legend_events.score_submitted',
+  'LEGEND_EVENTS.EVENTS_FINISHED': 'legend_events.events_finished',
+  'LEGEND_EVENTS.INTERMEDIATE_REWARD': 'legend_events.intermediate_reward',
+  'LEGEND_EVENTS.PARTICIPATION_REWARD': 'legend_events.participation_reward',
 } as const;
 /**
  * Available microservices events in the system.
