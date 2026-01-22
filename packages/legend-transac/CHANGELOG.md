@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.4
+
+### Patch Changes
+
+- e9bc600: support alphanumeric reward codes for final rankings
+
 ## 2.6.3
 
 ### Patch Changes
