@@ -3,7 +3,7 @@
  */
 export interface RankingWinners {
   userId: string;
-  reward: number;
+  reward: string;
 }
 
 /**
