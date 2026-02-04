@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.5
+
+### Patch Changes
+
+- f406682: just testing credentials
+
 ## 2.6.4
 
 ### Patch Changes
