@@ -250,6 +250,42 @@ export interface EventPayload {
     };
   };
   /**
+   * Event to notify when a ranking is submitted for review
+   */
+  'legend_rankings.ranking_submitted_for_review': {
+    rankingId: number;
+    title: string;
+    authorEmail: string;
+    createdAt: string;
+  };
+  /**
+   * Event to notify when a ranking is approved
+   */
+  'legend_rankings.ranking_approved': {
+    rankingId: number;
+    title: string;
+    authorEmail: string;
+    startAt: string;
+  };
+  /**
+   * Event to notify when a ranking is rejected
+   */
+  'legend_rankings.ranking_rejected': {
+    rankingId: number;
+    title: string;
+    authorEmail: string;
+    reasons: string;
+  };
+  /**
+   * Event to notify when a ranking is activated
+   */
+  'legend_rankings.ranking_activated': {
+    rankingId: number;
+    title: string;
+    authorEmail: string;
+    startAt: string;
+  };
+  /**
    * Event triggered when a product virtual is deleted
    */
   'legend_showcase.product_virtual_deleted': {
@@ -665,6 +701,10 @@ export const microserviceEvent = {
   'LEGEND_MISSIONS.SEND_EMAIL_NFT_MISSION_COMPLETED': 'legend_missions.send_email_nft_mission_completed',
   'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
   'LEGEND_RANKINGS.NEW_RANKING_CREATED': 'legend_rankings.new_ranking_created',
+  'LEGEND_RANKINGS.RANKING_SUBMITTED_FOR_REVIEW': 'legend_rankings.ranking_submitted_for_review',
+  'LEGEND_RANKINGS.RANKING_APPROVED': 'legend_rankings.ranking_approved',
+  'LEGEND_RANKINGS.RANKING_REJECTED': 'legend_rankings.ranking_rejected',
+  'LEGEND_RANKINGS.RANKING_ACTIVATED': 'legend_rankings.ranking_activated',
   'LEGEND_RANKINGS.INTERMEDIATE_REWARD': 'legend_rankings.intermediate_reward',
   'LEGEND_RANKINGS.PARTICIPATION_REWARD': 'legend_rankings.participation_reward',
   'LEGEND_SHOWCASE.PRODUCT_VIRTUAL_DELETED': 'legend_showcase.product_virtual_deleted',
