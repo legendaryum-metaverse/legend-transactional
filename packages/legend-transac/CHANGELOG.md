@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.6
+
+### Patch Changes
+
+- 3e37f47: add ranking lifecycle event mappings
+
 ## 2.6.5
 
 ### Patch Changes
