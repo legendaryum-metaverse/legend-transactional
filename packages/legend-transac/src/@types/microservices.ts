@@ -64,6 +64,10 @@ export const availableMicroservices = {
    * Represents the "legend-storage" microservice.
    */
   Storage: 'legend-storage',
+  /**
+   * Represents the "legend-game-analytics" microservice.
+   */
+  LegendGameAnalytics: 'legend-game-analytics',
 } as const;
 /**
  * Type of available microservices in the system.
