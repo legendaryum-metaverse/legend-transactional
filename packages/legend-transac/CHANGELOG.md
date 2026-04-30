@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 2.6.7
+
+### Patch Changes
+
+- 2deabe5: add legend-game-analytics to available microservices
+
 ## 2.6.6
 
 ### Patch Changes
