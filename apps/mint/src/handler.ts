@@ -1,4 +1,4 @@
-import { MicroserviceHandler } from 'legend-transactional';
+import { MicroserviceHandler } from '@legend-libs/transactional';
 
 const needToRequeueWithDelay = () => {
   return Math.random() >= 0.6;

@@ -1,4 +1,4 @@
-import { MicroserviceHandler, CommandMap } from 'legend-transactional';
+import { MicroserviceHandler, CommandMap } from '@legend-libs/transactional';
 
 const waitWithMessage = async (msg: string, time: number) => {
   await new Promise((resolve) => setTimeout(resolve, time));

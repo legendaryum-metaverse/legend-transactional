@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { Saga, stopRabbitMQ } from 'legend-transactional';
+import { Saga, stopRabbitMQ } from '@legend-libs/transactional';
 import { handler } from './handler';
 
 const app = express();

@@ -118,7 +118,7 @@ jobs:
                         "type": "plain_text",
                         "text": "npm library"
                       },
-                      "url": "https://www.npmjs.com/package/legend-transactional"
+                      "url": "https://www.npmjs.com/package/@legend-libs/transactional"
                     }
                   ]
                 }            

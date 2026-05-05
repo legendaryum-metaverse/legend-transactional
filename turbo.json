@@ -23,22 +23,22 @@
       "env": ["PORT", "RABBIT_URI"]
     },
     "saga#type-check": {
-      "dependsOn": ["legend-transactional#build:dev"],
+      "dependsOn": ["@legend-libs/transactional#build:dev"],
       "inputs": ["src/**"]
     },
     "micro-image#type-check": {
-      "dependsOn": ["legend-transactional#build:dev"],
+      "dependsOn": ["@legend-libs/transactional#build:dev"],
       "inputs": ["src/**"]
     },
     "micro-mint#type-check": {
-      "dependsOn": ["legend-transactional#build:dev"],
+      "dependsOn": ["@legend-libs/transactional#build:dev"],
       "inputs": ["src/**"]
     },
     "type-check": {
       "inputs": ["src/**"]
     },
     "dev": {
-      "dependsOn": ["legend-transactional#build:dev"],
+      "dependsOn": ["@legend-libs/transactional#build:dev"],
       "cache": false,
       "persistent": true
     },

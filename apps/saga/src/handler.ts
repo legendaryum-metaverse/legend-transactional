@@ -1,4 +1,4 @@
-import { AvailableMicroservices, CommandMap, SagaHandler } from 'legend-transactional';
+import { AvailableMicroservices, CommandMap, SagaHandler } from '@legend-libs/transactional';
 
 export const handler = (
   command: CommandMap[AvailableMicroservices],
