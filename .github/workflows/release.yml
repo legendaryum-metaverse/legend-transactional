@@ -37,12 +37,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Upgrade npm for trusted publishing (OIDC)
-        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install
