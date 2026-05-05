@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 3.0.2
+
+### Patch Changes
+
+- 60056b8: Validate OIDC trusted publishing path end-to-end (no NPM_TOKEN, with provenance).
+
 ## 3.0.1
 
 ### Patch Changes
