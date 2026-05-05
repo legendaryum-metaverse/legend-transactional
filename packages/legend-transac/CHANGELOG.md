@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 3.0.1
+
+### Patch Changes
+
+- 8ca8f45: Validate release CI publishes under new @legend-libs scope.
+
 ## 2.6.7
 
 ### Patch Changes
