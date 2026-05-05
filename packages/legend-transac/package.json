@@ -18,7 +18,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/legendaryum-metaverse/legend-transactional/tree/main/packages/legend-transac"
+    "url": "git+https://github.com/legendaryum-metaverse/legend-transactional.git",
+    "directory": "packages/legend-transac"
   },
   "private": false,
   "publishConfig": {
