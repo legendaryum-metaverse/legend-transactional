@@ -1,4 +1,4 @@
-# `legend-transactional`
+# `@legend-libs/transactional`
 
 <div style="text-align: center;">
   <br/>
@@ -10,15 +10,15 @@
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/legendaryum-metaverse/legend-transactional/release.yml?branch=main)](https://github.com/legendaryum-metaverse/legend-transactional/tree/main/packages/legend-transac)
 [![GitHub](https://img.shields.io/github/license/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/blob/main/LICENSE)
-[![npm](https://img.shields.io/npm/v/legend-transactional)](https://www.npmjs.com/package/legend-transactional)
-[![npm](https://img.shields.io/npm/dm/legend-transactional)](https://www.npmjs.com/package/legend-transactional)
-[![Bundle Size](https://img.shields.io/bundlephobia/min/legend-transactional)](https://bundlephobia.com/result?p=legend-transactional)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/legend-transactional)](https://bundlephobia.com/result?p=legend-transactional)
-[![npm type definitions](https://img.shields.io/npm/types/legend-transactional)](https://www.npmjs.com/package/legend-transactional)
+[![npm](https://img.shields.io/npm/v/@legend-libs/transactional)](https://www.npmjs.com/package/@legend-libs/transactional)
+[![npm](https://img.shields.io/npm/dm/@legend-libs/transactional)](https://www.npmjs.com/package/@legend-libs/transactional)
+[![Bundle Size](https://img.shields.io/bundlephobia/min/@legend-libs/transactional)](https://bundlephobia.com/result?p=@legend-libs/transactional)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@legend-libs/transactional)](https://bundlephobia.com/result?p=@legend-libs/transactional)
+[![npm type definitions](https://img.shields.io/npm/types/@legend-libs/transactional)](https://www.npmjs.com/package/@legend-libs/transactional)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/pulse)
 [![GitHub last commit](https://img.shields.io/github/last-commit/legendaryum-metaverse/legend-transactional)](https://github.com/legendaryum-metaverse/legend-transactional/commits/main)
 
-[**legend-transactional**](https://www.npmjs.com/package/legend-transactional) is a Node.js/TypeScript library designed to streamline communication
+[**@legend-libs/transactional**](https://www.npmjs.com/package/@legend-libs/transactional) is a Node.js/TypeScript library designed to streamline communication
 between microservices using RabbitMQ. It enables easy implementation of event-driven architectures and saga patterns, while ensuring reliable message delivery.
 
 ## Features

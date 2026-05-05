@@ -105,12 +105,12 @@ importers:
 
   apps/image:
     dependencies:
+      '@legend-libs/transactional':
+        specifier: workspace:*
+        version: link:../../packages/legend-transac
       express:
         specifier: latest
         version: 5.2.1
-      legend-transactional:
-        specifier: workspace:*
-        version: link:../../packages/legend-transac
     devDependencies:
       '@types/express':
         specifier: latest
@@ -121,12 +121,12 @@ importers:
 
   apps/mint:
     dependencies:
+      '@legend-libs/transactional':
+        specifier: workspace:*
+        version: link:../../packages/legend-transac
       express:
         specifier: latest
         version: 5.2.1
-      legend-transactional:
-        specifier: workspace:*
-        version: link:../../packages/legend-transac
     devDependencies:
       '@types/express':
         specifier: latest
@@ -137,12 +137,12 @@ importers:
 
   apps/saga:
     dependencies:
+      '@legend-libs/transactional':
+        specifier: workspace:*
+        version: link:../../packages/legend-transac
       express:
         specifier: latest
         version: 5.2.1
-      legend-transactional:
-        specifier: workspace:*
-        version: link:../../packages/legend-transac
     devDependencies:
       '@types/express':
         specifier: latest
