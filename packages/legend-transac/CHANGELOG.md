@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 3.0.2
+
+### Patch Changes
+
+- c021211: Re-run OIDC trusted publishing flow under Node 24 (npm 11.x bundled).
+
 ## 3.0.1
 
 ### Patch Changes
