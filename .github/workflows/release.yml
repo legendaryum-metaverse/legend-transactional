@@ -17,13 +17,18 @@ env:
   #  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   #  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   FORCE_COLOR: 3
+  NPM_CONFIG_PROVENANCE: true
 
 jobs:
   changelog:
-    timeout-minutes: 2
+    timeout-minutes: 5
     if: github.event.repository.full_name == github.repository
     name: Changelog PR or Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -32,8 +37,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Upgrade npm for trusted publishing (OIDC)
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: pnpm install
@@ -51,10 +60,7 @@ jobs:
           commit: '[ci] release'
           title: '[ci] release'
         env:
-          # Needs access to push to main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Needs access to publish to npm
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Set legend-transactional Package and Version
         id: set_env
         if: steps.changesets.outputs.published == 'true'
