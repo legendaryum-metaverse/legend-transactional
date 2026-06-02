@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 3.0.3
+
+### Patch Changes
+
+- 66b4de5: add social.country\_\* event payloads
+
 ## 3.0.2
 
 ### Patch Changes
