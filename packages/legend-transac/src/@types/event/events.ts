@@ -332,6 +332,31 @@ export interface EventPayload {
   'social.updated_user': {
     socialUser: SocialUser;
   };
+  /**
+   * A country was created in the Country Registry (source of truth in social).
+   * Consumers (rankings, events, etc.) upsert their local projection keyed by `code`.
+   */
+  'social.country_created': {
+    code: string;
+    name: string;
+    isEnabled: boolean;
+  };
+  /**
+   * A country in the Country Registry was updated (name and/or isEnabled changed).
+   * Consumers upsert their local projection keyed by `code`.
+   */
+  'social.country_updated': {
+    code: string;
+    name: string;
+    isEnabled: boolean;
+  };
+  /**
+   * A country was removed from the Country Registry.
+   * Consumers delete the matching entry from their local projection.
+   */
+  'social.country_deleted': {
+    code: string;
+  };
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   // AUDIT EVENTS - For tracking event lifecycle and debugging
   //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -714,6 +739,9 @@ export const microserviceEvent = {
   'SOCIAL.NEW_USER': 'social.new_user',
   'SOCIAL.UNBLOCK_CHAT': 'social.unblock_chat',
   'SOCIAL.UPDATED_USER': 'social.updated_user',
+  'SOCIAL.COUNTRY_CREATED': 'social.country_created',
+  'SOCIAL.COUNTRY_UPDATED': 'social.country_updated',
+  'SOCIAL.COUNTRY_DELETED': 'social.country_deleted',
   ///////////////////////////
   // BILLING EVENTS
   'BILLING.PAYMENT_CREATED': 'billing.payment_created',
