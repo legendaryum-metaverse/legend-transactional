@@ -142,21 +142,16 @@ export interface EventPayload {
     blockExpirationHours?: number;
   };
   /**
-   * Event to notify the mission's author that it has been created
+   * Event published when a mission is created and submitted for review.
    */
   'legend_missions.new_mission_created': {
+    missionId: number;
     title: string;
     author: string;
     authorEmail: string;
-    reward: number;
+    rewardKind: 'discount_code' | 'gift_card';
     startDate: string;
     endDate: string;
-    maxPlayersClaimingReward: number;
-    timeToReward: number;
-    notificationConfig?: {
-      customEmails?: string[];
-      templateName: string;
-    };
   };
   /**
    * Event to set a mission in progress
@@ -165,7 +160,9 @@ export interface EventPayload {
     redisKey: string;
   };
   /**
-   * Event triggered when a mission finishes and needs to send final reports to participants
+   * Event triggered when a mission finishes and needs to send final reports to participants.
+   * Emitted by the finalize ticker when an active mission reaches its end_date.
+   * Aggregate stat fields are optional — zero values mean not available.
    */
   'legend_missions.mission_finished': {
     missionTitle: string;
@@ -174,34 +171,67 @@ export interface EventPayload {
       email?: string;
       position?: number;
     }>;
+    author?: string;
+    authorEmail?: string;
+    totalSeats?: number;
+    registeredParticipants?: number;
+    rewardKind?: string;
+    startDate?: string;
+    endDate?: string;
   };
   /**
-   * Event triggered to send an email notification when a user completes a crypto-based mission and earns a reward.
+   * Event emitted by the finalize ticker when an approved mission reaches its start_date and becomes active.
+   * Consumed by legend-send-email to notify the mission author and admin team.
    */
-  'legend_missions.send_email_crypto_mission_completed': {
-    userId: string;
-    missionTitle: string;
-    reward: string;
-    blockchainNetwork: string;
-    cryptoAsset: string;
+  'legend_missions.mission_activated': {
+    title: string;
+    author: string;
+    authorEmail: string;
+    startDate: string;
+    endDate: string;
   };
   /**
-   * Event triggered to send an email notification when a user redeems a code and completes a mission.
+   * Event published when an admin approves a mission.
+   */
+  'legend_missions.mission_approved': {
+    missionId: number;
+    title: string;
+    authorEmail: string;
+    startDate: string;
+  };
+  /**
+   * Event published when an admin rejects a mission.
+   */
+  'legend_missions.mission_rejected': {
+    missionId: number;
+    title: string;
+    authorEmail: string;
+    adminNotes: string;
+  };
+  /**
+   * Event triggered to send an email notification when a user redeems a discount code.
+   * Optional redeem URLs trigger the redeem-variant template (two extra buttons).
    */
   'legend_missions.send_email_code_exchange_mission_completed': {
     userId: string;
     missionTitle: string;
     codeValue: string;
     codeDescription: string;
+    ecommerceRedeemUrl?: string;
+    mapsRedeemUrl?: string;
+    templateName?: string;
   };
   /**
-   * Event triggered to send an email notification when a user completes an NFT-related mission.
+   * Event triggered to send an email with a gift card download link to the mission winner.
    */
-  'legend_missions.send_email_nft_mission_completed': {
+  'legend_missions.send_email_gift_card_mission_completed': {
     userId: string;
     missionTitle: string;
-    nftContractAddress: string;
-    nftTokenId: string;
+    description: string;
+    fileKey: string;
+    ecommerceRedeemUrl?: string;
+    mapsRedeemUrl?: string;
+    templateName?: string;
   };
   /**
    * Event to send emails to winners when the ranking finishes
@@ -720,10 +750,12 @@ export const microserviceEvent = {
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
   'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
-  'LEGEND_MISSIONS.SEND_EMAIL_CRYPTO_MISSION_COMPLETED': 'legend_missions.send_email_crypto_mission_completed',
+  'LEGEND_MISSIONS.MISSION_ACTIVATED': 'legend_missions.mission_activated',
+  'LEGEND_MISSIONS.MISSION_APPROVED': 'legend_missions.mission_approved',
+  'LEGEND_MISSIONS.MISSION_REJECTED': 'legend_missions.mission_rejected',
   'LEGEND_MISSIONS.SEND_EMAIL_CODE_EXCHANGE_MISSION_COMPLETED':
     'legend_missions.send_email_code_exchange_mission_completed',
-  'LEGEND_MISSIONS.SEND_EMAIL_NFT_MISSION_COMPLETED': 'legend_missions.send_email_nft_mission_completed',
+  'LEGEND_MISSIONS.SEND_EMAIL_GIFT_CARD_MISSION_COMPLETED': 'legend_missions.send_email_gift_card_mission_completed',
   'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
   'LEGEND_RANKINGS.NEW_RANKING_CREATED': 'legend_rankings.new_ranking_created',
   'LEGEND_RANKINGS.RANKING_SUBMITTED_FOR_REVIEW': 'legend_rankings.ranking_submitted_for_review',
