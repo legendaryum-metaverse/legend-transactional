@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 3.0.4
+
+### Patch Changes
+
+- 19c82b7: feat/mission
+
 ## 3.0.3
 
 ### Patch Changes
