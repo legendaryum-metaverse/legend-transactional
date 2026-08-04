@@ -5,6 +5,7 @@ import { EventPayload, MicroserviceConsumeEvents, microserviceEvent, Microservic
 import { publishAuditEvent } from '../../Broker/PublishAuditEvent';
 import { extractMicroserviceFromQueue } from '../../utils';
 import { v7 as uuidv7 } from 'uuid';
+import { operationFromHeaders, reportMissingOperation, withOperation } from '../../operation';
 
 /**
  * Callback function for consuming and handling microservice events.
@@ -93,17 +94,24 @@ export const eventCallback = <U extends MicroserviceEvent>(
     publisherMicroservice = 'unknown';
   }
 
+  const operationId = operationFromHeaders(headers);
+  if (operationId === undefined) {
+    reportMissingOperation(receiverMicroservice, receivedEvent);
+  }
+
   //fire-and-forget -> Emit the audit.received event (never fail the main flow if audit fails)
-  publishAuditEvent(channel, 'audit.received', {
-    publisher_microservice: publisherMicroservice,
-    receiver_microservice: receiverMicroservice,
-    received_event: receivedEvent,
-    received_at: timestamp,
-    queue_name: queueName,
-    event_id,
-  }).catch((error) => {
-    console.error('Failed to emit audit.received event:', error);
-  });
+  withOperation(operationId, () =>
+    publishAuditEvent(channel, 'audit.received', {
+      publisher_microservice: publisherMicroservice,
+      receiver_microservice: receiverMicroservice,
+      received_event: receivedEvent,
+      received_at: timestamp,
+      queue_name: queueName,
+      event_id,
+    }).catch((error) => {
+      console.error('Failed to emit audit.received event:', error);
+    }),
+  );
 
   const responseChannel = new EventsConsumeChannel(
     channel,
@@ -113,10 +121,13 @@ export const eventCallback = <U extends MicroserviceEvent>(
     receivedEvent,
     event_id,
     publisherMicroservice,
+    operationId,
   );
 
   // si event.length > 1, a esta altura todos los eventos son válidos y se pueden emitir. Recordar llego un solo mensaje con extra headers.
   // Sin embargo, el payload es tipado para cada evento.
   // Mismo payload para dos handlers distintos, a menos que la relación con el evento en el proceso sea importante se podría refactorizar
-  e.emit(event[0], { payload, channel: responseChannel });
+  // Running the handler inside the scope makes the operation propagate to
+  // anything it publishes, with no code in the consuming service.
+  withOperation(operationId, () => e.emit(event[0], { payload, channel: responseChannel, operationId }));
 };
