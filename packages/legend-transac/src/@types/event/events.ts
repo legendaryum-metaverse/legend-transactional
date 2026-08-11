@@ -142,6 +142,16 @@ export interface EventPayload {
     blockExpirationHours?: number;
   };
   /**
+   * Event published when an operation is created. identity_mode is immutable
+   * once an operation exists, so this creation-time event is the only one a
+   * consumer needs to build a local {operationId -> identityMode} projection
+   * (IDR-01, MODULO-IDENTITY-RESOLVER.md).
+   */
+  'auth.operation_created': {
+    operationId: string;
+    identityMode: 'delegated' | 'managed';
+  };
+  /**
    * Event published when a mission is created and submitted for review.
    */
   'legend_missions.new_mission_created': {
@@ -747,6 +757,7 @@ export const microserviceEvent = {
   'AUTH.LOGOUT_USER': 'auth.logout_user',
   'AUTH.NEW_USER': 'auth.new_user',
   'AUTH.BLOCKED_USER': 'auth.blocked_user',
+  'AUTH.OPERATION_CREATED': 'auth.operation_created',
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
   'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
