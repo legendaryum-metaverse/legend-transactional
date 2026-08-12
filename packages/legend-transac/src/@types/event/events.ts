@@ -628,6 +628,20 @@ export interface EventPayload {
     occurredAt: string;
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////
+  // PLATFORM EVENTS - Level 1 entitlements (operation pays SIPLEI), see legend-billing/docs/ENTITLEMENTS.md
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * An operation's effective feature set changed (plan assignment or feature
+   * override). Invalidation signal only, not a snapshot: consumers refetch
+   * from legend-billing rather than trust a payload that could drift from
+   * the feature schema. Fired from invalidateOperationFeatures() right after
+   * the local Redis key is dropped, so every service's cached copy expires
+   * together instead of independently on a 1h TTL.
+   */
+  'platform.operation_features_changed': {
+    operationId: string;
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
   // LEGEND EVENTS - Event and registration domain events
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   /**
@@ -796,6 +810,9 @@ export const microserviceEvent = {
   'BILLING.SUBSCRIPTION_RENEWED': 'billing.subscription_renewed',
   'BILLING.SUBSCRIPTION_CANCELED': 'billing.subscription_canceled',
   'BILLING.SUBSCRIPTION_EXPIRED': 'billing.subscription_expired',
+  ///////////////////////////
+  // PLATFORM EVENTS
+  'PLATFORM.OPERATION_FEATURES_CHANGED': 'platform.operation_features_changed',
   ///////////////////////////
   // LEGEND EVENTS
   'LEGEND_EVENTS.NEW_EVENT_CREATED': 'legend_events.new_event_created',
