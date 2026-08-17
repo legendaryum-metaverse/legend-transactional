@@ -56,3 +56,32 @@ export const operationHeaders = (): Record<string, string> => {
   const operationId = currentOperation();
   return operationId === undefined ? {} : { [OPERATION_HEADER]: operationId };
 };
+
+/**
+ * The operation as gRPC metadata, for an outgoing call.
+ *
+ * Same key and same shape as the AMQP headers on purpose: one name for the
+ * tenant across both transports. A call made with no operation in scope sends
+ * nothing, which is what keeps the permissive migration working.
+ *
+ * Kept transport-agnostic — a plain record instead of a grpc `Metadata` — so
+ * the library does not pick a gRPC client for the services that use it. Each
+ * one spreads this into whatever its own client expects.
+ */
+export const operationMetadata = (): Record<string, string> => operationHeaders();
+
+/**
+ * Reads the operation off an incoming gRPC call and runs the handler inside its
+ * scope, so anything the handler publishes carries the same tenant.
+ *
+ * Reading the value without binding the scope is the subtle half-fix: the
+ * handler filters its own queries correctly and then emits an event with no
+ * operation, which every consumer resolves to Legendaryum.
+ *
+ * `get` is whatever the caller's gRPC library offers, e.g.
+ * `(key) => call.metadata.get(key)[0]?.toString()`.
+ */
+export const withOperationFromMetadata = <R>(get: (key: string) => string | undefined, fn: () => R): R => {
+  const operationId = get(OPERATION_HEADER);
+  return withOperation(operationId === '' ? undefined : operationId, fn);
+};
