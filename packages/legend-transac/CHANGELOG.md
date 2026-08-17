@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 4.0.0
+
+### Major Changes
+
+- 37744a6: add siplei
+
 ## 3.0.4
 
 ### Patch Changes
