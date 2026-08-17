@@ -1,6 +1,7 @@
 import { SagaConsumeSagaEvents, SagaStep, AvailableMicroservices } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
+import { operationFromHeaders, withOperation } from '../../operation';
 import { SagaConsumeChannel } from '../channels';
 /**
  * Callback function for consuming saga events/commands.
@@ -30,7 +31,8 @@ export const sagaConsumeCallback = <T extends AvailableMicroservices>(
     channel.nack(msg, false, false);
     return;
   }
-  const responseChannel = new SagaConsumeChannel(channel, msg, queueName, currentStep);
+  const operationId = operationFromHeaders(msg.properties.headers as Record<string, unknown> | undefined);
+  const responseChannel = new SagaConsumeChannel(channel, msg, queueName, currentStep, operationId);
 
-  e.emit(currentStep.command, { step: currentStep, channel: responseChannel });
+  withOperation(operationId, () => e.emit(currentStep.command, { step: currentStep, channel: responseChannel }));
 };

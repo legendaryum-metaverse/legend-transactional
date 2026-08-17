@@ -37,7 +37,8 @@
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
     "type-check": "tsc --noEmit --project tsconfig.json",
-    "prebuild": "pnpm run type-check"
+    "prebuild": "pnpm run type-check",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@types/amqplib": "^0.10.8",

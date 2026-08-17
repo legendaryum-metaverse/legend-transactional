@@ -142,6 +142,16 @@ export interface EventPayload {
     blockExpirationHours?: number;
   };
   /**
+   * Event published when an operation is created. identity_mode is immutable
+   * once an operation exists, so this creation-time event is the only one a
+   * consumer needs to build a local {operationId -> identityMode} projection
+   * (IDR-01, MODULO-IDENTITY-RESOLVER.md).
+   */
+  'auth.operation_created': {
+    operationId: string;
+    identityMode: 'delegated' | 'managed';
+  };
+  /**
    * Event published when a mission is created and submitted for review.
    */
   'legend_missions.new_mission_created': {
@@ -618,6 +628,20 @@ export interface EventPayload {
     occurredAt: string;
   };
   //////////////////////////////////////////////////////////////////////////////////////////////////////
+  // PLATFORM EVENTS - Level 1 entitlements (operation pays SIPLEI), see legend-billing/docs/ENTITLEMENTS.md
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /**
+   * An operation's effective feature set changed (plan assignment or feature
+   * override). Invalidation signal only, not a snapshot: consumers refetch
+   * from legend-billing rather than trust a payload that could drift from
+   * the feature schema. Fired from invalidateOperationFeatures() right after
+   * the local Redis key is dropped, so every service's cached copy expires
+   * together instead of independently on a 1h TTL.
+   */
+  'platform.operation_features_changed': {
+    operationId: string;
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
   // LEGEND EVENTS - Event and registration domain events
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   /**
@@ -747,6 +771,7 @@ export const microserviceEvent = {
   'AUTH.LOGOUT_USER': 'auth.logout_user',
   'AUTH.NEW_USER': 'auth.new_user',
   'AUTH.BLOCKED_USER': 'auth.blocked_user',
+  'AUTH.OPERATION_CREATED': 'auth.operation_created',
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
   'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
@@ -785,6 +810,9 @@ export const microserviceEvent = {
   'BILLING.SUBSCRIPTION_RENEWED': 'billing.subscription_renewed',
   'BILLING.SUBSCRIPTION_CANCELED': 'billing.subscription_canceled',
   'BILLING.SUBSCRIPTION_EXPIRED': 'billing.subscription_expired',
+  ///////////////////////////
+  // PLATFORM EVENTS
+  'PLATFORM.OPERATION_FEATURES_CHANGED': 'platform.operation_features_changed',
   ///////////////////////////
   // LEGEND EVENTS
   'LEGEND_EVENTS.NEW_EVENT_CREATED': 'legend_events.new_event_created',

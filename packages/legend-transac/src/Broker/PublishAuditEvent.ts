@@ -1,5 +1,6 @@
 import { Channel } from 'amqplib';
 import { EventPayload, exchange, MicroserviceEvent } from '../@types';
+import { operationHeaders } from '../operation';
 
 /**
  * Publishes audit events to the direct audit exchange
@@ -25,6 +26,7 @@ export async function publishAuditEvent<T extends MicroserviceEvent>(
     const messageBuffer = Buffer.from(JSON.stringify(payload));
 
     channel.publish(exchange.Audit, routingKey, messageBuffer, {
+      headers: operationHeaders(),
       contentType: 'application/json',
       deliveryMode: 2, // persistent
     });

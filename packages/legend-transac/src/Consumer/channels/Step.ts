@@ -2,6 +2,7 @@ import { queue, status, AvailableMicroservices, SagaStep } from '../../@types';
 import { sendToQueue } from '../../Broker';
 import ConsumeChannel from './Consume';
 import { Channel, ConsumeMessage } from 'amqplib';
+import { withOperation } from '../../operation';
 /**
  * Represents a **_consume_** channel for a specific microservice.
  * Extends the abstract ConsumeChannel class.
@@ -15,6 +16,12 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
   protected readonly step: SagaStep<T>;
 
   /**
+   * The operation (tenant) the consumed step belongs to, so the reply to the
+   * saga carries it forward instead of dropping the tenant mid-transaction.
+   */
+  protected readonly operationId: string | undefined;
+
+  /**
    * Constructs a new instance of the ConsumeChannel class.
    *
    * @param {Channel} channel - The channel to interact with the message broker.
@@ -22,9 +29,16 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
    * @param {string} queueName - The name of the queue from which the message was consumed.
    * @param {SagaStep} step - The saga step associated with the consumed message.
    */
-  public constructor(channel: Channel, msg: ConsumeMessage, queueName: string, step: SagaStep<T>) {
+  public constructor(
+    channel: Channel,
+    msg: ConsumeMessage,
+    queueName: string,
+    step: SagaStep<T>,
+    operationId?: string,
+  ) {
     super(channel, msg, queueName);
     this.step = step;
+    this.operationId = operationId;
   }
 
   ackMessage(payloadForNextStep: Record<string, unknown> = {}): void {
@@ -41,13 +55,15 @@ export class MicroserviceConsumeChannel<T extends AvailableMicroservices> extend
       ...metaData,
     };
 
-    sendToQueue(queue.ReplyToSaga, this.step)
-      .then(() => {
-        this.channel.ack(this.msg, false);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    withOperation(this.operationId, () =>
+      sendToQueue(queue.ReplyToSaga, this.step)
+        .then(() => {
+          this.channel.ack(this.msg, false);
+        })
+        .catch((err) => {
+          console.error(err);
+        }),
+    );
   }
 }
 

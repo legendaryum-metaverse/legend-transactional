@@ -4,6 +4,7 @@ import { getSendChannel } from './sendChannel';
 import { v7 as uuidv7 } from 'uuid';
 import { getStoredConfig } from '../Connections';
 import { publishAuditEvent } from './PublishAuditEvent';
+import { operationHeaders } from '../operation';
 /**
  * Publishes a microservice event to all subscribed microservices.
  *
@@ -38,6 +39,7 @@ export const publishEvent = async <T extends MicroserviceEvent>(
       ...getEventObject(event),
       // key para emitir eventos a todos los micros, todos los micros tienen el bind al exchange Matching
       'all-micro': 'yes',
+      ...operationHeaders(),
     },
     messageId,
     appId: publisherMicroservice,

@@ -2,6 +2,7 @@ import { CommenceSagaEvents, CommenceSaga, SagaTitle } from '../../@types';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { SagaCommenceConsumeChannel } from '../channels/CommenceSaga';
+import { operationFromHeaders, withOperation } from '../../operation';
 /**
  * Callback function for consuming a saga commence event.
  *
@@ -29,6 +30,7 @@ export const commenceSagaConsumeCallback = <U extends SagaTitle>(
     return;
   }
   const responseChannel = new SagaCommenceConsumeChannel(channel, msg, queueName);
+  const operationId = operationFromHeaders(msg.properties.headers as Record<string, unknown> | undefined);
 
-  e.emit(saga.title, { saga, channel: responseChannel });
+  withOperation(operationId, () => e.emit(saga.title, { saga, channel: responseChannel }));
 };

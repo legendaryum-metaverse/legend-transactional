@@ -3,6 +3,7 @@ import { Channel, ConsumeMessage } from 'amqplib';
 import { Emitter } from 'mitt';
 import { MicroserviceConsumeChannel } from '../channels';
 import { MicroserviceConsumeSagaEvents } from '../../@types/saga/microservice';
+import { operationFromHeaders, reportMissingOperation, withOperation } from '../../operation';
 /**
  * Callback function for consuming microservice events/commands.
  *
@@ -32,7 +33,13 @@ export const sagaStepCallback = <T extends AvailableMicroservices>(
     return;
   }
   const { command, sagaId, previousPayload } = currentStep;
-  const responseChannel = new MicroserviceConsumeChannel<T>(channel, msg, queueName, currentStep);
+  const operationId = operationFromHeaders(msg.properties.headers as Record<string, unknown> | undefined);
+  if (operationId === undefined) {
+    reportMissingOperation(currentStep.microservice, command);
+  }
+  const responseChannel = new MicroserviceConsumeChannel<T>(channel, msg, queueName, currentStep, operationId);
 
-  e.emit(command, { sagaId, payload: previousPayload, channel: responseChannel });
+  // Running the handler inside the scope makes the operation propagate to
+  // anything it publishes, with no code in the consuming service.
+  withOperation(operationId, () => e.emit(command, { sagaId, payload: previousPayload, channel: responseChannel }));
 };

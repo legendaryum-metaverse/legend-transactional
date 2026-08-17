@@ -1,5 +1,6 @@
 import { CommenceSaga, queue, SagaCommencePayload, SagaTitle } from '../@types';
 import { getSendChannel } from './sendChannel';
+import { operationHeaders } from '../operation';
 /**
  * Sends a message payload to a specified queue.
  *
@@ -21,6 +22,7 @@ export const sendToQueue =
     // so we'll ignore it.
     channel.sendToQueue(queueName, Buffer.from(JSON.stringify(payload)), {
       persistent: true,
+      headers: operationHeaders(),
     });
   };
 /**
