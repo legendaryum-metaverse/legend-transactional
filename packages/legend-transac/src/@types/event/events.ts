@@ -259,6 +259,10 @@ export interface EventPayload {
     operationId: string;
     sourceType: string;
     sourceId: string;
+    // Needed so consumers can dedupe on (operationId, sourceType, sourceId,
+    // userRef) - the same composite key billable_participants uses - and
+    // stay correct under RabbitMQ redelivery instead of double-counting.
+    userRef: string;
     occurredAt: string;
   };
   /**
