@@ -1,5 +1,12 @@
 # legend-transactional
 
+## 4.0.1
+
+### Patch Changes
+
+- e14a67b: modification payload billing
+- 976427f: add legend_rankings.billable_participant_recorded event
+
 ## 4.0.0
 
 ### Major Changes
