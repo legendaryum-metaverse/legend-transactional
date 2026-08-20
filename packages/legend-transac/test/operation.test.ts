@@ -101,12 +101,22 @@ describe('withOperationFromMetadata', () => {
   });
 
   it('binds nothing when the call carried no operation', () => {
-    expect(withOperationFromMetadata(() => undefined, () => currentOperation())).toBeUndefined();
+    expect(
+      withOperationFromMetadata(
+        () => undefined,
+        () => currentOperation(),
+      ),
+    ).toBeUndefined();
   });
 
   // An empty metadata value is absence, not an operation named "".
   it('treats an empty value as absent', () => {
-    expect(withOperationFromMetadata(() => '', () => currentOperation())).toBeUndefined();
+    expect(
+      withOperationFromMetadata(
+        () => '',
+        () => currentOperation(),
+      ),
+    ).toBeUndefined();
   });
 });
 
