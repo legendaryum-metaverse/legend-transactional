@@ -250,6 +250,18 @@ export interface EventPayload {
     completedRankings: CompletedRanking[];
   };
   /**
+   * A distinct player's first participation in a ranking was recorded (the
+   * billable unit - the same player playing 50 times counts once).
+   * Invalidation signal, not a snapshot: consumers re-fetch the count they
+   * need rather than trust a total baked into the event.
+   */
+  'legend_rankings.billable_participant_recorded': {
+    operationId: string;
+    sourceType: string;
+    sourceId: string;
+    occurredAt: string;
+  };
+  /**
    * Event to deliver intermediate reward (e.g., first game)
    */
   'legend_rankings.intermediate_reward': {
@@ -785,6 +797,7 @@ export const microserviceEvent = {
     'legend_missions.send_email_code_exchange_mission_completed',
   'LEGEND_MISSIONS.SEND_EMAIL_GIFT_CARD_MISSION_COMPLETED': 'legend_missions.send_email_gift_card_mission_completed',
   'LEGEND_RANKINGS.RANKINGS_FINISHED': 'legend_rankings.rankings_finished',
+  'LEGEND_RANKINGS.BILLABLE_PARTICIPANT_RECORDED': 'legend_rankings.billable_participant_recorded',
   'LEGEND_RANKINGS.NEW_RANKING_CREATED': 'legend_rankings.new_ranking_created',
   'LEGEND_RANKINGS.RANKING_SUBMITTED_FOR_REVIEW': 'legend_rankings.ranking_submitted_for_review',
   'LEGEND_RANKINGS.RANKING_APPROVED': 'legend_rankings.ranking_approved',
