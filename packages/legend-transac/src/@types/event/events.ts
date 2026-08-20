@@ -578,6 +578,7 @@ export interface EventPayload {
     periodStart: string;
     periodEnd: string;
     occurredAt: string;
+    features?: string[];
   };
   /**
    * Subscription was updated (plan change, status change, etc.)
@@ -592,6 +593,7 @@ export interface EventPayload {
     periodStart: string;
     periodEnd: string;
     occurredAt: string;
+    features?: string[];
   };
   /**
    * Subscription was renewed (new billing period started)
@@ -604,6 +606,7 @@ export interface EventPayload {
     periodStart: string;
     periodEnd: string;
     occurredAt: string;
+    features?: string[];
   };
   /**
    * Subscription was canceled (still active until period end)
