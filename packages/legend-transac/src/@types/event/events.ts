@@ -152,6 +152,34 @@ export interface EventPayload {
     identityMode: 'delegated' | 'managed';
   };
   /**
+   * The full current state of an operation, published on creation and on every
+   * update. A snapshot, not a diff: applying it is idempotent, so a consumer
+   * keeping a local operations catalog overwrites its row wholesale.
+   *
+   * `updatedAt` is what makes that safe under redelivery and out-of-order
+   * arrival — a snapshot older than the row already stored is discarded.
+   *
+   * `organizationSlug` and `clientType` belong to the organization rather than
+   * the operation, and are denormalized here so a consumer does not need a
+   * second round trip to render or group by them.
+   *
+   * Fiscal and network identity (tax id, fiscal address, postal code, IP
+   * allowlist) stay out on purpose: this is broadcast to every subscribed
+   * microservice and no consumer of this event needs them.
+   */
+  'auth.operation_snapshot': {
+    operationId: string;
+    organizationId: string;
+    organizationSlug: string;
+    clientType: 'enterprise' | 'operator' | 'app' | 'miniapp';
+    legalName: string;
+    countryCode: string;
+    currency: string;
+    identityMode: 'delegated' | 'managed';
+    status: 'active' | 'suspended' | 'archived';
+    updatedAt: string;
+  };
+  /**
    * Event published when a mission is created and submitted for review.
    */
   'legend_missions.new_mission_created': {
@@ -791,6 +819,7 @@ export const microserviceEvent = {
   'AUTH.NEW_USER': 'auth.new_user',
   'AUTH.BLOCKED_USER': 'auth.blocked_user',
   'AUTH.OPERATION_CREATED': 'auth.operation_created',
+  'AUTH.OPERATION_SNAPSHOT': 'auth.operation_snapshot',
   'LEGEND_MISSIONS.NEW_MISSION_CREATED': 'legend_missions.new_mission_created',
   'LEGEND_MISSIONS.ONGOING_MISSION': 'legend_missions.ongoing_mission',
   'LEGEND_MISSIONS.MISSION_FINISHED': 'legend_missions.mission_finished',
