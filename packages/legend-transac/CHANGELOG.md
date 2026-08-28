@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 4.1.0
+
+### Minor Changes
+
+- 1b053c9: add auth.operation_snapshot event
+
 ## 4.0.1
 
 ### Patch Changes
