@@ -1,5 +1,11 @@
 # legend-transactional
 
+## 4.2.0
+
+### Minor Changes
+
+- 4ab5df0: Add billing.invoice_charge_created event
+
 ## 4.1.0
 
 ### Minor Changes
