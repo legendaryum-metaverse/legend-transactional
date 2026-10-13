@@ -610,6 +610,14 @@ export interface EventPayload {
     metadata: Record<string, string>;
     occurredAt: string;
   };
+  'billing.invoice_charge_created': {
+    chargeId: string;
+    userId: string;
+    amount: number;
+    currency: string;
+    metadata: Record<string, string>;
+    occurredAt: string;
+  };
   /**
    * New subscription created
    */
@@ -854,6 +862,7 @@ export const microserviceEvent = {
   'BILLING.PAYMENT_SUCCEEDED': 'billing.payment_succeeded',
   'BILLING.PAYMENT_FAILED': 'billing.payment_failed',
   'BILLING.PAYMENT_REFUNDED': 'billing.payment_refunded',
+  'BILLING.INVOICE_CHARGE_CREATED': 'billing.invoice_charge_created',
   'BILLING.SUBSCRIPTION_CREATED': 'billing.subscription_created',
   'BILLING.SUBSCRIPTION_UPDATED': 'billing.subscription_updated',
   'BILLING.SUBSCRIPTION_RENEWED': 'billing.subscription_renewed',
