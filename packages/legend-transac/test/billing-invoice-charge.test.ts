@@ -1,5 +1,5 @@
-import {microserviceEvent} from '../src/@types/event/events';
-import type {EventPayload} from '../src/@types/event/events';
+import { microserviceEvent } from '../src/@types/event/events';
+import type { EventPayload } from '../src/@types/event/events';
 
 describe('billing.invoice_charge_created', () => {
   it('is registered in the event map', () => {
@@ -12,7 +12,7 @@ describe('billing.invoice_charge_created', () => {
       userId: 'u-1',
       amount: 1500,
       currency: 'usd',
-      metadata: {product_type: 'suggested_game', product_id: 'p-1'},
+      metadata: { product_type: 'suggested_game', product_id: 'p-1' },
       occurredAt: '2026-10-13T00:00:00Z',
     };
     expect(Object.keys(payload).sort()).toEqual(['amount', 'chargeId', 'currency', 'metadata', 'occurredAt', 'userId']);
