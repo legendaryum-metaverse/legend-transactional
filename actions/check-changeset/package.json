@@ -9,11 +9,11 @@
     "@actions/github": "^6.0.1",
     "@octokit/webhooks-types": "^7.6.1",
     "@types/markdown-table": "^2.0.0",
-    "@vercel/ncc": "^0.38.4",
+    "@vercel/ncc": "^0.45.0",
     "chalk": "^2.4.2",
     "markdown-table": "^2.0.0",
     "tsconfig": "workspace:*",
-    "tty-table": "^4.2.3"
+    "tty-table": "^4.2.4"
   },
   "scripts": {
     "build": "swc src -s -d dist --strip-leading-paths",
